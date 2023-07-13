@@ -4,5 +4,5 @@ namespace GamePlay.Models;
 
 public class ApplicationUser : IdentityUser
 {
-    public string PhotoPath { get; set; }
+    public string? PhotoPath { get; set; }
 }

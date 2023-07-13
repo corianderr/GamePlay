@@ -12,4 +12,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         : base(options, operationalStoreOptions)
     {
     }
+    public DbSet<Game>? Games { get; set; }
+    public DbSet<UserRelation>? UserRelations { get; set; }
+    public DbSet<UsersGame>? UsersGames { get; set; }
 }

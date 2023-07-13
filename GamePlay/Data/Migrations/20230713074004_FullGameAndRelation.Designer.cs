@@ -4,6 +4,7 @@ using GamePlay.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamePlay.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713074004_FullGameAndRelation")]
+    partial class FullGameAndRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,16 +285,12 @@ namespace GamePlay.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SubscriberId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SubscriberId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserRelations");
                 });
@@ -303,19 +301,15 @@ namespace GamePlay.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("GameId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UsersGames");
                 });
@@ -455,36 +449,6 @@ namespace GamePlay.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("GamePlay.Models.UserRelation", b =>
-                {
-                    b.HasOne("GamePlay.Models.ApplicationUser", "Subscriber")
-                        .WithMany()
-                        .HasForeignKey("SubscriberId");
-
-                    b.HasOne("GamePlay.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Subscriber");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GamePlay.Models.UsersGame", b =>
-                {
-                    b.HasOne("GamePlay.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId");
-
-                    b.HasOne("GamePlay.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Game");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

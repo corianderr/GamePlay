@@ -13,4 +13,11 @@ public class Game : BaseEntity
     public int MaxPlayTime { get; set; }
     public int YearOfRelease { get; set; }
     public double AverageRating { get; set; }
+    public List<ApplicationUser> Users { get; set; }
+
+    public Game() : base()
+    {
+        Users = new List<ApplicationUser>();
+    }
+
 }

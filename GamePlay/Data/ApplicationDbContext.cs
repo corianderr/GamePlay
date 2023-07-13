@@ -14,5 +14,5 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     }
     public DbSet<Game>? Games { get; set; }
     public DbSet<UserRelation>? UserRelations { get; set; }
-    public DbSet<UsersGame>? UsersGames { get; set; }
+    public DbSet<GameRating>? GameRatings { get; set; }
 }

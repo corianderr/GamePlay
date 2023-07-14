@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace GamePlay.Models;
+namespace GamePlay.Domain.Entities;
 
 public class ApplicationUser : IdentityUser
 {

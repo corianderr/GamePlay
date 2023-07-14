@@ -1,4 +1,4 @@
-namespace GamePlay.Models;
+namespace GamePlay.Domain.Entities;
 
 public class UserRelation : BaseEntity
 {

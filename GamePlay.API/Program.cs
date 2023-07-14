@@ -1,9 +1,7 @@
+using GamePlay.DAL.Data;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using GamePlay.Data;
-using GamePlay.Models;
+using GamePlay.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

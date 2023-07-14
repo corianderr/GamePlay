@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
-using GamePlay.Models;
+using GamePlay.Domain.Entities;
 
-namespace GamePlay.Data;
+namespace GamePlay.DAL.Data;
 
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace GamePlay.Data.Migrations
+namespace GamePlay.DAL.Data.Migrations
 {
     public partial class GameAndRelation : Migration
     {

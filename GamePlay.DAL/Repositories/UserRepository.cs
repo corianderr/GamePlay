@@ -3,13 +3,16 @@ using GamePlay.DAL.Data;
 using GamePlay.Domain.Contracts;
 using GamePlay.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace GamePlay.DAL.Repositories;
 
 public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
 {
+    private readonly DbSet<UserRelation> DbRelationsSet;
     protected UserRepository(ApplicationDbContext context) : base(context)
     {
+        DbRelationsSet = Context.Set<UserRelation>();
     }
 
     public async void AddGameAsync(Guid gameId, Guid userId)
@@ -20,18 +23,34 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         await Context.SaveChangesAsync();
     }
 
-    public async Task<UserRelation> SubscribeAsync(UserRelation entity)
+    public async Task<UserRelation> AddSubscriptionAsync(UserRelation entity)
     {
-        throw new NotImplementedException();
+        var addedEntity = (await DbRelationsSet.AddAsync(entity)).Entity;
+        await Context.SaveChangesAsync();
+
+        return addedEntity;
     }
 
-    public async Task<UserRelation> BecomeFriendsAsync(UserRelation entity)
+    public async Task<UserRelation> BecomeFriendsAsync(Guid relationsId)
     {
-        throw new NotImplementedException();
+        var relation = await DbRelationsSet.FirstOrDefaultAsync(r => r.Id.Equals(relationsId));
+        
+        DbRelationsSet.Attach(relation);
+        relation.IsFriend = true;
+        Context.Entry(relation).Property(g => g.IsFriend).IsModified = true;
+        
+        await Context.SaveChangesAsync();
+        return relation;
     }
 
-    public async Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Expression<Func<UserRelation, bool>> predicate, params Expression<Func<UserRelation, object>>[] includeProperties)
+    public async Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Expression<Func<UserRelation, bool>>? predicate = null, params Expression<Func<UserRelation, object>>[] includeProperties)
     {
-        throw new NotImplementedException();
+        IQueryable<UserRelation> query = DbRelationsSet;
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+        if (predicate != null) return await query.Where(predicate).ToListAsync();
+        return await query.ToListAsync();
     }
 }

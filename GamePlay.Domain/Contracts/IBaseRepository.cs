@@ -3,9 +3,8 @@ using GamePlay.Domain.Entities;
 
 namespace GamePlay.Domain.Contracts;
 
-public interface IBaseRepository<TEntity> where TEntity : BaseEntity
+public interface IBaseRepository<TEntity> where TEntity : class
 {
-    Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
     Task<TEntity> AddAsync(TEntity entity);
     Task<TEntity> UpdateAsync(TEntity entity);

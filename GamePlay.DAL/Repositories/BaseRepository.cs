@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GamePlay.DAL.Repositories;
 
-public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
     protected readonly ApplicationDbContext Context;
     protected readonly DbSet<TEntity> DbSet;
@@ -51,13 +51,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         {
             query = query.Include(includeProperty);
         }
-        if (predicate != null) return (await query.Where(predicate).FirstOrDefaultAsync())!;
+        if (predicate != null) return (await query.FirstOrDefaultAsync(predicate))!;
         return (await query.FirstOrDefaultAsync())!;
-    }
-    
-    public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        return (await DbSet.Where(predicate).FirstOrDefaultAsync())!;
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)

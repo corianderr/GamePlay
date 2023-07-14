@@ -11,7 +11,7 @@ public class GameRepository : BaseRepository<Game>, IGameRepository
     {
     }
 
-    public async Task<GameRating> AddRating(GameRating entity)
+    public async Task<GameRating> AddRatingAsync(GameRating entity)
     {
         var addedEntity = (await Context.GameRatings!.AddAsync(entity)).Entity;
         var numberOfRatings = Context.GameRatings.Count(r => r.GameId.Equals(entity.GameId));
@@ -25,7 +25,7 @@ public class GameRepository : BaseRepository<Game>, IGameRepository
         return addedEntity;
     }
 
-    public async Task<GameRating> GetRating(Guid userId, Guid gameId)
+    public async Task<GameRating> GetRatingAsync(Guid userId, Guid gameId)
     {
         return await Context.GameRatings.FirstOrDefaultAsync(r => r.GameId.Equals(gameId) && r.UserId.Equals(userId));
     }

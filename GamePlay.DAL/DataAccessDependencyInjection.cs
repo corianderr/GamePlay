@@ -1,7 +1,8 @@
+using GamePlay.DAL.MappingProfiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ProjectManagement.DAL;
+namespace GamePlay.DAL;
 
 public static class DataAccessDependencyInjection
 {
@@ -14,5 +15,9 @@ public static class DataAccessDependencyInjection
     private static void AddRepositories(this IServiceCollection services)
     {
 
+    }
+    private static void RegisterAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(IMappingProfilesMarker));
     }
 }

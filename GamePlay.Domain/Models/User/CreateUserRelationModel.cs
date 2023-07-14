@@ -1,6 +1,6 @@
 namespace GamePlay.Domain.Models.User;
 
-public class UserRelationCreateModel
+public class CreateUserRelationModel
 {
     public string? SubscriberId { get; set; }
     public string? UserId { get; set; }

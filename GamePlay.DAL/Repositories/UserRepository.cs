@@ -31,9 +31,9 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         return addedEntity;
     }
 
-    public async Task<UserRelation> BecomeFriendsAsync(Guid relationsId)
+    public async Task<UserRelation> BecomeFriendsAsync(Guid subscriberId, Guid userId)
     {
-        var relation = await DbRelationsSet.FirstOrDefaultAsync(r => r.Id.Equals(relationsId));
+        var relation = await DbRelationsSet.FirstOrDefaultAsync(r => r.SubscriberId.Equals(subscriberId) && r.UserId.Equals(userId));
         
         DbRelationsSet.Attach(relation);
         relation.IsFriend = true;

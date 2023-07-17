@@ -53,4 +53,17 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         if (predicate != null) return await query.Where(predicate).ToListAsync();
         return await query.ToListAsync();
     }
+    
+    public bool IsEmailUnique (string email)
+    {
+        ApplicationUser? user = null;
+        user = DbSet.FirstOrDefault(u => u.Email.Equals(email));
+        return user == default;
+    }
+
+    public bool IsUsernameUnique (string username) {
+        ApplicationUser? user = null;
+        user = DbSet.FirstOrDefault(u => u.UserName.Equals(username));
+        return user == default;
+    }
 }

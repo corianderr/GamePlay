@@ -1,0 +1,70 @@
+using System.Linq.Expressions;
+using AutoMapper;
+using GamePlay.BLL.Services.Interfaces;
+using GamePlay.Domain.Contracts;
+using GamePlay.Domain.Entities;
+using GamePlay.Domain.Models;
+using GamePlay.Domain.Models.Game;
+
+namespace GamePlay.BLL.Services;
+
+public class GameService : IGameService
+{
+    private readonly IMapper _mapper;
+    private readonly IGameRepository _gameRepository;
+
+    public GameService(IMapper mapper, IGameRepository gameRepository)
+    {
+        _gameRepository = gameRepository;
+        _mapper = mapper;
+    }
+    
+    public async Task<BaseResponseModel> AddRatingAsync(GameRatingResponseModel entity)
+    {
+        var gameRating = _mapper.Map<GameRating>(entity);
+        return new BaseResponseModel
+        {
+            Id = (await _gameRepository.AddRatingAsync(gameRating)).Id
+        };
+    }
+
+    public async Task<GameRatingResponseModel> GetRatingAsync(Guid userId, Guid gameId)
+    {
+        var rating = await _gameRepository.GetRatingAsync(userId, gameId);
+        return _mapper.Map<GameRatingResponseModel>(rating);
+    }
+
+    public async Task<GameResponseModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(id));
+        return _mapper.Map<GameResponseModel>(game);
+    }
+
+    public async Task<BaseResponseModel> CreateAsync(CreateGameModel createGameModel, CancellationToken cancellationToken = default)
+    {
+        var game = _mapper.Map<Game>(createGameModel);
+        return new BaseResponseModel
+        {
+            Id = (await _gameRepository.AddAsync(game)).Id
+        };
+    }
+
+    public async Task<BaseResponseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(id));
+        return new BaseResponseModel
+        {
+            Id = (await _gameRepository.DeleteAsync(game)).Id
+        };
+    }
+
+    public async Task<BaseResponseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>> predicate)
+    {
+        throw new NotImplementedException();
+    }
+}

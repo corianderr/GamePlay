@@ -7,7 +7,7 @@ namespace GamePlay.DAL.Repositories;
 
 public class GameRepository : BaseRepository<Game>, IGameRepository
 {
-    protected GameRepository(ApplicationDbContext context) : base(context)
+    public GameRepository(ApplicationDbContext context) : base(context)
     {
     }
 

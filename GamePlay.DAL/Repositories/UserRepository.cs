@@ -10,7 +10,7 @@ namespace GamePlay.DAL.Repositories;
 public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
 {
     private readonly DbSet<UserRelation> DbRelationsSet;
-    protected UserRepository(ApplicationDbContext context) : base(context)
+    public UserRepository(ApplicationDbContext context) : base(context)
     {
         DbRelationsSet = Context.Set<UserRelation>();
     }

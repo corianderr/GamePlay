@@ -60,11 +60,18 @@ public class GameService : IGameService
 
     public async Task<BaseResponseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var game = await _gameRepository.GetFirstAsync(e => e.Id == id);
+        _mapper.Map(updateGameModel, game);
+        return new BaseResponseModel
+        {
+            Id = (await _gameRepository.UpdateAsync(game)).Id
+        };
     }
 
-    public Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>> predicate)
+    public async Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>> predicate)
     {
-        throw new NotImplementedException();
+        // TODO: Check whether automapper works on expressions
+        var games = await _gameRepository.GetAllAsync(_mapper.Map<Expression<Func<Game, bool>>>(predicate));
+        return _mapper.Map<IEnumerable<GameResponseModel>>(games);
     }
 }

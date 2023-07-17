@@ -12,6 +12,8 @@ public class GameProfile : Profile
             .ForMember(g => g.AverageRating, map => map.MapFrom(g => 0));;
         CreateMap<UpdateGameModel, Game>();
         CreateMap<Game, GameResponseModel>();
+        // TODO: delete map with API project
+        CreateMap<GameResponseModel, Game>();
         CreateMap<CreateGameRatingModel, GameRating>();
         CreateMap<GameRating, GameRatingResponseModel>();
     }

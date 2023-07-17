@@ -67,7 +67,7 @@ public class UserService : IUserService
         await _userRepository.AddGameAsync(gameId, userId);
     }
 
-    public async Task<UserRelation> SubscribeAsync(Guid subscriberId, Guid userId)
+    public async Task<UserRelationResponseModel> SubscribeAsync(Guid subscriberId, Guid userId)
     {
         var createRelation = new CreateUserRelationModel
         {
@@ -77,18 +77,20 @@ public class UserService : IUserService
         };
         var relation = _mapper.Map<UserRelation>(createRelation);
         await _userRepository.AddSubscriptionAsync(relation);
-        return relation;
+        return (UserRelationResponseModel)createRelation;
     }
 
-    public async Task<UserRelation> BecomeFriendsAsync(Guid subscriberId, Guid userId)
+    public async Task<UserRelationResponseModel> BecomeFriendsAsync(Guid subscriberId, Guid userId)
     {
         var relation = await _userRepository.BecomeFriendsAsync(subscriberId, userId);
-        return relation;
+        return _mapper.Map<UserRelationResponseModel>(relation);
     }
 
-    public async Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Guid userId, bool isFriend)
+    public async Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(Guid userId, bool isFriend)
     {
-        var relations = await _userRepository.GetAllRelationsAsync(r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
-        return relations;
+        var relations = await _userRepository.GetAllRelationsAsync(
+            r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
+        var newRelations = _mapper.Map<IEnumerable<UserRelationResponseModel>>(relations);
+        return newRelations;
     }
 }

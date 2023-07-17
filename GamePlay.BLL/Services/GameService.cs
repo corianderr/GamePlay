@@ -68,7 +68,7 @@ public class GameService : IGameService
         };
     }
 
-    public async Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>> predicate)
+    public async Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>>? predicate = null)
     {
         // TODO: Check whether automapper works on expressions
         var games = await _gameRepository.GetAllAsync(_mapper.Map<Expression<Func<Game, bool>>>(predicate));

@@ -20,5 +20,5 @@ public interface IGameService
     Task<BaseResponseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>> predicate);
+    Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>>? predicate = null);
 }

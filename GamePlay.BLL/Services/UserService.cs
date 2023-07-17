@@ -80,13 +80,15 @@ public class UserService : IUserService
         return relation;
     }
 
-    public Task<UserRelation> BecomeFriendsAsync(Guid firstUserId, Guid secondUserId)
+    public async Task<UserRelation> BecomeFriendsAsync(Guid subscriberId, Guid userId)
     {
-        throw new NotImplementedException();
+        var relation = await _userRepository.BecomeFriendsAsync(subscriberId, userId);
+        return relation;
     }
 
-    public Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Guid userId, bool isFriend)
+    public async Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Guid userId, bool isFriend)
     {
-        throw new NotImplementedException();
+        var relations = await _userRepository.GetAllRelationsAsync(r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
+        return relations;
     }
 }

@@ -10,6 +10,6 @@ public interface IUserService
     Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel);
     Task AddGameToUserAsync(Guid gameId, Guid userId);
     Task<UserRelation> SubscribeAsync(Guid subscriberId, Guid userId);
-    Task<UserRelation> BecomeFriendsAsync(Guid firstUserId, Guid secondUserId);
+    Task<UserRelation> BecomeFriendsAsync(Guid subscriberId, Guid userId);
     Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Guid userId, bool isFriend);
 }

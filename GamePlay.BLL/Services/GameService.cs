@@ -58,7 +58,7 @@ public class GameService : IGameService
         };
     }
 
-    public async Task<BaseResponseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel, CancellationToken cancellationToken = default)
+    public async Task<BaseResponseModel> UpdateAsync(Guid id, GameResponseModel updateGameModel, CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateGameModel, game);

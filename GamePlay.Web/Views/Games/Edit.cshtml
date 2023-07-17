@@ -1,0 +1,77 @@
+@model GameResponseModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h1>Edit</h1>
+
+<h4>Game</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AverageRating" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameRu" class="control-label"></label>
+                <input asp-for="NameRu" class="form-control" />
+                <span asp-validation-for="NameRu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameEn" class="control-label"></label>
+                <input asp-for="NameEn" class="form-control" />
+                <span asp-validation-for="NameEn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhotoPath" class="control-label"></label>
+                <input asp-for="PhotoPath" class="form-control" />
+                <span asp-validation-for="PhotoPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinPlayers" class="control-label"></label>
+                <input asp-for="MinPlayers" class="form-control" />
+                <span asp-validation-for="MinPlayers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxPlayers" class="control-label"></label>
+                <input asp-for="MaxPlayers" class="form-control" />
+                <span asp-validation-for="MaxPlayers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinAge" class="control-label"></label>
+                <input asp-for="MinAge" class="form-control" />
+                <span asp-validation-for="MinAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinPlayTime" class="control-label"></label>
+                <input asp-for="MinPlayTime" class="form-control" />
+                <span asp-validation-for="MinPlayTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxPlayTime" class="control-label"></label>
+                <input asp-for="MaxPlayTime" class="form-control" />
+                <span asp-validation-for="MaxPlayTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearOfRelease" class="control-label"></label>
+                <input asp-for="YearOfRelease" class="form-control" />
+                <span asp-validation-for="YearOfRelease" class="text-danger"></span>
+            </div>
+Z            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -15,7 +15,7 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         DbRelationsSet = Context.Set<UserRelation>();
     }
 
-    public async void AddGameAsync(Guid gameId, Guid userId)
+    public async Task AddGameAsync(Guid gameId, Guid userId)
     {
         var user = await GetFirstAsync(u => u.Id.Equals(userId));
         var game = await Context.Games.FirstOrDefaultAsync(g => g.Id.Equals(gameId));

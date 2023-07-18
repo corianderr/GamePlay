@@ -19,7 +19,7 @@ public class GameService : IGameService
         _mapper = mapper;
     }
     
-    public async Task<BaseResponseModel> AddRatingAsync(GameRatingResponseModel entity)
+    public async Task<BaseResponseModel> AddRatingAsync(CreateGameRatingModel entity)
     {
         var gameRating = _mapper.Map<GameRating>(entity);
         return new BaseResponseModel

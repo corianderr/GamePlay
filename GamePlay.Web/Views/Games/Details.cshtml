@@ -5,81 +5,26 @@
     Layout = "_Layout";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Game</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameRu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameRu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameEn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameEn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoPath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotoPath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MinPlayers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MinPlayers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxPlayers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaxPlayers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MinAge)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MinAge)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MinPlayTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MinPlayTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxPlayTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaxPlayTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearOfRelease)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearOfRelease)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AverageRating)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AverageRating)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="text-center">
+    <h2>@Model.Name</h2>
+    <div class="card h-100 w-75 mx-auto">
+        <img class="card-img-top" src="@Model.PhotoPath" alt="Game image">
+        <div class="card-body my-auto">
+            <h5 class="card-title">@Model.NameRu / @Model.NameEn</h5>
+            <p class="card-text">
+                From @Model.MinPlayers to @Model.MaxPlayers participants<br/>
+                Time: @Model.MinPlayTime - @Model.MaxPlayTime minutes<br/>
+                <i>Required minimum age: @Model.MinAge</i><br/>
+                <strong>Average rating: @Model.AverageRating</strong>
+            </p>
+            <div>
+                <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                <a class="btn btn-light" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+                <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+        <div class="card-footer text-body-secondary">
+            Released in @Model.YearOfRelease<br/>
+        </div>
+    </div>
 </div>

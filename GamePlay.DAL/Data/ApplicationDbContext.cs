@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GamePlay.DAL.Data;
 
-public class ApplicationDbContext :  IdentityDbContext<ApplicationUser>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Game>? Games { get; set; }
     public DbSet<UserRelation>? UserRelations { get; set; }
@@ -20,6 +20,21 @@ public class ApplicationDbContext :  IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        ConfigureEntityId<Game>(modelBuilder);
+        ConfigureEntityId<UserRelation>(modelBuilder);
+        ConfigureEntityId<GameRating>(modelBuilder);
+    }
+    
+    private void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : BaseEntity
+    {
+        modelBuilder.Entity<T>(b =>
+        {
+            b.Property<Guid>("Id")
+                .HasColumnType("uniqueidentifier")
+                .ValueGeneratedOnAdd();
+
+            b.HasKey("Id");
+        });
     }
 
     public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GamePlay.DAL.Data.Migrations
+namespace GamePlay.DAL.Migrations
 {
     public partial class Initial : Migration
     {
@@ -28,6 +28,7 @@ namespace GamePlay.DAL.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -49,60 +50,25 @@ namespace GamePlay.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DeviceCodes",
+                name: "Games",
                 columns: table => new
                 {
-                    UserCode = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DeviceCode = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    SubjectId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    SessionId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ClientId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Expiration = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", maxLength: 50000, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameRu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MinPlayers = table.Column<int>(type: "int", nullable: false),
+                    MaxPlayers = table.Column<int>(type: "int", nullable: false),
+                    MinAge = table.Column<int>(type: "int", nullable: false),
+                    MinPlayTime = table.Column<int>(type: "int", nullable: false),
+                    MaxPlayTime = table.Column<int>(type: "int", nullable: false),
+                    YearOfRelease = table.Column<int>(type: "int", nullable: false),
+                    AverageRating = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeviceCodes", x => x.UserCode);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Keys",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Use = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Algorithm = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsX509Certificate = table.Column<bool>(type: "bit", nullable: false),
-                    DataProtected = table.Column<bool>(type: "bit", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Keys", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PersistedGrants",
-                columns: table => new
-                {
-                    Key = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SubjectId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    SessionId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ClientId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Expiration = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ConsumedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Data = table.Column<string>(type: "nvarchar(max)", maxLength: 50000, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                    table.PrimaryKey("PK_Games", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,6 +177,87 @@ namespace GamePlay.DAL.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserRelations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriberId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsFriend = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRelations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRelations_AspNetUsers_SubscriberId1",
+                        column: x => x.SubscriberId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRelations_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUserGame",
+                columns: table => new
+                {
+                    GamesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUserGame", x => new { x.GamesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserGame_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserGame_Games_GamesId",
+                        column: x => x.GamesId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GameRatings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameRatings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameRatings_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GameRatings_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserGame_UsersId",
+                table: "ApplicationUserGame",
+                column: "UsersId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -251,44 +298,31 @@ namespace GamePlay.DAL.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeviceCodes_DeviceCode",
-                table: "DeviceCodes",
-                column: "DeviceCode",
-                unique: true);
+                name: "IX_GameRatings_GameId",
+                table: "GameRatings",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeviceCodes_Expiration",
-                table: "DeviceCodes",
-                column: "Expiration");
+                name: "IX_GameRatings_UserId1",
+                table: "GameRatings",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Keys_Use",
-                table: "Keys",
-                column: "Use");
+                name: "IX_UserRelations_SubscriberId1",
+                table: "UserRelations",
+                column: "SubscriberId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersistedGrants_ConsumedTime",
-                table: "PersistedGrants",
-                column: "ConsumedTime");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersistedGrants_Expiration",
-                table: "PersistedGrants",
-                column: "Expiration");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersistedGrants_SubjectId_ClientId_Type",
-                table: "PersistedGrants",
-                columns: new[] { "SubjectId", "ClientId", "Type" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersistedGrants_SubjectId_SessionId_Type",
-                table: "PersistedGrants",
-                columns: new[] { "SubjectId", "SessionId", "Type" });
+                name: "IX_UserRelations_UserId1",
+                table: "UserRelations",
+                column: "UserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUserGame");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -305,16 +339,16 @@ namespace GamePlay.DAL.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DeviceCodes");
+                name: "GameRatings");
 
             migrationBuilder.DropTable(
-                name: "Keys");
-
-            migrationBuilder.DropTable(
-                name: "PersistedGrants");
+                name: "UserRelations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -25,7 +25,7 @@ public class GameRepository : BaseRepository<Game>, IGameRepository
         return addedEntity;
     }
 
-    public async Task<GameRating> GetRatingAsync(Guid userId, Guid gameId)
+    public async Task<GameRating> GetRatingAsync(string userId, Guid gameId)
     {
         return await Context.GameRatings.FirstOrDefaultAsync(r => r.GameId.Equals(gameId) && r.UserId.Equals(userId));
     }

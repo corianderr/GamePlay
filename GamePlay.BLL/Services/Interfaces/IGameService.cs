@@ -7,7 +7,7 @@ namespace GamePlay.BLL.Services.Interfaces;
 public interface IGameService
 {
     Task<BaseResponseModel> AddRatingAsync(GameRatingResponseModel entity);
-    Task<GameRatingResponseModel> GetRatingAsync(Guid userId, Guid gameId);
+    Task<GameRatingResponseModel> GetRatingAsync(string userId, Guid gameId);
 
     Task<GameResponseModel>
         GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

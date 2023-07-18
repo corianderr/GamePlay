@@ -28,7 +28,7 @@ public class GameService : IGameService
         };
     }
 
-    public async Task<GameRatingResponseModel> GetRatingAsync(Guid userId, Guid gameId)
+    public async Task<GameRatingResponseModel> GetRatingAsync(string userId, Guid gameId)
     {
         var rating = await _gameRepository.GetRatingAsync(userId, gameId);
         return _mapper.Map<GameRatingResponseModel>(rating);

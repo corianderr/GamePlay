@@ -15,12 +15,52 @@
                 From @Model.MinPlayers to @Model.MaxPlayers participants<br/>
                 Time: @Model.MinPlayTime - @Model.MaxPlayTime minutes<br/>
                 <i>Required minimum age: @Model.MinAge</i><br/>
-                <strong>Average rating: @Model.AverageRating</strong>
+                <strong>Average rating: @Model.AverageRating.ToString("#.##")</strong>
             </p>
             <div>
                 <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
                 <a class="btn btn-light" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
                 <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+            </div>
+            <div class="text-center d-flex">
+                @if (@ViewBag.Rating == null)
+                {
+                    <form asp-controller="Games" asp-action="RateGame" method="post" class="ms-auto">
+                        <input type="hidden" name="id" value="@Model.Id">
+                        <div class="d-flex mb-3">
+                            <div class="rating choose">
+                                <input id="star5" name="rating" type="radio" value="5" class="radio-btn hide"/>
+                                <label for="star5">☆</label>
+                                <input id="star4" name="rating" type="radio" value="4" class="radio-btn hide"/>
+                                <label for="star4">☆</label>
+                                <input id="star3" name="rating" type="radio" value="3" class="radio-btn hide"/>
+                                <label for="star3">☆</label>
+                                <input id="star2" name="rating" type="radio" value="2" class="radio-btn hide"/>
+                                <label for="star2">☆</label>
+                                <input id="star1" name="rating" type="radio" value="1" class="radio-btn hide"/>
+                                <label for="star1">☆</label>
+                                <div class="clear"></div>
+                            </div>
+                            <input type="submit" value="Rate" class="btn btn-warning"/>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="rating show-result ms-auto" disabled>
+                        <input id="star5" name="rating" type="radio" value="5" class="radio-btn hide" disabled/>
+                        <label for="star5">☆</label>
+                        <input id="star4" name="rating" type="radio" value="4" class="radio-btn hide" disabled/>
+                        <label for="star4">☆</label>
+                        <input id="star3" name="rating" type="radio" value="3" class="radio-btn hide" disabled/>
+                        <label for="star3">☆</label>
+                        <input id="star2" name="rating" type="radio" value="2" class="radio-btn hide" disabled/>
+                        <label for="star2">☆</label>
+                        <input id="star1" name="rating" type="radio" value="1" class="radio-btn hide" disabled/>
+                        <label for="star1">☆</label>
+                        <div class="clear"></div>
+                    </div>
+                }
             </div>
         </div>
         <div class="card-footer text-body-secondary">
@@ -28,3 +68,15 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                const starInputs = document.querySelectorAll('.show-result input[type="radio"]');
+                
+                const selectedStar = parseInt(@ViewBag.Rating);
+                starInputs[starInputs.length - selectedStar].checked = true;
+            });
+    </script>
+}

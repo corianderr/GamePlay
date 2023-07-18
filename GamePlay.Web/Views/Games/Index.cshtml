@@ -5,92 +5,40 @@
     Layout = "_Layout";
 }
 
-<h1>Index</h1>
-
+<h1>Games</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameRu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameEn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinPlayers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxPlayers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinAge)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinPlayTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxPlayTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YearOfRelease)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AverageRating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameRu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameEn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotoPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinPlayers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxPlayers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinAge)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinPlayTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxPlayTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearOfRelease)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AverageRating)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 mb-3">
+            <div class="card h-100 text-center" onclick="Details('@item.Id')" style="cursor: pointer">
+                <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
+                <div class="card-body my-auto">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">
+                        From @item.MinPlayers to @item.MaxPlayers participants<br/>
+                        Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
+                        <i>Required minimum age: @item.MinAge</i><br/>
+                        <strong>Average rating: @item.AverageRating</strong>
+                    </p>
+                    <div>
+                        <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
+                        <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+        function Details(gameId) {
+                window.location.href = '@Url.Action("Details","Games")?id=' + gameId;
+        }
+    </script>
 }
-    </tbody>
-</table>

@@ -22,7 +22,7 @@
                         From @item.MinPlayers to @item.MaxPlayers participants<br/>
                         Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
                         <i>Required minimum age: @item.MinAge</i><br/>
-                        <strong>Average rating: @item.AverageRating</strong>
+                        <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
                     </p>
                     <div>
                         <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>

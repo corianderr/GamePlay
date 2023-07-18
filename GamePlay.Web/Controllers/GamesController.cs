@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using GamePlay.BLL.Services.Interfaces;
@@ -77,12 +77,25 @@ namespace GamePlay.Web.Controllers
         // POST: Games/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, GameResponseModel gameModel)
+        public async Task<ActionResult> Edit(Guid id, GameResponseModel gameModel, IFormFile? gameImage)
         {
             try
             {
                 if (!ModelState.IsValid) return View(gameModel);
                 
+                if (gameImage != null)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath);
+                    if (System.IO.File.Exists(path) &&
+                        !gameModel.PhotoPath.Equals("/gameCovers/default-game-cover.jpg"))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    var name = GenerateCode() + Path.GetExtension(gameImage.FileName);
+                    gameModel.PhotoPath = "/gameCovers/" + name;
+                    await using var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath), FileMode.Create);
+                    await gameImage.CopyToAsync(fileStream);
+                }
                 var response = await _gameService.UpdateAsync(id, gameModel);
                 return RedirectToAction(nameof(Index));
             }

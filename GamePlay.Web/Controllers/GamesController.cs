@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Duende.IdentityServer.Extensions;
 using GamePlay.BLL.Services.Interfaces;
 using GamePlay.Domain.Models.Game;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace GamePlay.Web.Controllers
 {
@@ -23,7 +25,6 @@ namespace GamePlay.Web.Controllers
         // GET: Games
         public async Task<ActionResult> Index()
         {
-            
             var games = await _gameService.GetAllAsync();
             return View(games);
         }
@@ -31,6 +32,8 @@ namespace GamePlay.Web.Controllers
         // GET: Games/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
+            var rating = await _gameService.GetRatingAsync(User.Identity.GetUserId(), id);
+            ViewBag.Rating = rating == null ? null : (int?)rating.Rating;
             var game = await _gameService.GetByIdAsync(id);
             return View(game);
         }
@@ -128,6 +131,28 @@ namespace GamePlay.Web.Controllers
             }
         }
         
+        // POST: Games/RateGame/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RateGame(Guid id, int rating)
+        {
+            try
+            {
+                var gameRating = new CreateGameRatingModel()
+                {
+                    GameId = id,
+                    UserId = User.Identity.GetUserId(),
+                    Rating = rating
+                };
+                await _gameService.AddRatingAsync(gameRating);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Details), new {Id = id});
+        }
+
         private static string GenerateCode()
         {
             var builder = new StringBuilder(12);

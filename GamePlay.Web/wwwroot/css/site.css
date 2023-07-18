@@ -22,3 +22,7 @@ body {
   height: 15vw;
   object-fit: cover;
 }
+
+.form-group{
+  margin-bottom: 15px;
+}

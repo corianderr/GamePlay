@@ -17,6 +17,8 @@ public interface IUserService
         bool? isFriend = null);
     Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null);
 
-    Task<UserRelationResponseModel> GetRelationByUserIdAsync(string userId,
+    Task<UserRelationResponseModel?> GetRelationByUsersIdAsync(string subscriberId, string userId,
         CancellationToken cancellationToken = default);
+
+    Task<UserResponseModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default);
 }

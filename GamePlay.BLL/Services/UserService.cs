@@ -100,9 +100,15 @@ public class UserService : IUserService
         return _mapper.Map<IEnumerable<UserResponseModel>>(games);
     }
     
-    public async Task<UserRelationResponseModel> GetRelationByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<UserRelationResponseModel?> GetRelationByUsersIdAsync(string subscriberId, string userId, CancellationToken cancellationToken = default)
     {
-        var userRelation = await _userRepository.GetFirstRelationAsync(r => r.UserId.Equals(userId), r => r.Subscriber);
+        var userRelation = await _userRepository.GetFirstRelationAsync(
+            r => r.UserId.Equals(userId) && r.SubscriberId.Equals(subscriberId));
         return _mapper.Map<UserRelationResponseModel>(userRelation);
+    }
+    public async Task<UserResponseModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
+        return _mapper.Map<UserResponseModel>(user);
     }
 }

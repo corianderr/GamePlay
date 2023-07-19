@@ -5,11 +5,17 @@
     Layout = "_Layout";
 }
 
-<h2>Edit photo</h2>
+<h2 class="text-center">Edit photo</h2>
 <div class="row">
     <div class="col-md-4 mx-auto">
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="Username" />
+            <input type="hidden" asp-for="FollowersCount" />
+            <input type="hidden" asp-for="FriendsCount" />
+            <input type="hidden" asp-for="PhotoPath" />
             <div class="form-group">
                 <label for="avatar">Profile Photo</label>
                 <input type="file" class="form-control" id="avatar" name="avatar">
@@ -21,6 +27,9 @@
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" asp-for="Username" disabled>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>
     </div>

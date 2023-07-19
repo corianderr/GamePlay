@@ -44,7 +44,7 @@ public class GameService : IGameService
     {
         var isExist = (await _gameRepository.GetFirstAsync(g => g.Name.Equals(createGameModel.Name))) != null;
         if (isExist) 
-            throw new ArgumentException("The game already exists, but you can create another one. :)");
+            throw new ArgumentException("The game already exists, but you can create another one :)");
         
         var game = _mapper.Map<Game>(createGameModel);;
         return new BaseResponseModel

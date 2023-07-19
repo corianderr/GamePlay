@@ -26,6 +26,13 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
     public async Task<UserRelation> AddSubscriptionAsync(UserRelation entity)
     {
         var addedEntity = (await DbRelationsSet.AddAsync(entity)).Entity;
+        
+        // TODO: Try to delete Attach and Entry lines
+        var user = await GetFirstAsync(u => u.Id.Equals(entity.UserId));
+        DbSet.Attach(user);
+        user.FollowersCount++;
+        Context.Entry(user).Property(u => u.FollowersCount).IsModified = true;
+
         await Context.SaveChangesAsync();
 
         return addedEntity;
@@ -34,11 +41,23 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
     public async Task<UserRelation> BecomeFriendsAsync(string subscriberId, string userId)
     {
         var relation = await DbRelationsSet.FirstOrDefaultAsync(r => r.SubscriberId.Equals(subscriberId) && r.UserId.Equals(userId));
-        
+        // TODO: Try to delete Attach and Entry lines
         DbRelationsSet.Attach(relation);
         relation.IsFriend = true;
         Context.Entry(relation).Property(g => g.IsFriend).IsModified = true;
+
+        var user1 = await GetFirstAsync(u => u.Id.Equals(subscriberId));
+        DbSet.Attach(user1);
+        user1.FriendsCount++;
+        Context.Entry(user1).Property(u => u.FriendsCount).IsModified = true;
         
+        var user2 = await GetFirstAsync(u => u.Id.Equals(userId));
+        DbSet.Attach(user2);
+        user2.FriendsCount++;
+        user2.FollowersCount--;
+        Context.Entry(user2).Property(u => u.FriendsCount).IsModified = true;
+        Context.Entry(user2).Property(u => u.FollowersCount).IsModified = true;
+
         await Context.SaveChangesAsync();
         return relation;
     }

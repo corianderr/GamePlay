@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.User;
@@ -12,4 +13,5 @@ public interface IUserService
     Task<BaseResponseModel> SubscribeAsync(Guid subscriberId, Guid userId);
     Task<UserRelationResponseModel> BecomeFriendsAsync(Guid subscriberId, Guid userId);
     Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(Guid userId, bool isFriend);
+    Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null);
 }

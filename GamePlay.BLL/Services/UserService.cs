@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using GamePlay.BLL.Services.Interfaces;
 using GamePlay.Domain.Contracts;
@@ -90,5 +91,11 @@ public class UserService : IUserService
         var relations = await _userRepository.GetAllRelationsAsync(
             r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
         return _mapper.Map<IEnumerable<UserRelationResponseModel>>(relations);
+    }
+    
+    public async Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null)
+    {
+        var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>>(predicate));
+        return _mapper.Map<IEnumerable<UserResponseModel>>(games);
     }
 }

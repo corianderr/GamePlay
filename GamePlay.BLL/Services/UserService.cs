@@ -73,8 +73,8 @@ public class UserService : IUserService
     {
         var createRelation = new CreateUserRelationModel
         {
-            SubscriberId = default,
-            UserId = default,
+            SubscriberId = subscriberId,
+            UserId = userId,
             IsFriend = false
         };
         var relation = _mapper.Map<UserRelation>(createRelation);

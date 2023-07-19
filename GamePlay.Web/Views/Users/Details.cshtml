@@ -1,3 +1,4 @@
+@using GamePlay.Web.Enums
 @model UserRelationViewModel
 
 @{
@@ -19,26 +20,32 @@
             {
                 <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Edit">Edit profile</a>
             }
-            else if(Model.IsFriend == null)
-            {
-                <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Follow" asp-route-id="@Model.User.Id">Follow</a>
-            }
-            else if ((bool)Model.IsFriend)
-            {
-                <p class="btn-sm follow text-secondary">Friends</p>
-            }
             else
             {
-                <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@Model.User.Id">Become Friends</a>
+                switch (Model.RelationOption)
+                {
+                    case RelationOptions.DoesNotExist:
+                        <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Follow" asp-route-id="@Model.User.Id">Follow</a>
+                        break;
+                    case RelationOptions.Pending:
+                        <p class="btn-sm follow text-secondary">Is Pending...</p>
+                        break;
+                    case RelationOptions.Friends:
+                        <p class="btn-sm follow text-secondary">Friends</p>
+                        break;
+                    case RelationOptions.Accept:
+                        <a class="btn btn-success btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@Model.User.Id">Accept</a>
+                        break;
+                }
             }
             <div class="d-flex justify-content-between align-items-center mt-4 px-4">
                 <div class="stats">
                     <h6 class="mb-0">Followers</h6>
-                    <span>@Model.FollowersCount</span>
+                    <span>@Model.User.FollowersCount</span>
                 </div>
                 <div class="stats">
                     <h6 class="mb-0">Friends</h6>
-                    <span>@Model.FriendsCount</span>
+                    <span>@Model.User.FriendsCount</span>
                 </div>
             </div>
         </div>

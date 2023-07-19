@@ -29,6 +29,8 @@ namespace GamePlay.DAL.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FriendsCount = table.Column<int>(type: "int", nullable: false),
+                    FollowersCount = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -182,23 +184,21 @@ namespace GamePlay.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriberId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SubscriberId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     IsFriend = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRelations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRelations_AspNetUsers_SubscriberId1",
-                        column: x => x.SubscriberId1,
+                        name: "FK_UserRelations_AspNetUsers_SubscriberId",
+                        column: x => x.SubscriberId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserRelations_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserRelations_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
@@ -232,8 +232,7 @@ namespace GamePlay.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false)
                 },
@@ -241,8 +240,8 @@ namespace GamePlay.DAL.Migrations
                 {
                     table.PrimaryKey("PK_GameRatings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GameRatings_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_GameRatings_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -303,19 +302,19 @@ namespace GamePlay.DAL.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameRatings_UserId1",
+                name: "IX_GameRatings_UserId",
                 table: "GameRatings",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRelations_SubscriberId1",
+                name: "IX_UserRelations_SubscriberId",
                 table: "UserRelations",
-                column: "SubscriberId1");
+                column: "SubscriberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRelations_UserId1",
+                name: "IX_UserRelations_UserId",
                 table: "UserRelations",
-                column: "UserId1");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

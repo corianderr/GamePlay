@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamePlay.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230719084716_AddFollowersAndFriendsCount")]
-    partial class AddFollowersAndFriendsCount
+    [Migration("20230719113425_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -170,7 +170,6 @@ namespace GamePlay.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -191,19 +190,15 @@ namespace GamePlay.DAL.Migrations
                     b.Property<bool>("IsFriend")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("SubscriberId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SubscriberId1")
+                    b.Property<string>("SubscriberId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriberId1");
+                    b.HasIndex("SubscriberId");
 
                     b.HasIndex("UserId");
 
@@ -372,9 +367,7 @@ namespace GamePlay.DAL.Migrations
 
                     b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Game");
 
@@ -385,13 +378,11 @@ namespace GamePlay.DAL.Migrations
                 {
                     b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "Subscriber")
                         .WithMany()
-                        .HasForeignKey("SubscriberId1");
+                        .HasForeignKey("SubscriberId");
 
                     b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Subscriber");
 

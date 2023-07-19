@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Duende.IdentityServer.Extensions;
 using GamePlay.BLL.Services.Interfaces;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -54,16 +55,8 @@ namespace GamePlay.Web.Controllers
             {
                 if (!ModelState.IsValid) return View(gameModel);
 
-                if (gameImage != null)
-                {
-                    var name = GenerateCode() + Path.GetExtension(gameImage.FileName);
-                    gameModel.PhotoPath = "/gameCovers/" + name;
-                    await using var fileStream =
-                        new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath),
-                            FileMode.Create);
-                    await gameImage.CopyToAsync(fileStream);
-                }
-                else gameModel.PhotoPath = "/gameCovers/default-game-cover.jpg";
+                gameModel.PhotoPath =
+                    await ImageUploadingHelper.UploadImageAsync("gameCovers", "/gameCovers/default-game-cover.jpg", gameImage);
 
                 var response = await _gameService.CreateAsync(gameModel);
                 return RedirectToAction(nameof(Index));
@@ -95,23 +88,9 @@ namespace GamePlay.Web.Controllers
             {
                 if (!ModelState.IsValid) return View(gameModel);
 
-                if (gameImage != null)
-                {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath);
-                    if (System.IO.File.Exists(path) &&
-                        !gameModel.PhotoPath.Equals("/gameCovers/default-game-cover.jpg"))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-
-                    var name = GenerateCode() + Path.GetExtension(gameImage.FileName);
-                    gameModel.PhotoPath = "/gameCovers/" + name;
-                    await using var fileStream =
-                        new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath),
-                            FileMode.Create);
-                    await gameImage.CopyToAsync(fileStream);
-                }
-
+                gameModel.PhotoPath =
+                    await ImageUploadingHelper.ReuploadAndGetNewPathAsync("gameCovers", "/gameCovers/default-game-cover.jpg", gameImage, gameModel.PhotoPath);
+                
                 var response = await _gameService.UpdateAsync(id, gameModel);
                 return RedirectToAction(nameof(Index));
             }
@@ -165,18 +144,6 @@ namespace GamePlay.Web.Controllers
             }
 
             return RedirectToAction(nameof(Details), new { Id = id });
-        }
-
-        private static string GenerateCode()
-        {
-            var builder = new StringBuilder(12);
-            var random = new Random();
-            for (var i = 0; i < 12; i++)
-            {
-                builder.Append(random.Next(10));
-            }
-
-            return builder.ToString();
         }
     }
 }

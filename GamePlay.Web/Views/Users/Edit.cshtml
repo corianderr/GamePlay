@@ -1,0 +1,27 @@
+@model UserResponseModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Edit photo</h2>
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="avatar">Profile Photo</label>
+                <input type="file" class="form-control" id="avatar" name="avatar">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" asp-for="Email" disabled>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" asp-for="Username" disabled>
+            </div>
+        </form>
+    </div>
+</div>

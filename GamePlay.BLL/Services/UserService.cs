@@ -52,7 +52,7 @@ public class UserService : IUserService
         if (user == null)
             throw new NotFoundException("Username or password is incorrect");
 
-        var signInResult = await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, false, false);
+        var signInResult = await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, loginUserModel.RememberMe, false);
         if (!signInResult.Succeeded)
             throw new BadRequestException("Username or password is incorrect");
         

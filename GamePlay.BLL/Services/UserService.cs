@@ -96,7 +96,7 @@ public class UserService : IUserService
     
     public async Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null)
     {
-        var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>>(predicate));
+        var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
         return _mapper.Map<IEnumerable<UserResponseModel>>(games);
     }
     

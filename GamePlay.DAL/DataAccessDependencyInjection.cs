@@ -1,3 +1,4 @@
+using AutoMapper.Extensions.ExpressionMapping;
 using GamePlay.DAL.MappingProfiles;
 using GamePlay.DAL.Repositories;
 using GamePlay.Domain.Contracts;
@@ -22,6 +23,8 @@ public static class DataAccessDependencyInjection
     }
     private static void RegisterAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(IMappingProfilesMarker));
+        services.AddAutoMapper(cfg => {
+                cfg.AddExpressionMapping();
+            }, typeof(IMappingProfilesMarker));
     }
 }

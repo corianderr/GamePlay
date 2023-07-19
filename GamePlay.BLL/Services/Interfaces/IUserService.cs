@@ -21,4 +21,7 @@ public interface IUserService
         CancellationToken cancellationToken = default);
 
     Task<UserResponseModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default);
+
+    Task<UserResponseModel> UpdateAsync(string id, UserResponseModel updateUserModel,
+        CancellationToken cancellationToken = default);
 }

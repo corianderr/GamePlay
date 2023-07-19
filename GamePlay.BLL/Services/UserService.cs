@@ -111,4 +111,14 @@ public class UserService : IUserService
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         return _mapper.Map<UserResponseModel>(user);
     }
+    
+    public async Task<UserResponseModel> UpdateAsync(string id, UserResponseModel updateUserModel, CancellationToken cancellationToken = default)
+    {
+        var game = await _userRepository.GetFirstAsync(e => e.Id == id);
+        _mapper.Map(updateUserModel, game);
+        return new UserResponseModel
+        {
+            Id = (await _userRepository.UpdateAsync(game)).Id
+        };
+    }
 }

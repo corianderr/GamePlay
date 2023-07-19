@@ -1,12 +1,46 @@
-@model UserRelationResponseModel
+@model UserRelationViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<div class="card">
-    <div class="d-flex">
-        <img src="@Model.Subscriber.PhotoPath" alt="">
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="profile-card">
+        <div class="d-flex text-center">
+            <div class="mx-auto profile">
+                <img src="@Model.User.PhotoPath" class="rounded-circle" width="80">
+            </div>
+        </div>
+        <div class="mt-2 text-center">
+            <h4 class="mb-0">@Model.User.Username</h4>
+            <span class="text-muted d-block mb-2">@Model.User.Email</span>
+            @if (ViewBag.IsCurrentUser)
+            {
+                <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="EditPhoto">Edit profile photo</a>
+            }
+            else if(Model.IsFriend == null)
+            {
+                <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Follow" asp-route-id="@Model.User.Id">Follow</a>
+            }
+            else if ((bool)Model.IsFriend)
+            {
+                <p class="btn-sm follow text-secondary">Friends</p>
+            }
+            else
+            {
+                <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@Model.User.Id">Become Friends</a>
+            }
+            <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+                <div class="stats">
+                    <h6 class="mb-0">Followers</h6>
+                    <span>@Model.FollowersCount</span>
+                </div>
+                <div class="stats">
+                    <h6 class="mb-0">Friends</h6>
+                    <span>@Model.FriendsCount</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

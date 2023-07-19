@@ -98,5 +98,12 @@ namespace GamePlay.Web.Controllers
             await _userService.BecomeFriendsAsync(id, User.Identity.GetUserId());
             return RedirectToAction(nameof(Details), new {id});
         }
+        
+        // POST: Users/ShowRelations/userId=2&isFriend=0
+        public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
+        {
+            var users = (await _userService.GetAllRelationsAsync(userId, isFriend)).Select(r => r.Subscriber);
+            return View(users);
+        }
     }
 }

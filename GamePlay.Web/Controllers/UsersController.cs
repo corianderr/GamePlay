@@ -26,7 +26,7 @@ namespace GamePlay.Web.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var users = await _userService.GetAllAsync();
+            var users = await _userService.GetAllAsync(u => !u.Id.Equals(User.Identity.GetUserId()));
             return View(users);
         }
 
@@ -62,8 +62,8 @@ namespace GamePlay.Web.Controllers
                 userModel.PhotoPath = await ImageUploadingHelper.ReuploadAndGetNewPathAsync("avatars",
                     "/avatars/default-user-avatar.jpg", avatar, userModel.PhotoPath);
                 
-                var response = await _userService.UpdateAsync(User.Identity.GetUserId(), userModel);
-                return RedirectToAction(nameof(Index));
+                var response = await _userService.UpdateAsync(userModel.Id, userModel);
+                return RedirectToAction(nameof(Details), new {id = userModel.Id});
             }
             catch
             {

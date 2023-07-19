@@ -32,6 +32,7 @@ public class UserService : IUserService
     public async Task<BaseResponseModel> RegisterAsync(CreateUserModel createUserModel)
     {
         var user = _mapper.Map<ApplicationUser>(createUserModel);
+        user.PhotoPath = "/avatars/default-user-avatar.jpg";
         
         var emailUniq = _userRepository.IsEmailUnique(user.Email);
         if (!emailUniq) throw new BadRequestException("User with this email already exists");
@@ -63,12 +64,12 @@ public class UserService : IUserService
         };
     }
 
-    public async Task AddGameToUserAsync(Guid gameId, Guid userId)
+    public async Task AddGameToUserAsync(Guid gameId, string userId)
     {
         await _userRepository.AddGameAsync(gameId, userId);
     }
 
-    public async Task<BaseResponseModel> SubscribeAsync(Guid subscriberId, Guid userId)
+    public async Task<BaseResponseModel> SubscribeAsync(string subscriberId, string userId)
     {
         var createRelation = new CreateUserRelationModel
         {
@@ -80,16 +81,16 @@ public class UserService : IUserService
         return new BaseResponseModel{ Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
     }
 
-    public async Task<UserRelationResponseModel> BecomeFriendsAsync(Guid subscriberId, Guid userId)
+    public async Task<UserRelationResponseModel> BecomeFriendsAsync(string subscriberId, string userId)
     {
         var relation = await _userRepository.BecomeFriendsAsync(subscriberId, userId);
         return _mapper.Map<UserRelationResponseModel>(relation);
     }
 
-    public async Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(Guid userId, bool isFriend)
+    public async Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(string userId, bool? isFriend = null)
     {
         var relations = await _userRepository.GetAllRelationsAsync(
-            r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
+            r => r.UserId.Equals(userId) && (isFriend == null || r.IsFriend == isFriend), r => r.Subscriber);
         return _mapper.Map<IEnumerable<UserRelationResponseModel>>(relations);
     }
     

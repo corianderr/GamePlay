@@ -15,7 +15,7 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         DbRelationsSet = Context.Set<UserRelation>();
     }
 
-    public async Task AddGameAsync(Guid gameId, Guid userId)
+    public async Task AddGameAsync(Guid gameId, string userId)
     {
         var user = await GetFirstAsync(u => u.Id.Equals(userId));
         var game = await Context.Games.FirstOrDefaultAsync(g => g.Id.Equals(gameId));
@@ -31,7 +31,7 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         return addedEntity;
     }
 
-    public async Task<UserRelation> BecomeFriendsAsync(Guid subscriberId, Guid userId)
+    public async Task<UserRelation> BecomeFriendsAsync(string subscriberId, string userId)
     {
         var relation = await DbRelationsSet.FirstOrDefaultAsync(r => r.SubscriberId.Equals(subscriberId) && r.UserId.Equals(userId));
         

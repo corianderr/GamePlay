@@ -11,4 +11,7 @@ public interface IUserRepository : IBaseRepository<ApplicationUser>
     Task<UserRelation> AddSubscriptionAsync(UserRelation entity);
     Task<UserRelation> BecomeFriendsAsync(string subscriberId, string userId);
     Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Expression<Func<UserRelation, bool>> predicate, params Expression<Func<UserRelation, object>>[] includeProperties);
+
+    Task<UserRelation?> GetFirstRelationAsync(Expression<Func<UserRelation, bool>>? predicate = null,
+        params Expression<Func<UserRelation, object>>[] includeProperties);
 }

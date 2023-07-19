@@ -99,4 +99,10 @@ public class UserService : IUserService
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>>(predicate));
         return _mapper.Map<IEnumerable<UserResponseModel>>(games);
     }
+    
+    public async Task<UserRelationResponseModel> GetRelationByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var userRelation = await _userRepository.GetFirstRelationAsync(r => r.UserId.Equals(userId), r => r.Subscriber);
+        return _mapper.Map<UserRelationResponseModel>(userRelation);
+    }
 }

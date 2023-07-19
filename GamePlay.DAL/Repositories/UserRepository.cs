@@ -54,6 +54,17 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         return await query.ToListAsync();
     }
     
+    public async Task<UserRelation?> GetFirstRelationAsync(Expression<Func<UserRelation, bool>>? predicate = null, params Expression<Func<UserRelation, object>>[] includeProperties)
+    {
+        IQueryable<UserRelation> query = DbRelationsSet;
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+        if (predicate != null) return await query.FirstOrDefaultAsync(predicate);
+        return await query.FirstOrDefaultAsync();
+    }
+    
     public bool IsEmailUnique (string email)
     {
         ApplicationUser? user = null;

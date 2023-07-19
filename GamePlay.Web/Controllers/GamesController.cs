@@ -22,6 +22,7 @@ namespace GamePlay.Web.Controllers
         {
             _gameService = gameService;
         }
+
         // GET: Games
         public async Task<ActionResult> Index()
         {
@@ -52,17 +53,25 @@ namespace GamePlay.Web.Controllers
             try
             {
                 if (!ModelState.IsValid) return View(gameModel);
-                
+
                 if (gameImage != null)
                 {
                     var name = GenerateCode() + Path.GetExtension(gameImage.FileName);
                     gameModel.PhotoPath = "/gameCovers/" + name;
-                    await using var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath), FileMode.Create);
+                    await using var fileStream =
+                        new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath),
+                            FileMode.Create);
                     await gameImage.CopyToAsync(fileStream);
                 }
                 else gameModel.PhotoPath = "/gameCovers/default-game-cover.jpg";
+
                 var response = await _gameService.CreateAsync(gameModel);
                 return RedirectToAction(nameof(Index));
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(gameModel);
             }
             catch
             {
@@ -85,7 +94,7 @@ namespace GamePlay.Web.Controllers
             try
             {
                 if (!ModelState.IsValid) return View(gameModel);
-                
+
                 if (gameImage != null)
                 {
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath);
@@ -94,11 +103,15 @@ namespace GamePlay.Web.Controllers
                     {
                         System.IO.File.Delete(path);
                     }
+
                     var name = GenerateCode() + Path.GetExtension(gameImage.FileName);
                     gameModel.PhotoPath = "/gameCovers/" + name;
-                    await using var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath), FileMode.Create);
+                    await using var fileStream =
+                        new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + gameModel.PhotoPath),
+                            FileMode.Create);
                     await gameImage.CopyToAsync(fileStream);
                 }
+
                 var response = await _gameService.UpdateAsync(id, gameModel);
                 return RedirectToAction(nameof(Index));
             }
@@ -130,7 +143,7 @@ namespace GamePlay.Web.Controllers
                 return View();
             }
         }
-        
+
         // POST: Games/RateGame/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -150,7 +163,8 @@ namespace GamePlay.Web.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Details), new {Id = id});
+
+            return RedirectToAction(nameof(Details), new { Id = id });
         }
 
         private static string GenerateCode()
@@ -161,6 +175,7 @@ namespace GamePlay.Web.Controllers
             {
                 builder.Append(random.Next(10));
             }
+
             return builder.ToString();
         }
     }

@@ -42,7 +42,11 @@ public class GameService : IGameService
 
     public async Task<BaseResponseModel> CreateAsync(CreateGameModel createGameModel, CancellationToken cancellationToken = default)
     {
-        var game = _mapper.Map<Game>(createGameModel);
+        var isExist = (await _gameRepository.GetFirstAsync(g => g.Name.Equals(createGameModel.Name))) != null;
+        if (isExist) 
+            throw new ArgumentException("The game already exists, but you can create another one. :)");
+        
+        var game = _mapper.Map<Game>(createGameModel);;
         return new BaseResponseModel
         {
             Id = (await _gameRepository.AddAsync(game)).Id

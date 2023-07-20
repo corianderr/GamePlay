@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GamePlay.BLL.Services.Interfaces;
+using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models.User;
 using GamePlay.Web.Enums;
 using GamePlay.Web.Helpers;
@@ -99,10 +101,19 @@ namespace GamePlay.Web.Controllers
             return RedirectToAction(nameof(Details), new {id});
         }
         
-        // POST: Users/ShowRelations/userId=2&isFriend=0
+        // POST: Users/ShowRelations/userId=2&isFriend=true
         public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
         {
-            var users = (await _userService.GetAllRelationsAsync(userId, isFriend)).Select(r => r.Subscriber);
+            IEnumerable<ApplicationUser?> users;
+            if (isFriend)
+            {
+                users = (await _userService.GetAllRelationsAsync(userId, isFriend)).SelectMany(r => new[] {r.Subscriber, r.User});
+                users = users.Where(u => !u.Id.Equals(userId));
+            }
+            else
+            {
+                users = (await _userService.GetAllRelationsAsync(userId, isFriend)).Select(r => r.Subscriber);
+            }
             return View(users);
         }
     }

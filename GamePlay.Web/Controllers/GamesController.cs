@@ -29,6 +29,7 @@ public class GamesController : Controller
         var rating = await _gameService.GetRatingAsync(User.Identity.GetUserId(), id);
         ViewBag.Rating = rating == null ? null : (int?)rating.Rating;
         var game = await _gameService.GetByIdAsync(id);
+        ViewBag.IsInCollection = await _gameService.CheckIfTheUserHas(User.Identity.GetUserId(), id);
         return View(game);
     }
 
@@ -53,7 +54,7 @@ public class GamesController : Controller
                 await ImageUploadingHelper.UploadImageAsync("gameCovers", "/gameCovers/default-game-cover.jpg",
                     gameImage);
 
-            var response = await _gameService.CreateAsync(gameModel);
+            await _gameService.CreateAsync(gameModel);
             return RedirectToAction(nameof(Index));
         }
         catch (ArgumentException ex)

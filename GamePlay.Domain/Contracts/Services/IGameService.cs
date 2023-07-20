@@ -22,4 +22,5 @@ public interface IGameService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<GameModel>> GetAllAsync(Expression<Func<GameModel, bool>>? predicate = null);
+    Task<bool> CheckIfTheUserHas(string userId, Guid gameId);
 }

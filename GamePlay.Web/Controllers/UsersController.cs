@@ -96,7 +96,7 @@ public class UsersController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
-    // POST: Users/ShowRelations/userId=2&isFriend=true
+    // GET: Users/ShowRelations/userId=2&isFriend=true
     public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
     {
         IEnumerable<ApplicationUser?> users;
@@ -112,5 +112,12 @@ public class UsersController : Controller
         }
 
         return View(users);
+    }
+
+    // GET: Users/ShowNotifications
+    public async Task<ActionResult> ShowNotifications()
+    {
+        var subscribers = (await _userService.GetAllRelationsAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
+        return View(subscribers);
     }
 }

@@ -16,10 +16,7 @@ public class YearRangeAttribute : ValidationAttribute
         if (value is not int year) return ValidationResult.Success;
         var currentYear = DateTime.Now.Year;
 
-        if (year < _minYear || year > currentYear)
-        {
-            return new ValidationResult(ErrorMessage);
-        }
+        if (year < _minYear || year > currentYear) return new ValidationResult(ErrorMessage);
         return ValidationResult.Success;
     }
 }

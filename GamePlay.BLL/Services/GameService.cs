@@ -10,22 +10,22 @@ namespace GamePlay.BLL.Services;
 
 public class GameService : IGameService
 {
-    private readonly IMapper _mapper;
     private readonly IGameRepository _gameRepository;
+    private readonly IMapper _mapper;
 
     public GameService(IMapper mapper, IGameRepository gameRepository)
     {
         _gameRepository = gameRepository;
         _mapper = mapper;
     }
-    
+
     public async Task<BaseModel> AddRatingAsync(CreateGameRatingModel entity)
     {
         var gameRating = _mapper.Map<GameRating>(entity);
         var numberOfRatings = _gameRepository.GetGameRatingsCount(r => r.GameId.Equals(entity.GameId));
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(entity.GameId));
         game.AverageRating = (game.AverageRating * numberOfRatings + entity.Rating) / (numberOfRatings + 1);
-        
+
         return new BaseModel
         {
             Id = (await _gameRepository.AddRatingAsync(gameRating)).Id
@@ -44,13 +44,15 @@ public class GameService : IGameService
         return _mapper.Map<GameModel>(game);
     }
 
-    public async Task<BaseModel> CreateAsync(CreateGameModel createGameModel, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> CreateAsync(CreateGameModel createGameModel,
+        CancellationToken cancellationToken = default)
     {
-        var isExist = (await _gameRepository.GetFirstAsync(g => g.Name.Equals(createGameModel.Name))) != null;
-        if (isExist) 
+        var isExist = await _gameRepository.GetFirstAsync(g => g.Name.Equals(createGameModel.Name)) != null;
+        if (isExist)
             throw new ArgumentException("The game already exists, but you can create another one :)");
-        
-        var game = _mapper.Map<Game>(createGameModel);;
+
+        var game = _mapper.Map<Game>(createGameModel);
+        ;
         return new BaseModel
         {
             Id = (await _gameRepository.AddAsync(game)).Id
@@ -66,7 +68,8 @@ public class GameService : IGameService
         };
     }
 
-    public async Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel,
+        CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateGameModel, game);

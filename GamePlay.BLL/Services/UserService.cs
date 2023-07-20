@@ -14,9 +14,9 @@ namespace GamePlay.BLL.Services;
 public class UserService : IUserService
 {
     private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserRepository _userRepository;
 
     public UserService(IUserRepository userRepository,
         UserManager<ApplicationUser> userManager,
@@ -33,16 +33,16 @@ public class UserService : IUserService
     {
         var user = _mapper.Map<ApplicationUser>(createUserModel);
         user.PhotoPath = "/avatars/default-user-avatar.jpg";
-        
+
         var emailUniq = _userRepository.IsEmailUnique(user.Email);
         if (!emailUniq) throw new BadRequestException("User with this email already exists");
         var usernameUniq = _userRepository.IsUsernameUnique(user.UserName);
-        if (!usernameUniq) throw new BadRequestException("User with this username already exists" );
-        
+        if (!usernameUniq) throw new BadRequestException("User with this username already exists");
+
         var result = await _userManager.CreateAsync(user, createUserModel.Password);
         if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
-        
-        return new BaseModel()
+
+        return new BaseModel
         {
             Id = Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id)
         };
@@ -54,10 +54,11 @@ public class UserService : IUserService
         if (user == null)
             throw new NotFoundException("Username or password is incorrect");
 
-        var signInResult = await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, loginUserModel.RememberMe, false);
+        var signInResult =
+            await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, loginUserModel.RememberMe, false);
         if (!signInResult.Succeeded)
             throw new BadRequestException("Username or password is incorrect");
-        
+
         return new LoginUserModel
         {
             Username = user.UserName
@@ -78,14 +79,14 @@ public class UserService : IUserService
             IsFriend = false
         };
         var relation = _mapper.Map<UserRelation>(createRelation);
-        return new BaseModel{ Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
+        return new BaseModel { Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
     }
 
     public async Task<UserRelationModel> BecomeFriendsAsync(string subscriberId, string userId)
     {
         var subscriber = await _userRepository.GetFirstAsync(u => u.Id.Equals(subscriberId));
         subscriber.FriendsCount++;
-        
+
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         user.FriendsCount++;
         user.FollowersCount--;
@@ -98,42 +99,40 @@ public class UserService : IUserService
     {
         IEnumerable<UserRelation> relations;
         if (isFriend == null)
-        {
             relations = await _userRepository.GetAllRelationsAsync(
                 r => r.UserId.Equals(userId), r => r.Subscriber);
-        }
         else if ((bool)isFriend)
-        {
             relations = await _userRepository.GetAllRelationsAsync(
-                r => (r.UserId.Equals(userId) || r.SubscriberId.Equals(userId)) && r.IsFriend == isFriend, r => r.Subscriber, r => r.User);
-        }
+                r => (r.UserId.Equals(userId) || r.SubscriberId.Equals(userId)) && r.IsFriend == isFriend,
+                r => r.Subscriber, r => r.User);
         else
-        {
             relations = await _userRepository.GetAllRelationsAsync(
                 r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
-        }
         return _mapper.Map<IEnumerable<UserRelationModel>>(relations);
     }
-    
+
     public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
     {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
         return _mapper.Map<IEnumerable<UserModel>>(games);
     }
-    
-    public async Task<UserRelationModel?> GetRelationByUsersIdAsync(string subscriberId, string userId, CancellationToken cancellationToken = default)
+
+    public async Task<UserRelationModel?> GetRelationByUsersIdAsync(string subscriberId, string userId,
+        CancellationToken cancellationToken = default)
     {
         var userRelation = await _userRepository.GetFirstRelationAsync(
             r => r.UserId.Equals(userId) && r.SubscriberId.Equals(subscriberId));
         return _mapper.Map<UserRelationModel>(userRelation);
     }
+
     public async Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         return _mapper.Map<UserModel>(user);
     }
-    
-    public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel, CancellationToken cancellationToken = default)
+
+    public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,
+        CancellationToken cancellationToken = default)
     {
         var game = await _userRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateUserModel, game);

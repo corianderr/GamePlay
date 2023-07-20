@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using GamePlay.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamePlay.Web.Controllers;
 

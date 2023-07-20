@@ -41,11 +41,15 @@
             <div class="d-flex justify-content-between align-items-center mt-4 px-4">
                 <div class="stats">
                     <h6 class="mb-0">Followers</h6>
-                    <a asp-action="ShowRelations" asp-route-userId="@Model.User.Id" asp-route-isFriend="false"><span>@Model.User.FollowersCount</span></a>
+                    <a asp-action="ShowRelations" asp-route-userId="@Model.User.Id" asp-route-isFriend="false">
+                        <span>@Model.User.FollowersCount</span>
+                    </a>
                 </div>
                 <div class="stats">
                     <h6 class="mb-0">Friends</h6>
-                    <a asp-action="ShowRelations" asp-route-userId="@Model.User.Id" asp-route-isFriend="true"><span>@Model.User.FriendsCount</span></a>
+                    <a asp-action="ShowRelations" asp-route-userId="@Model.User.Id" asp-route-isFriend="true">
+                        <span>@Model.User.FriendsCount</span>
+                    </a>
                 </div>
             </div>
         </div>

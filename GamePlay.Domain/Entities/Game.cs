@@ -2,6 +2,11 @@ namespace GamePlay.Domain.Entities;
 
 public class Game : BaseEntity
 {
+    public Game()
+    {
+        Users = new List<ApplicationUser>();
+    }
+
     public string? Name { get; set; }
     public string? NameRu { get; set; }
     public string? NameEn { get; set; }
@@ -14,10 +19,4 @@ public class Game : BaseEntity
     public int YearOfRelease { get; set; }
     public double AverageRating { get; set; }
     public List<ApplicationUser> Users { get; set; }
-
-    public Game() : base()
-    {
-        Users = new List<ApplicationUser>();
-    }
-
 }

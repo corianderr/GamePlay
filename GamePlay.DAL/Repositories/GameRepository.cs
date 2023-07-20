@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using GamePlay.DAL.Data;
-using GamePlay.Domain.Contracts;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +24,7 @@ public class GameRepository : BaseRepository<Game>, IGameRepository
     {
         return Context.GameRatings.Count(predicate);
     }
-    
+
     public async Task<GameRating> GetRatingAsync(string userId, Guid gameId)
     {
         return await Context.GameRatings.FirstOrDefaultAsync(r => r.GameId.Equals(gameId) && r.UserId.Equals(userId));

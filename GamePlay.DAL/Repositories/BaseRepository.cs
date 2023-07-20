@@ -1,8 +1,6 @@
 using System.Linq.Expressions;
 using GamePlay.DAL.Data;
-using GamePlay.Domain.Contracts;
 using GamePlay.Domain.Contracts.Repositories;
-using GamePlay.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GamePlay.DAL.Repositories;
@@ -34,24 +32,20 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return removedEntity;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, params Expression<Func<TEntity, object>>[] includeProperties)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null,
+        params Expression<Func<TEntity, object>>[] includeProperties)
     {
         IQueryable<TEntity> query = DbSet;
-        foreach (var includeProperty in includeProperties)
-        {
-            query = query.Include(includeProperty);
-        }
+        foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
         if (predicate != null) return await query.Where(predicate).ToListAsync();
         return await query.ToListAsync();
     }
 
-    public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>>? predicate = null, params Expression<Func<TEntity, object>>[] includeProperties)
+    public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>>? predicate = null,
+        params Expression<Func<TEntity, object>>[] includeProperties)
     {
         IQueryable<TEntity> query = DbSet;
-        foreach (var includeProperty in includeProperties)
-        {
-            query = query.Include(includeProperty);
-        }
+        foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
         if (predicate != null) return (await query.FirstOrDefaultAsync(predicate))!;
         return (await query.FirstOrDefaultAsync())!;
     }

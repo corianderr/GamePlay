@@ -6,7 +6,7 @@
 }
 
 <h2 class="text-center">Create Game</h2>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4 mx-auto">
         <form asp-action="Create" enctype="multipart/form-data">
@@ -15,53 +15,53 @@
                 <label for="gameImage">Game Photo Cover</label>
                 <input type="file" class="form-control" id="gameImage" name="gameImage">
             </div>
-            <div class="form-group">    
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NameRu" class="control-label"></label>
-                <input asp-for="NameRu" class="form-control" />
+                <input asp-for="NameRu" class="form-control"/>
                 <span asp-validation-for="NameRu" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NameEn" class="control-label"></label>
-                <input asp-for="NameEn" class="form-control" />
+                <input asp-for="NameEn" class="form-control"/>
                 <span asp-validation-for="NameEn" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MinPlayers" class="control-label"></label>
-                <input asp-for="MinPlayers" class="form-control" />
+                <input asp-for="MinPlayers" class="form-control"/>
                 <span asp-validation-for="MinPlayers" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxPlayers" class="control-label"></label>
-                <input asp-for="MaxPlayers" class="form-control" />
+                <input asp-for="MaxPlayers" class="form-control"/>
                 <span asp-validation-for="MaxPlayers" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MinAge" class="control-label"></label>
-                <input asp-for="MinAge" class="form-control" />
+                <input asp-for="MinAge" class="form-control"/>
                 <span asp-validation-for="MinAge" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MinPlayTime" class="control-label"></label>
-                <input asp-for="MinPlayTime" class="form-control" />
+                <input asp-for="MinPlayTime" class="form-control"/>
                 <span asp-validation-for="MinPlayTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxPlayTime" class="control-label"></label>
-                <input asp-for="MaxPlayTime" class="form-control" />
+                <input asp-for="MaxPlayTime" class="form-control"/>
                 <span asp-validation-for="MaxPlayTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="YearOfRelease" class="control-label"></label>
-                <input asp-for="YearOfRelease" class="form-control" />
+                <input asp-for="YearOfRelease" class="form-control"/>
                 <span asp-validation-for="YearOfRelease" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>

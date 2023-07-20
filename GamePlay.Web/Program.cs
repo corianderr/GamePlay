@@ -60,8 +60,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Games}/{action=Index}");
+    "default",
+    "{controller=Games}/{action=Index}");
 app.MapRazorPages();
 
 app.Run();

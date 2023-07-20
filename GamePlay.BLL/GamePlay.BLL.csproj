@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GamePlay.DAL\GamePlay.DAL.csproj" />
-      <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj" />
+        <ProjectReference Include="..\GamePlay.DAL\GamePlay.DAL.csproj"/>
+        <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Interfaces\" />
+        <Folder Include="Services\Interfaces\"/>
     </ItemGroup>
 
 </Project>

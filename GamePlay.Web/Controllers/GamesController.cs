@@ -85,7 +85,7 @@ namespace GamePlay.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, GameResponseModel gameModel, IFormFile? gameImage)
+        public async Task<ActionResult> Edit(Guid id, GameModel gameModel, IFormFile? gameImage)
         {
             try
             {

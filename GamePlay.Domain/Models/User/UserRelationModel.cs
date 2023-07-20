@@ -2,7 +2,7 @@ using GamePlay.Domain.Entities;
 
 namespace GamePlay.Domain.Models.User;
 
-public class UserRelationResponseModel : BaseResponseModel
+public class UserRelationModel : BaseModel
 {
     public string? UserId { get; set; }
     public ApplicationUser? User { get; set; }

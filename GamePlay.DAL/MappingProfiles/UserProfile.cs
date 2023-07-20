@@ -11,9 +11,9 @@ public class UserProfile : Profile
         CreateMap<CreateUserModel, ApplicationUser>()
             .ForMember(g => g.FollowersCount, map => map.MapFrom(g => 0))
             .ForMember(g => g.FriendsCount, map => map.MapFrom(g => 0));
-        CreateMap<UserResponseModel, ApplicationUser>();
-        CreateMap<ApplicationUser, UserResponseModel>();
+        CreateMap<UserModel, ApplicationUser>();
+        CreateMap<ApplicationUser, UserModel>();
         CreateMap<CreateUserRelationModel, UserRelation>();
-        CreateMap<UserRelation, UserRelationResponseModel>();
+        CreateMap<UserRelation, UserRelationModel>();
     }
 }

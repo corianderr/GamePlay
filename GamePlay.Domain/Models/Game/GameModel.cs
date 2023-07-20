@@ -1,6 +1,6 @@
 namespace GamePlay.Domain.Models.Game;
 
-public class GameResponseModel : BaseResponseModel
+public class GameModel : BaseModel
 {
     public string? Name { get; set; }
     public string? NameRu { get; set; }

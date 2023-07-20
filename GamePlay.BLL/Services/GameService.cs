@@ -19,66 +19,66 @@ public class GameService : IGameService
         _mapper = mapper;
     }
     
-    public async Task<BaseResponseModel> AddRatingAsync(CreateGameRatingModel entity)
+    public async Task<BaseModel> AddRatingAsync(CreateGameRatingModel entity)
     {
         var gameRating = _mapper.Map<GameRating>(entity);
         var numberOfRatings = _gameRepository.GetGameRatingsCount(r => r.GameId.Equals(entity.GameId));
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(entity.GameId));
         game.AverageRating = (game.AverageRating * numberOfRatings + entity.Rating) / (numberOfRatings + 1);
         
-        return new BaseResponseModel
+        return new BaseModel
         {
             Id = (await _gameRepository.AddRatingAsync(gameRating)).Id
         };
     }
 
-    public async Task<GameRatingResponseModel> GetRatingAsync(string userId, Guid gameId)
+    public async Task<GameRatingModel> GetRatingAsync(string userId, Guid gameId)
     {
         var rating = await _gameRepository.GetRatingAsync(userId, gameId);
-        return _mapper.Map<GameRatingResponseModel>(rating);
+        return _mapper.Map<GameRatingModel>(rating);
     }
 
-    public async Task<GameResponseModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<GameModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(id));
-        return _mapper.Map<GameResponseModel>(game);
+        return _mapper.Map<GameModel>(game);
     }
 
-    public async Task<BaseResponseModel> CreateAsync(CreateGameModel createGameModel, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> CreateAsync(CreateGameModel createGameModel, CancellationToken cancellationToken = default)
     {
         var isExist = (await _gameRepository.GetFirstAsync(g => g.Name.Equals(createGameModel.Name))) != null;
         if (isExist) 
             throw new ArgumentException("The game already exists, but you can create another one :)");
         
         var game = _mapper.Map<Game>(createGameModel);;
-        return new BaseResponseModel
+        return new BaseModel
         {
             Id = (await _gameRepository.AddAsync(game)).Id
         };
     }
 
-    public async Task<BaseResponseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(id));
-        return new BaseResponseModel
+        return new BaseModel
         {
             Id = (await _gameRepository.DeleteAsync(game)).Id
         };
     }
 
-    public async Task<BaseResponseModel> UpdateAsync(Guid id, GameResponseModel updateGameModel, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel, CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateGameModel, game);
-        return new BaseResponseModel
+        return new BaseModel
         {
             Id = (await _gameRepository.UpdateAsync(game)).Id
         };
     }
 
-    public async Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>>? predicate = null)
+    public async Task<IEnumerable<GameModel>> GetAllAsync(Expression<Func<GameModel, bool>>? predicate = null)
     {
         var games = await _gameRepository.GetAllAsync(_mapper.Map<Expression<Func<Game, bool>>>(predicate));
-        return _mapper.Map<IEnumerable<GameResponseModel>>(games);
+        return _mapper.Map<IEnumerable<GameModel>>(games);
     }
 }

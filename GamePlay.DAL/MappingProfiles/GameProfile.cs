@@ -11,9 +11,9 @@ public class GameProfile : Profile
         CreateMap<CreateGameModel, Game>()
             .ForMember(g => g.AverageRating, map => map.MapFrom(g => 0));;
         CreateMap<UpdateGameModel, Game>();
-        CreateMap<Game, GameResponseModel>();
-        CreateMap<GameResponseModel, Game>();
+        CreateMap<Game, GameModel>();
+        CreateMap<GameModel, Game>();
         CreateMap<CreateGameRatingModel, GameRating>();
-        CreateMap<GameRating, GameRatingResponseModel>();
+        CreateMap<GameRating, GameRatingModel>();
     }
 }

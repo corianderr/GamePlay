@@ -29,7 +29,7 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<BaseResponseModel> RegisterAsync(CreateUserModel createUserModel)
+    public async Task<BaseModel> RegisterAsync(CreateUserModel createUserModel)
     {
         var user = _mapper.Map<ApplicationUser>(createUserModel);
         user.PhotoPath = "/avatars/default-user-avatar.jpg";
@@ -42,7 +42,7 @@ public class UserService : IUserService
         var result = await _userManager.CreateAsync(user, createUserModel.Password);
         if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
         
-        return new BaseResponseModel()
+        return new BaseModel()
         {
             Id = Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id)
         };
@@ -69,7 +69,7 @@ public class UserService : IUserService
         await _userRepository.AddGameAsync(gameId, userId);
     }
 
-    public async Task<BaseResponseModel> SubscribeAsync(string subscriberId, string userId)
+    public async Task<BaseModel> SubscribeAsync(string subscriberId, string userId)
     {
         var createRelation = new CreateUserRelationModel
         {
@@ -78,10 +78,10 @@ public class UserService : IUserService
             IsFriend = false
         };
         var relation = _mapper.Map<UserRelation>(createRelation);
-        return new BaseResponseModel{ Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
+        return new BaseModel{ Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
     }
 
-    public async Task<UserRelationResponseModel> BecomeFriendsAsync(string subscriberId, string userId)
+    public async Task<UserRelationModel> BecomeFriendsAsync(string subscriberId, string userId)
     {
         var subscriber = await _userRepository.GetFirstAsync(u => u.Id.Equals(subscriberId));
         subscriber.FriendsCount++;
@@ -91,10 +91,10 @@ public class UserService : IUserService
         user.FollowersCount--;
 
         var newRelation = await _userRepository.BecomeFriendsAsync(subscriber, user);
-        return _mapper.Map<UserRelationResponseModel>(newRelation);
+        return _mapper.Map<UserRelationModel>(newRelation);
     }
 
-    public async Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(string userId, bool? isFriend = null)
+    public async Task<IEnumerable<UserRelationModel>> GetAllRelationsAsync(string userId, bool? isFriend = null)
     {
         IEnumerable<UserRelation> relations;
         if (isFriend == null)
@@ -112,32 +112,32 @@ public class UserService : IUserService
             relations = await _userRepository.GetAllRelationsAsync(
                 r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
         }
-        return _mapper.Map<IEnumerable<UserRelationResponseModel>>(relations);
+        return _mapper.Map<IEnumerable<UserRelationModel>>(relations);
     }
     
-    public async Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null)
+    public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
     {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
-        return _mapper.Map<IEnumerable<UserResponseModel>>(games);
+        return _mapper.Map<IEnumerable<UserModel>>(games);
     }
     
-    public async Task<UserRelationResponseModel?> GetRelationByUsersIdAsync(string subscriberId, string userId, CancellationToken cancellationToken = default)
+    public async Task<UserRelationModel?> GetRelationByUsersIdAsync(string subscriberId, string userId, CancellationToken cancellationToken = default)
     {
         var userRelation = await _userRepository.GetFirstRelationAsync(
             r => r.UserId.Equals(userId) && r.SubscriberId.Equals(subscriberId));
-        return _mapper.Map<UserRelationResponseModel>(userRelation);
+        return _mapper.Map<UserRelationModel>(userRelation);
     }
-    public async Task<UserResponseModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
-        return _mapper.Map<UserResponseModel>(user);
+        return _mapper.Map<UserModel>(user);
     }
     
-    public async Task<UserResponseModel> UpdateAsync(string id, UserResponseModel updateUserModel, CancellationToken cancellationToken = default)
+    public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel, CancellationToken cancellationToken = default)
     {
         var game = await _userRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateUserModel, game);
-        return new UserResponseModel
+        return new UserModel
         {
             Id = (await _userRepository.UpdateAsync(game)).Id
         };

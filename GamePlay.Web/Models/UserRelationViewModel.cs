@@ -5,6 +5,6 @@ namespace GamePlay.Web.Models;
 
 public class UserRelationViewModel
 {
-    public UserResponseModel? User { get; set; }
+    public UserModel? User { get; set; }
     public RelationOptions RelationOption { get; set; }
 }

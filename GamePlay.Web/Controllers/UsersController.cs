@@ -65,7 +65,7 @@ namespace GamePlay.Web.Controllers
         // POST: Users/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UserResponseModel userModel, IFormFile? avatar)
+        public async Task<ActionResult> Edit(UserModel userModel, IFormFile? avatar)
         {
             try
             {

@@ -6,20 +6,20 @@ namespace GamePlay.BLL.Services.Interfaces;
 
 public interface IGameService
 {
-    Task<BaseResponseModel> AddRatingAsync(CreateGameRatingModel entity);
-    Task<GameRatingResponseModel> GetRatingAsync(string userId, Guid gameId);
+    Task<BaseModel> AddRatingAsync(CreateGameRatingModel entity);
+    Task<GameRatingModel> GetRatingAsync(string userId, Guid gameId);
 
-    Task<GameResponseModel>
+    Task<GameModel>
         GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<BaseResponseModel> CreateAsync(CreateGameModel createGameModel,
+    Task<BaseModel> CreateAsync(CreateGameModel createGameModel,
         CancellationToken cancellationToken = default);
 
-    Task<BaseResponseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<BaseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     // TODO: In API version return UpdateGameModel type
-    Task<BaseResponseModel> UpdateAsync(Guid id, GameResponseModel updateGameModel,
+    Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<GameResponseModel>> GetAllAsync(Expression<Func<GameResponseModel, bool>>? predicate = null);
+    Task<IEnumerable<GameModel>> GetAllAsync(Expression<Func<GameModel, bool>>? predicate = null);
 }

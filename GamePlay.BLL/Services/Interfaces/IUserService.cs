@@ -7,21 +7,21 @@ namespace GamePlay.BLL.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<BaseResponseModel> RegisterAsync(CreateUserModel createUserModel);
+    Task<BaseModel> RegisterAsync(CreateUserModel createUserModel);
     Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel);
     Task AddGameToUserAsync(Guid gameId, string userId);
-    Task<BaseResponseModel> SubscribeAsync(string subscriberId, string userId);
-    Task<UserRelationResponseModel> BecomeFriendsAsync(string subscriberId, string userId);
+    Task<BaseModel> SubscribeAsync(string subscriberId, string userId);
+    Task<UserRelationModel> BecomeFriendsAsync(string subscriberId, string userId);
 
-    Task<IEnumerable<UserRelationResponseModel>> GetAllRelationsAsync(string userId,
+    Task<IEnumerable<UserRelationModel>> GetAllRelationsAsync(string userId,
         bool? isFriend = null);
-    Task<IEnumerable<UserResponseModel>> GetAllAsync(Expression<Func<UserResponseModel, bool>>? predicate = null);
+    Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null);
 
-    Task<UserRelationResponseModel?> GetRelationByUsersIdAsync(string subscriberId, string userId,
+    Task<UserRelationModel?> GetRelationByUsersIdAsync(string subscriberId, string userId,
         CancellationToken cancellationToken = default);
 
-    Task<UserResponseModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default);
+    Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default);
 
-    Task<UserResponseModel> UpdateAsync(string id, UserResponseModel updateUserModel,
+    Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,
         CancellationToken cancellationToken = default);
 }

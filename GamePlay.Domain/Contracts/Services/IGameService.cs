@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Game;
 
-namespace GamePlay.BLL.Services.Interfaces;
+namespace GamePlay.Domain.Contracts.Services;
 
 public interface IGameService
 {

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using GamePlay.DAL.Data;
 using GamePlay.Domain.Contracts;
+using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

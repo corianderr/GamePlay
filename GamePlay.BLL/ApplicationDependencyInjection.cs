@@ -1,6 +1,5 @@
 using GamePlay.BLL.Services;
-using GamePlay.BLL.Services.Interfaces;
-using GamePlay.DAL.MappingProfiles;
+using GamePlay.Domain.Contracts.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

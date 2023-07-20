@@ -3,7 +3,7 @@ using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.User;
 
-namespace GamePlay.BLL.Services.Interfaces;
+namespace GamePlay.Domain.Contracts.Services;
 
 public interface IUserService
 {

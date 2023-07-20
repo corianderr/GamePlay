@@ -2,6 +2,7 @@ using AutoMapper.Extensions.ExpressionMapping;
 using GamePlay.DAL.MappingProfiles;
 using GamePlay.DAL.Repositories;
 using GamePlay.Domain.Contracts;
+using GamePlay.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

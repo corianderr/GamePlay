@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Duende.IdentityServer.Extensions;
-using GamePlay.BLL.Services.Interfaces;
+using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Models.Game;
 using GamePlay.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;

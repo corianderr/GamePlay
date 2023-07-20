@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
-using GamePlay.BLL.Services.Interfaces;
-using GamePlay.Domain.Contracts;
+using GamePlay.Domain.Contracts.Repositories;
+using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models;

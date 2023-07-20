@@ -11,4 +11,8 @@
       <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Interfaces\" />
+    </ItemGroup>
+
 </Project>

@@ -2,12 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using GamePlay.BLL.Services.Interfaces;
+using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models.User;

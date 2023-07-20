@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamePlay.BLL.Services.Interfaces;
+using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Enums;
 using GamePlay.Domain.Models.User;

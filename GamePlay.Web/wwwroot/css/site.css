@@ -281,3 +281,11 @@ body {
 .stats span{
   font-size: 29px;
 }
+
+.stats a {
+  text-decoration: none;
+}
+
+.candidate-list-title a{
+  color: black;
+}

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using GamePlay.DAL.Data;
 using GamePlay.Domain.Contracts;
 using GamePlay.Domain.Entities;
@@ -14,17 +15,16 @@ public class GameRepository : BaseRepository<Game>, IGameRepository
     public async Task<GameRating> AddRatingAsync(GameRating entity)
     {
         var addedEntity = (await Context.GameRatings!.AddAsync(entity)).Entity;
-        var numberOfRatings = Context.GameRatings.Count(r => r.GameId.Equals(entity.GameId));
-        var game = await GetFirstAsync(g => g.Id.Equals(entity.GameId));
-        
-        DbSet.Attach(game);
-        game.AverageRating = (game.AverageRating * numberOfRatings + entity.Rating) / numberOfRatings + 1;
-        Context.Entry(game).Property(g => g.AverageRating).IsModified = true;
-        
+
         await Context.SaveChangesAsync();
         return addedEntity;
     }
 
+    public int GetGameRatingsCount(Expression<Func<GameRating, bool>>? predicate = null)
+    {
+        return Context.GameRatings.Count(predicate);
+    }
+    
     public async Task<GameRating> GetRatingAsync(string userId, Guid gameId)
     {
         return await Context.GameRatings.FirstOrDefaultAsync(r => r.GameId.Equals(gameId) && r.UserId.Equals(userId));

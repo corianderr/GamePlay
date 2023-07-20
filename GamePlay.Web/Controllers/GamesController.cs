@@ -14,7 +14,6 @@ using Microsoft.AspNet.Identity;
 
 namespace GamePlay.Web.Controllers
 {
-    [Authorize]
     public class GamesController : Controller
     {
         private readonly IGameService _gameService;
@@ -41,12 +40,14 @@ namespace GamePlay.Web.Controllers
         }
 
         // GET: Games/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Games/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateGameModel gameModel, IFormFile? gameImage)
@@ -73,6 +74,7 @@ namespace GamePlay.Web.Controllers
         }
 
         // GET: Games/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(Guid id)
         {
             var game = await _gameService.GetByIdAsync(id);
@@ -80,6 +82,7 @@ namespace GamePlay.Web.Controllers
         }
 
         // POST: Games/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Guid id, GameResponseModel gameModel, IFormFile? gameImage)
@@ -101,6 +104,7 @@ namespace GamePlay.Web.Controllers
         }
 
         // GET: Games/Delete/5
+        [Authorize]
         public async Task<ActionResult> Delete(Guid id)
         {
             var game = await _gameService.GetByIdAsync(id);
@@ -108,6 +112,7 @@ namespace GamePlay.Web.Controllers
         }
 
         // POST: Games/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
@@ -124,6 +129,7 @@ namespace GamePlay.Web.Controllers
         }
 
         // POST: Games/RateGame/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RateGame(Guid id, int rating)

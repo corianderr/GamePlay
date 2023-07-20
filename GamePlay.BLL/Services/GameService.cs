@@ -22,6 +22,10 @@ public class GameService : IGameService
     public async Task<BaseResponseModel> AddRatingAsync(CreateGameRatingModel entity)
     {
         var gameRating = _mapper.Map<GameRating>(entity);
+        var numberOfRatings = _gameRepository.GetGameRatingsCount(r => r.GameId.Equals(entity.GameId));
+        var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(entity.GameId));
+        game.AverageRating = (game.AverageRating * numberOfRatings + entity.Rating) / (numberOfRatings + 1);
+        
         return new BaseResponseModel
         {
             Id = (await _gameRepository.AddRatingAsync(gameRating)).Id

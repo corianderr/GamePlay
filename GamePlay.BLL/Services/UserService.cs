@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq.Expressions;
 using AutoMapper;
 using GamePlay.Domain.Contracts.Repositories;
@@ -5,6 +6,7 @@ using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models;
+using GamePlay.Domain.Models.Game;
 using GamePlay.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -129,6 +131,12 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         return _mapper.Map<UserModel>(user);
+    }
+    
+    public async Task<IEnumerable<GameModel>> GetUsersGames(string userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId), u => u.Games);
+        return _mapper.Map<IEnumerable<GameModel>>(user.Games);
     }
 
     public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,

@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model UserRelationViewModel
+@model UserDetailsViewModel
 
 @{
     ViewBag.Title = "title";
@@ -55,3 +55,43 @@
         </div>
     </div>
 </div>
+@if (Model.Games.Count == 0)
+{
+    <h5>I don't have any games yet :(</h5>
+}
+else
+{
+    <h3>My Games</h3>
+    <div class="row">
+        @foreach (var item in Model.Games)
+        {
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100 text-center" onclick="Details('@item.Id')" style="cursor: pointer">
+                    <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
+                    <div class="card-body my-auto">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">
+                            From @item.MinPlayers to @item.MaxPlayers participants<br/>
+                            Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
+                            <i>Required minimum age: @item.MinAge</i><br/>
+                            <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
+                        </p>
+                        <div>
+                            <a class="btn btn-light" asp-action="Edit" asp-controller="Games" asp-route-id="@item?.Id">Edit</a>
+                            <a class="btn btn-light" asp-action="Delete" asp-controller="Games" asp-route-id="@item?.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+        function Details(gameId) {
+                window.location.href = '@Url.Action("Details", "Games")?id=' + gameId;
+        }
+    </script>
+}

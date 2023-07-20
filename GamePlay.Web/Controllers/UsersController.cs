@@ -32,22 +32,24 @@ public class UsersController : Controller
     {
         var userRelation = await _userService.GetRelationByUsersIdAsync(id, User.Identity.GetUserId());
 
-        var relation = new UserRelationViewModel();
+        var userDetailsViewModel = new UserDetailsViewModel();
         if (userRelation == null)
         {
             var oppositeRelation = await _userService.GetRelationByUsersIdAsync(User.Identity.GetUserId(), id);
-            if (oppositeRelation == null) relation.RelationOption = RelationOptions.DoesNotExist;
+            if (oppositeRelation == null) userDetailsViewModel.RelationOption = RelationOptions.DoesNotExist;
             else
-                relation.RelationOption = oppositeRelation.IsFriend ? RelationOptions.Friends : RelationOptions.Pending;
+                userDetailsViewModel.RelationOption = oppositeRelation.IsFriend ? RelationOptions.Friends : RelationOptions.Pending;
         }
         else
         {
-            relation.RelationOption = userRelation.IsFriend ? RelationOptions.Friends : RelationOptions.Accept;
+            userDetailsViewModel.RelationOption = userRelation.IsFriend ? RelationOptions.Friends : RelationOptions.Accept;
         }
 
-        relation.User = await _userService.GetFirstAsync(id);
-        ViewBag.IsCurrentUser = User.Identity.GetUserId().Equals(relation.User.Id);
-        return View(relation);
+        userDetailsViewModel.User = await _userService.GetFirstAsync(id);
+        userDetailsViewModel.Games = (await _userService.GetUsersGames(id)).ToList();
+        
+        ViewBag.IsCurrentUser = User.Identity.GetUserId().Equals(userDetailsViewModel.User.Id);
+        return View(userDetailsViewModel);
     }
 
     // GET: Users/Edit

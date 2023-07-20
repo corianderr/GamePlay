@@ -83,7 +83,14 @@ public class UserService : IUserService
 
     public async Task<UserRelationResponseModel> BecomeFriendsAsync(string subscriberId, string userId)
     {
-        var newRelation = await _userRepository.BecomeFriendsAsync(subscriberId, userId);
+        var subscriber = await _userRepository.GetFirstAsync(u => u.Id.Equals(subscriberId));
+        subscriber.FriendsCount++;
+        
+        var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
+        user.FriendsCount++;
+        user.FollowersCount--;
+
+        var newRelation = await _userRepository.BecomeFriendsAsync(subscriber, user);
         return _mapper.Map<UserRelationResponseModel>(newRelation);
     }
 

@@ -9,7 +9,7 @@ public interface IUserRepository : IBaseRepository<ApplicationUser>
     public bool IsUsernameUnique(string username);
     Task AddGameAsync(Guid gameId, string userId);
     Task<UserRelation> AddSubscriptionAsync(UserRelation entity);
-    Task<UserRelation> BecomeFriendsAsync(string subscriberId, string userId);
+    Task<UserRelation> BecomeFriendsAsync(ApplicationUser subscriber, ApplicationUser user);
     Task<IEnumerable<UserRelation>> GetAllRelationsAsync(Expression<Func<UserRelation, bool>> predicate, params Expression<Func<UserRelation, object>>[] includeProperties);
 
     Task<UserRelation?> GetFirstRelationAsync(Expression<Func<UserRelation, bool>>? predicate = null,

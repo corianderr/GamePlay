@@ -71,7 +71,7 @@ public class UsersController : Controller
             userModel.PhotoPath = await ImageUploadingHelper.ReuploadAndGetNewPathAsync("avatars",
                 "/avatars/default-user-avatar.jpg", avatar, userModel.PhotoPath);
 
-            var response = await _userService.UpdateAsync(userModel.Id, userModel);
+            await _userService.UpdateAsync(userModel.Id, userModel);
             return RedirectToAction(nameof(Details), new { id = userModel.Id });
         }
         catch
@@ -121,5 +121,15 @@ public class UsersController : Controller
     {
         var subscribers = (await _userService.GetAllRelationsAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
         return View(subscribers);
+    }
+
+    // Get: Users/AddGame/5
+    // [HttpPost]
+    // [ValidateAntiForgeryToken]
+    public async Task<ActionResult> AddGame(Guid id)
+    {
+        string currentUserId = User.Identity.GetUserId();
+        await _userService.AddGameToUserAsync(id, currentUserId);
+        return RedirectToAction(nameof(Details), new { id = currentUserId });
     }
 }

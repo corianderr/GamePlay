@@ -1,5 +1,5 @@
+using GamePlay.Domain.Enums;
 using GamePlay.Domain.Models.User;
-using GamePlay.Web.Enums;
 
 namespace GamePlay.Web.Models;
 

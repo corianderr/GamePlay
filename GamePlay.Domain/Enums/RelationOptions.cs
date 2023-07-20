@@ -1,4 +1,4 @@
-namespace GamePlay.Web.Enums;
+namespace GamePlay.Domain.Enums;
 
 public enum RelationOptions
 {

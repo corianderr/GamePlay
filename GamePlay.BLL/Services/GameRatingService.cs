@@ -33,9 +33,28 @@ public class GameRatingService : IGameRatingService
         };
     }
 
-    public async Task<GameRatingModel> GetAsync(string userId, Guid gameId)
+    public async Task<GameRatingModel> GetByUserAndGameAsync(string userId, Guid gameId)
     {
         var rating = await _ratingRepository.GetFirstAsync(r => r.GameId.Equals(gameId) && r.UserId.Equals(userId));
+        return _mapper.Map<GameRatingModel>(rating);
+    }
+    
+    public async Task<BaseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var rating = await _ratingRepository.GetFirstAsync(g => g.Id.Equals(id));
+        var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(rating.GameId));
+        var numberOfRatings = _ratingRepository.GetGameRatingsCount(r => r.GameId.Equals(game.Id));
+        game.AverageRating = (game.AverageRating * numberOfRatings - rating.Rating) / (numberOfRatings - 1);
+        
+        return new BaseModel
+        {
+            Id = (await _ratingRepository.DeleteAsync(rating)).Id
+        };
+    }
+
+    public async Task<GameRatingModel> GetByIdAsync(Guid id)
+    {
+        var rating = await _ratingRepository.GetFirstAsync(r => r.Id.Equals(id));
         return _mapper.Map<GameRatingModel>(rating);
     }
 }

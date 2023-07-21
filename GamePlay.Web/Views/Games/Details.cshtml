@@ -1,4 +1,4 @@
-@model GameModel
+@model GameDetailsViewModel
 
 @{
     ViewBag.Title = "title";
@@ -6,21 +6,21 @@
 }
 
 <div class="text-center">
-    <h2>@Model.Name</h2>
+    <h2>@Model.Game.Name</h2>
     <div class="card h-100 w-75 mx-auto">
-        <img class="card-img-top" src="@Model.PhotoPath" alt="Game image">
+        <img class="card-img-top" src="@Model.Game.PhotoPath" alt="Game image">
         <div class="card-body my-auto">
-            <h5 class="card-title">@Model.NameRu / @Model.NameEn</h5>
+            <h5 class="card-title">@Model.Game.NameRu / @Model.Game.NameEn</h5>
             <p class="card-text mb-4">
-                From @Model.MinPlayers to @Model.MaxPlayers participants<br/>
-                Time: @Model.MinPlayTime - @Model.MaxPlayTime minutes<br/>
-                <i>Required minimum age: @Model.MinAge</i><br/>
-                <strong>Average rating: @Model.AverageRating.ToString("#.##")</strong>
+                From @Model.Game.MinPlayers to @Model.Game.MaxPlayers participants<br/>
+                Time: @Model.Game.MinPlayTime - @Model.Game.MaxPlayTime minutes<br/>
+                <i>Required minimum age: @Model.Game.MinAge</i><br/>
+                <strong>Average rating: @Model.Game.AverageRating.ToString("#.##")</strong>
             </p>
             <div class="my-3">
-                @if (!ViewBag.IsInCollection)
+                @if (!Model.IsInCollection)
                 {
-                    <a class="btn btn-warning" asp-controller="Users" asp-action="AddGame" asp-route-id="@Model.Id">Add in my collection</a>
+                    <a class="btn btn-warning" asp-controller="Users" asp-action="AddGame" asp-route-id="@Model.Game.Id">Add in my collection</a>
                 }
                 else
                 {
@@ -28,15 +28,15 @@
                 }
             </div>
             <div>
-                <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                <a class="btn btn-light" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model.Game.Id">Edit</a>
+                <a class="btn btn-light" asp-action="Delete" asp-route-id="@Model.Game.Id">Delete</a>
                 <a class="btn btn-secondary" asp-action="Index">Back to List</a>
             </div>
             <div class="text-center d-flex">
-                @if (ViewBag.Rating == null)
+                @if (Model.Rating == null)
                 {
                     <form asp-controller="Games" asp-action="RateGame" method="post" class="ms-auto">
-                        <input type="hidden" name="id" value="@Model.Id">
+                        <input type="hidden" name="id" value="@Model.Game.Id">
                         <div class="d-flex mb-3">
                             <div class="rating choose">
                                 <input id="star5" name="rating" type="radio" value="5" class="radio-btn hide"/>
@@ -69,12 +69,16 @@
                         <input id="star1" name="rating" type="radio" value="1" class="radio-btn hide" disabled/>
                         <label for="star1">☆</label>
                         <div class="clear"></div>
+                        <form asp-action="DeleteRating">
+                            <input type="hidden" name="id" value="@Model.Rating.Id"/>
+                            <input type="submit" value="Delete my rating" class="btn btn-secondary btn-sm"/>
+                        </form>
                     </div>
                 }
             </div>
         </div>
         <div class="card-footer text-body-secondary">
-            Released in @Model.YearOfRelease<br/>
+            Released in @Model.Game.YearOfRelease<br/>
         </div>
     </div>
 </div>
@@ -85,8 +89,12 @@
         document.addEventListener('DOMContentLoaded', function() {
                 const starInputs = document.querySelectorAll('.show-result input[type="radio"]');
                 
-                const selectedStar = parseInt(@ViewBag.Rating);
+                const selectedStar = parseInt(@if (Model.Rating != null)
+                                              {
+                                                  @Model.Rating.Rating
+                                              });
                 starInputs[starInputs.length - selectedStar].checked = true;
             });
+        
     </script>
 }

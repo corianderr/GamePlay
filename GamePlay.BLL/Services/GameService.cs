@@ -18,26 +18,7 @@ public class GameService : IGameService
         _gameRepository = gameRepository;
         _mapper = mapper;
     }
-
-    public async Task<BaseModel> AddRatingAsync(CreateGameRatingModel entity)
-    {
-        var gameRating = _mapper.Map<GameRating>(entity);
-        var numberOfRatings = _gameRepository.GetGameRatingsCount(r => r.GameId.Equals(entity.GameId));
-        var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(entity.GameId));
-        game.AverageRating = (game.AverageRating * numberOfRatings + entity.Rating) / (numberOfRatings + 1);
-
-        return new BaseModel
-        {
-            Id = (await _gameRepository.AddRatingAsync(gameRating)).Id
-        };
-    }
-
-    public async Task<GameRatingModel> GetRatingAsync(string userId, Guid gameId)
-    {
-        var rating = await _gameRepository.GetRatingAsync(userId, gameId);
-        return _mapper.Map<GameRatingModel>(rating);
-    }
-
+    
     public async Task<GameModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(id));

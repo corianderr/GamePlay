@@ -10,10 +10,12 @@ namespace GamePlay.Web.Controllers;
 public class GamesController : Controller
 {
     private readonly IGameService _gameService;
+    private readonly IGameRatingService _ratingService;
 
-    public GamesController(IGameService gameService)
+    public GamesController(IGameService gameService, IGameRatingService ratingService)
     {
         _gameService = gameService;
+        _ratingService = ratingService;
     }
 
     // GET: Games
@@ -26,7 +28,7 @@ public class GamesController : Controller
     // GET: Games/Details/5
     public async Task<ActionResult> Details(Guid id)
     {
-        var rating = await _gameService.GetRatingAsync(User.Identity.GetUserId(), id);
+        var rating = await _ratingService.GetAsync(User.Identity.GetUserId(), id);
         ViewBag.Rating = rating == null ? null : (int?)rating.Rating;
         var game = await _gameService.GetByIdAsync(id);
         ViewBag.IsInCollection = await _gameService.CheckIfTheUserHas(User.Identity.GetUserId(), id);
@@ -139,7 +141,7 @@ public class GamesController : Controller
                 UserId = User.Identity.GetUserId(),
                 Rating = rating
             };
-            await _gameService.AddRatingAsync(gameRating);
+            await _ratingService.AddAsync(gameRating);
         }
         catch
         {

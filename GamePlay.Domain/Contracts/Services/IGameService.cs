@@ -6,9 +6,6 @@ namespace GamePlay.Domain.Contracts.Services;
 
 public interface IGameService
 {
-    Task<BaseModel> AddRatingAsync(CreateGameRatingModel entity);
-    Task<GameRatingModel> GetRatingAsync(string userId, Guid gameId);
-
     Task<GameModel>
         GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

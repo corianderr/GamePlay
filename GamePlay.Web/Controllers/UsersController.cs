@@ -87,7 +87,7 @@ public class UsersController : Controller
         }
     }
 
-    // POST: Users/Follow/5
+    // POST: Users/Follow
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Follow(string id)
@@ -96,7 +96,7 @@ public class UsersController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
-    // POST: Users/BecomeFriends/5
+    // POST: Users/BecomeFriends
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> BecomeFriends(string id)
@@ -130,9 +130,9 @@ public class UsersController : Controller
         return View(subscribers);
     }
 
-    // POST: Users/AddGame/5
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
+    // POST: Users/AddGame
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult> AddGame(Guid id)
     {
         string currentUserId = User.Identity.GetUserId();

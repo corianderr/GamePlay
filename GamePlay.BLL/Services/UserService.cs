@@ -55,18 +55,20 @@ public class UserService : IUserService
 
     public async Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.Email);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.EmailOrUsername) 
+                   ?? await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.EmailOrUsername);
+        
         if (user == null)
-            throw new NotFoundException("Username or password is incorrect");
+            throw new NotFoundException("Username/email or password is incorrect");
 
         var signInResult =
             await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, loginUserModel.RememberMe, false);
         if (!signInResult.Succeeded)
-            throw new BadRequestException("Username or password is incorrect");
+            throw new BadRequestException("Username/email or password is incorrect");
 
         return new LoginUserModel
         {
-            Email = user.UserName
+            EmailOrUsername = user.UserName
         };
     }
 

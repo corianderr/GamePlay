@@ -42,7 +42,7 @@ public class RegisterModel : PageModel
 
         var user = CreateUser();
         user.Email = Input.Email;
-        user.Username = Input.Email;
+        user.Username = Input.Username;
         user.Password = Input.Password;
         try
         {
@@ -77,6 +77,9 @@ public class RegisterModel : PageModel
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+        [Required]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

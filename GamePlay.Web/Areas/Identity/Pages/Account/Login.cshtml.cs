@@ -52,7 +52,7 @@ public class LoginModel : PageModel
             {
                 var user = new LoginUserModel
                 {
-                    Email = Input.Email,
+                    EmailOrUsername = Input.EmailOrUsername,
                     Password = Input.Password,
                     RememberMe = Input.RememberMe
                 };
@@ -77,7 +77,9 @@ public class LoginModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; }
+        [Required]
+        [Display(Name = "Email or Username")]
+        public string EmailOrUsername { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

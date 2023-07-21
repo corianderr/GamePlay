@@ -16,7 +16,7 @@
         <div class="mt-2 text-center">
             <h4 class="mb-0">@Model.User.Username</h4>
             <span class="text-muted d-block mb-2">@Model.User.Email</span>
-            @if (ViewBag.IsCurrentUser)
+            @if (Model.IsCurrentUser)
             {
                 <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Edit">Edit profile</a>
             }
@@ -61,7 +61,14 @@
 }
 else
 {
-    <h3>My Games</h3>
+    @if (Model.IsCurrentUser)
+    {
+        <h3>My Games</h3>
+    }
+    else
+    {
+        <h3>@Model.User.Username's Games</h3>
+    }
     <div class="row">
         @foreach (var item in Model.Games)
         {

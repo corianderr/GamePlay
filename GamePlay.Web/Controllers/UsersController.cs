@@ -14,10 +14,12 @@ namespace GamePlay.Web.Controllers;
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
+    private readonly IUserRelationService _relationService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, IUserRelationService relationService)
     {
         _userService = userService;
+        _relationService = relationService;
     }
 
     // GET: Users
@@ -30,15 +32,20 @@ public class UsersController : Controller
     // GET: Users/Details/5
     public async Task<IActionResult> Details(string id)
     {
-        var userRelation = await _userService.GetRelationByUsersIdAsync(id, User.Identity.GetUserId());
+        var userRelation = await _relationService.GetByUsersIdAsync(id, User.Identity.GetUserId());
 
         var userDetailsViewModel = new UserDetailsViewModel();
         if (userRelation == null)
         {
-            var oppositeRelation = await _userService.GetRelationByUsersIdAsync(User.Identity.GetUserId(), id);
-            if (oppositeRelation == null) userDetailsViewModel.RelationOption = RelationOptions.DoesNotExist;
+            var oppositeRelation = await _relationService.GetByUsersIdAsync(User.Identity.GetUserId(), id);
+            if (oppositeRelation == null)
+            {
+                userDetailsViewModel.RelationOption = RelationOptions.DoesNotExist;
+            }
             else
+            {
                 userDetailsViewModel.RelationOption = oppositeRelation.IsFriend ? RelationOptions.Friends : RelationOptions.Pending;
+            }
         }
         else
         {
@@ -85,7 +92,7 @@ public class UsersController : Controller
     // [ValidateAntiForgeryToken]
     public async Task<ActionResult> Follow(string id)
     {
-        await _userService.SubscribeAsync(User.Identity.GetUserId(), id);
+        await _relationService.SubscribeAsync(User.Identity.GetUserId(), id);
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -94,7 +101,7 @@ public class UsersController : Controller
     // [ValidateAntiForgeryToken]
     public async Task<ActionResult> BecomeFriends(string id)
     {
-        await _userService.BecomeFriendsAsync(id, User.Identity.GetUserId());
+        await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -104,13 +111,13 @@ public class UsersController : Controller
         IEnumerable<ApplicationUser?> users;
         if (isFriend)
         {
-            users = (await _userService.GetAllRelationsAsync(userId, isFriend)).SelectMany(r =>
+            users = (await _relationService.GetAllAsync(userId, isFriend)).SelectMany(r =>
                 new[] { r.Subscriber, r.User });
             users = users.Where(u => !u.Id.Equals(userId));
         }
         else
         {
-            users = (await _userService.GetAllRelationsAsync(userId, isFriend)).Select(r => r.Subscriber);
+            users = (await _relationService.GetAllAsync(userId, isFriend)).Select(r => r.Subscriber);
         }
 
         return View(users);
@@ -119,7 +126,7 @@ public class UsersController : Controller
     // GET: Users/ShowNotifications
     public async Task<ActionResult> ShowNotifications()
     {
-        var subscribers = (await _userService.GetAllRelationsAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
+        var subscribers = (await _relationService.GetAllAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
         return View(subscribers);
     }
 

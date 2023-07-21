@@ -72,61 +72,12 @@ public class UserService : IUserService
         await _userRepository.AddGameAsync(gameId, userId);
     }
 
-    public async Task<BaseModel> SubscribeAsync(string subscriberId, string userId)
-    {
-        var createRelation = new CreateUserRelationModel
-        {
-            SubscriberId = subscriberId,
-            UserId = userId,
-            IsFriend = false
-        };
-        var relation = _mapper.Map<UserRelation>(createRelation);
-        return new BaseModel { Id = (await _userRepository.AddSubscriptionAsync(relation)).Id };
-    }
-
-    public async Task<UserRelationModel> BecomeFriendsAsync(string subscriberId, string userId)
-    {
-        var subscriber = await _userRepository.GetFirstAsync(u => u.Id.Equals(subscriberId));
-        subscriber.FriendsCount++;
-
-        var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
-        user.FriendsCount++;
-        user.FollowersCount--;
-
-        var newRelation = await _userRepository.BecomeFriendsAsync(subscriber, user);
-        return _mapper.Map<UserRelationModel>(newRelation);
-    }
-
-    public async Task<IEnumerable<UserRelationModel>> GetAllRelationsAsync(string userId, bool? isFriend = null)
-    {
-        IEnumerable<UserRelation> relations;
-        if (isFriend == null)
-            relations = await _userRepository.GetAllRelationsAsync(
-                r => r.UserId.Equals(userId), r => r.Subscriber);
-        else if ((bool)isFriend)
-            relations = await _userRepository.GetAllRelationsAsync(
-                r => (r.UserId.Equals(userId) || r.SubscriberId.Equals(userId)) && r.IsFriend == isFriend,
-                r => r.Subscriber, r => r.User);
-        else
-            relations = await _userRepository.GetAllRelationsAsync(
-                r => r.UserId.Equals(userId) && r.IsFriend == isFriend, r => r.Subscriber);
-        return _mapper.Map<IEnumerable<UserRelationModel>>(relations);
-    }
-
     public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
     {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
         return _mapper.Map<IEnumerable<UserModel>>(games);
     }
-
-    public async Task<UserRelationModel?> GetRelationByUsersIdAsync(string subscriberId, string userId,
-        CancellationToken cancellationToken = default)
-    {
-        var userRelation = await _userRepository.GetFirstRelationAsync(
-            r => r.UserId.Equals(userId) && r.SubscriberId.Equals(subscriberId));
-        return _mapper.Map<UserRelationModel>(userRelation);
-    }
-
+    
     public async Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));

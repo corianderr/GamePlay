@@ -7,7 +7,7 @@ namespace GamePlay.DAL.Repositories;
 
 public class GameRatingRepository : BaseRepository<GameRating>, IGameRatingRepository
 {
-    protected GameRatingRepository(ApplicationDbContext context) : base(context)
+    public GameRatingRepository(ApplicationDbContext context) : base(context)
     {
     }
     public int GetGameRatingsCount(Expression<Func<GameRating, bool>>? predicate = null)

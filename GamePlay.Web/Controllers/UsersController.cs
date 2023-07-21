@@ -25,7 +25,7 @@ public class UsersController : Controller
     // GET: Users
     public async Task<IActionResult> Index()
     {
-        var users = await _userService.GetAllAsync(u => !u.Id.Equals(User.Identity.GetUserId()));
+        var users = await _userService.GetAllAsync();
         return View(users);
     }
 

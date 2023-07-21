@@ -6,7 +6,8 @@ riderModule.iml
 .vs/
 global.json
 
-wwwroot/gameCovers/*
-!wwwroot/gameCovers/default-game-cover.jpg
-wwwroot/avatars/*
-!wwwroot/avatars/default-user-avatar.jpg
+GamePlay.Web/wwwroot/gameCovers/*
+GamePlay.Web/wwwroot/avatars/*
+
+!GamePlay.Web/wwwroot/gameCovers/default-game-cover.jpg
+!GamePlay.Web/wwwroot/avatars/default-user-avatar.jpg

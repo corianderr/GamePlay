@@ -34,10 +34,13 @@ else
                             <i>Required minimum age: @item.MinAge</i><br/>
                             <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
                         </p>
-                        <div>
-                            <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
-                            <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
-                        </div>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <div>
+                                <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
+                                <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

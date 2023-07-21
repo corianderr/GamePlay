@@ -88,8 +88,8 @@ public class UsersController : Controller
     }
 
     // POST: Users/Follow/5
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult> Follow(string id)
     {
         await _relationService.SubscribeAsync(User.Identity.GetUserId(), id);
@@ -97,8 +97,8 @@ public class UsersController : Controller
     }
 
     // POST: Users/BecomeFriends/5
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult> BecomeFriends(string id)
     {
         await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());

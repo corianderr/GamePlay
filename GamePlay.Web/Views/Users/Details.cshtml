@@ -25,7 +25,10 @@
                 switch (Model.RelationOption)
                 {
                     case RelationOptions.DoesNotExist:
-                        <a class="btn btn-primary btn-sm follow" asp-controller="Users" asp-action="Follow" asp-route-id="@Model.User.Id">Follow</a>
+                        <form asp-controller="Users" asp-action="Follow">
+                            <input type="hidden" name="id" value="@Model.User.Id"/>
+                            <input type="submit" value="Follow" class="btn btn-primary btn-sm follow"/>
+                        </form>
                         break;
                     case RelationOptions.Pending:
                         <p class="btn-sm follow text-secondary">Is Pending...</p>
@@ -34,7 +37,10 @@
                         <p class="btn-sm follow text-secondary">Friends</p>
                         break;
                     case RelationOptions.Accept:
-                        <a class="btn btn-success btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@Model.User.Id">Accept</a>
+                        <form asp-controller="Users" asp-action="BecomeFriends">
+                            <input type="hidden" name="id" value="@Model.User.Id"/>
+                            <input type="submit" value="Accept" class="btn btn-primary btn-sm follow"/>
+                        </form>
                         break;
                 }
             }
@@ -57,7 +63,14 @@
 </div>
 @if (Model.Games.Count == 0)
 {
-    <h5>I don't have any games yet :(</h5>
+    @if (Model.IsCurrentUser)
+    {
+        <h5>I don't have any games yet :(</h5>
+    }
+    else
+    {
+        <h5>@Model.User.Username does not have any games yet :(</h5>
+    }
 }
 else
 {

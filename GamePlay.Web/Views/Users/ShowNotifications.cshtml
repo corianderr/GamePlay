@@ -43,7 +43,10 @@ else
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="btn btn-success btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@subscribers.Id">Accept</a>
+                                        <form asp-controller="Users" asp-action="BecomeFriends">
+                                            <input type="hidden" name="id" value="@subscribers.Id"/>
+                                            <input type="submit" value="Accept" class="btn btn-primary btn-sm follow"/>
+                                        </form>
                                     </td>
                                 </tr>
                             }

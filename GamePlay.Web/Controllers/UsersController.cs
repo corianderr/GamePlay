@@ -130,7 +130,7 @@ public class UsersController : Controller
         return View(subscribers);
     }
 
-    // Get: Users/AddGame/5
+    // POST: Users/AddGame/5
     // [HttpPost]
     // [ValidateAntiForgeryToken]
     public async Task<ActionResult> AddGame(Guid id)

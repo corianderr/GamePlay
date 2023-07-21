@@ -6,51 +6,52 @@
     Layout = "_Layout";
 }
 
-<h2>Notifications</h2>
-<div class="container mt-3 mb-4">
-    <div class="col-lg-9 mt-4 mt-lg-0">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
-                    <table class="table manage-candidates-top mb-0">
-                        <thead>
-                        <tr>
-                            <th>Username</th>
-                        </tr>
-                        <tr></tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var subscribers in Model)
-                        {
-                            <tr class="candidates-list">
-                                <td class="title">
-                                    <div class="thumb">
-                                        <img class="img-fluid" src=@subscribers.PhotoPath alt="avatar">
-                                    </div>
-                                    <div class="candidate-list-details">
-                                        <div class="candidate-list-info">
-                                            <div class="candidate-list-title">
-                                                <h5 class="mb-0">
-                                                    <a asp-action="Details" asp-controller="Users" asp-route-id="@subscribers.Id">
-                                                        @subscribers.UserName
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                            <div class="candidate-list-option">
-                                                <p>has followed you. You can accept the request to become friends!</p>
+@if (Model.ToList().Count == 0)
+{
+    <p>There are no notifications yet :(</p>
+}
+else
+{
+    <h2>Notifications</h2>
+    <div class="container mt-3 mb-4">
+        <div class="col-lg-9 mt-4 mt-lg-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                        <table class="table manage-candidates-top mb-0">
+                            <tbody>
+                            @foreach (var subscribers in Model)
+                            {
+                                <tr class="candidates-list">
+                                    <td class="title">
+                                        <div class="thumb">
+                                            <img class="img-fluid" src=@subscribers.PhotoPath alt="avatar">
+                                        </div>
+                                        <div class="candidate-list-details">
+                                            <div class="candidate-list-info">
+                                                <div class="candidate-list-title">
+                                                    <h5 class="mb-0">
+                                                        <a asp-action="Details" asp-controller="Users" asp-route-id="@subscribers.Id">
+                                                            @subscribers.UserName
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div class="candidate-list-option">
+                                                    <p>has followed you. You can accept the request to become friends!</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a class="btn btn-success btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@subscribers.Id">Accept</a>
-                                </td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success btn-sm follow" asp-controller="Users" asp-action="BecomeFriends" asp-route-id="@subscribers.Id">Accept</a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}

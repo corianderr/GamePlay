@@ -14,30 +14,36 @@
         </p>
     }
 </div>
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-sm-4 mb-3">
-            <div class="card h-100 text-center" onclick="Details('@item.Id')" style="cursor: pointer">
-                <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
-                <div class="card-body my-auto">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text">
-                        From @item.MinPlayers to @item.MaxPlayers participants<br/>
-                        Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
-                        <i>Required minimum age: @item.MinAge</i><br/>
-                        <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
-                    </p>
-                    <div>
-                        <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
-                        <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+@if (Model.ToList().Count == 0)
+{
+    <p>There are no games yet :(</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100 text-center" onclick="Details('@item.Id')" style="cursor: pointer">
+                    <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
+                    <div class="card-body my-auto">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">
+                            From @item.MinPlayers to @item.MaxPlayers participants<br/>
+                            Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
+                            <i>Required minimum age: @item.MinAge</i><br/>
+                            <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
+                        </p>
+                        <div>
+                            <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
+                            <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
-
+        }
+    </div>
+}
 @section Scripts
 {
     <script>

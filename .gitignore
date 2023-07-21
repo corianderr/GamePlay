@@ -3,5 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.vs/
+global.json
 
 wwwroot/gameCovers/*
+!wwwroot/gameCovers/default-game-cover.jpg
+wwwroot/avatars/*
+!wwwroot/avatars/default-user-avatar.jpg

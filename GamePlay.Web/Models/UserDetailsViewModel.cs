@@ -9,4 +9,5 @@ public class UserDetailsViewModel
     public UserModel? User { get; set; }
     public RelationOptions RelationOption { get; set; }
     public List<GameModel> Games { get; set; }
+    public bool IsCurrentUser { get; set; }
 }

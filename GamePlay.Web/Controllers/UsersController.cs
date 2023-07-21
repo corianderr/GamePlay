@@ -55,7 +55,7 @@ public class UsersController : Controller
         userDetailsViewModel.User = await _userService.GetFirstAsync(id);
         userDetailsViewModel.Games = (await _userService.GetUsersGames(id)).ToList();
         
-        ViewBag.IsCurrentUser = User.Identity.GetUserId().Equals(userDetailsViewModel.User.Id);
+        userDetailsViewModel.IsCurrentUser = User.Identity.GetUserId().Equals(userDetailsViewModel.User.Id);
         return View(userDetailsViewModel);
     }
 

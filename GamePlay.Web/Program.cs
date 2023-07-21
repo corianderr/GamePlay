@@ -19,10 +19,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 4;
     options.Password.RequiredUniqueChars = 1;
 
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

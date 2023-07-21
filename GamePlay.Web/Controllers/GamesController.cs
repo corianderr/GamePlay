@@ -36,14 +36,14 @@ public class GamesController : Controller
     }
 
     // GET: Games/Create
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public ActionResult Create()
     {
         return View();
     }
 
     // POST: Games/Create
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Create(CreateGameModel gameModel, IFormFile? gameImage)
@@ -71,7 +71,7 @@ public class GamesController : Controller
     }
 
     // GET: Games/Edit/5
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult> Edit(Guid id)
     {
         var game = await _gameService.GetByIdAsync(id);
@@ -79,7 +79,7 @@ public class GamesController : Controller
     }
 
     // POST: Games/Edit/5
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Edit(Guid id, GameModel gameModel, IFormFile? gameImage)
@@ -102,7 +102,7 @@ public class GamesController : Controller
     }
 
     // GET: Games/Delete/5
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult> Delete(Guid id)
     {
         var game = await _gameService.GetByIdAsync(id);
@@ -110,7 +110,7 @@ public class GamesController : Controller
     }
 
     // POST: Games/Delete/5
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

@@ -4,6 +4,7 @@ using GamePlay.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamePlay.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230721082602_AddInitialData")]
+    partial class AddInitialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,9 +115,9 @@ namespace GamePlay.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "964d01a4-af91-422a-9d7a-e88b02398b00",
+                            Id = "4d9d6b56-47a6-4e18-98dd-382feb87ce37",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c0ce3486-19bd-43d7-974c-973db66b3710",
+                            ConcurrencyStamp = "079395eb-54fc-4cde-a7d2-29afc4376275",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             FollowersCount = 0,
@@ -123,9 +125,8 @@ namespace GamePlay.DAL.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAGuVdh7FUcxb+87xaMRVQR2ZtfZnFFct0B1o6UocOCvxM7WEWEByAzEXbB3yQZzHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEENIh8XUnbnGfbAGwWaG5Yo5X+gzkBAt2GiWwjpG9eMajvmT7FJ8vUfbaLJ3Is31Ag==",
                             PhoneNumberConfirmed = false,
-                            PhotoPath = "/avatars/default-user-avatar.jpg",
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -253,15 +254,15 @@ namespace GamePlay.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b6a28f69-2c96-42fa-9261-91d0815a900e",
-                            ConcurrencyStamp = "677ab182-1188-4ce7-bc6d-dfed51865740",
+                            Id = "7620712d-0200-4660-99e0-43751c9ee61b",
+                            ConcurrencyStamp = "5a2e557f-73b0-47a7-9d85-7a5ccbfc3293",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "064f3a21-31a4-4bee-861e-af3acba38b5b",
-                            ConcurrencyStamp = "4057cd4c-f12d-42f4-a9bb-da60da1b4b26",
+                            Id = "91336711-71aa-4539-9bee-1711cb9175ca",
+                            ConcurrencyStamp = "51ca6721-1e75-4c35-9ea4-a1373b96bf65",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -358,8 +359,8 @@ namespace GamePlay.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "964d01a4-af91-422a-9d7a-e88b02398b00",
-                            RoleId = "b6a28f69-2c96-42fa-9261-91d0815a900e"
+                            UserId = "4d9d6b56-47a6-4e18-98dd-382feb87ce37",
+                            RoleId = "7620712d-0200-4660-99e0-43751c9ee61b"
                         });
                 });
 

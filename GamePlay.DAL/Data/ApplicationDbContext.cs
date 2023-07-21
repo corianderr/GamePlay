@@ -1,4 +1,5 @@
-﻿using GamePlay.Domain.Entities;
+﻿using GamePlay.DAL.Extensions;
+using GamePlay.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         ConfigureEntityId<Game>(modelBuilder);
         ConfigureEntityId<UserRelation>(modelBuilder);
         ConfigureEntityId<GameRating>(modelBuilder);
+        
+        modelBuilder.Seed();
     }
 
     private void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : BaseEntity

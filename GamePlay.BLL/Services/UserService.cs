@@ -44,6 +44,9 @@ public class UserService : IUserService
         var result = await _userManager.CreateAsync(user, createUserModel.Password);
         if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
 
+        result = await _userManager.AddToRoleAsync(user, "user");
+        if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
+        
         return new BaseModel
         {
             Id = Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id)
@@ -52,7 +55,7 @@ public class UserService : IUserService
 
     public async Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.Username);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.Email);
         if (user == null)
             throw new NotFoundException("Username or password is incorrect");
 
@@ -63,7 +66,7 @@ public class UserService : IUserService
 
         return new LoginUserModel
         {
-            Username = user.UserName
+            Email = user.UserName
         };
     }
 

@@ -1,0 +1,49 @@
+@model GamePlay.Domain.Models.Collection.CollectionModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>@Model.Name</h2>
+@if (Model.Games.ToList().Count == 0)
+{
+    <p>There are no games yet :(</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model.Games)
+        {
+            <div class="col-sm-4 mb-3">
+                <div class="card h-100 text-center" onclick="details('@item.Id')" style="cursor: pointer">
+                    <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
+                    <div class="card-body my-auto">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">
+                            From @item.MinPlayers to @item.MaxPlayers participants<br/>
+                            Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
+                            <i>Required minimum age: @item.MinAge</i><br/>
+                            <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
+                        </p>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <div>
+                                <a class="btn btn-light" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
+                                <a class="btn btn-light" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+@section Scripts
+{
+    <script>
+        function details(gameId) {
+                window.location.href = '@Url.Action("Details", "Games")?id=' + gameId;
+        }
+    </script>
+}

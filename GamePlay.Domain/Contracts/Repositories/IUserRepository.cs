@@ -7,6 +7,4 @@ public interface IUserRepository : IBaseRepository<ApplicationUser>
 {
     bool IsEmailUnique(string email);
     public bool IsUsernameUnique(string username);
-    // TODO: Fix to collections implementation
-    // Task AddGameAsync(Guid gameId, string userId);
 }

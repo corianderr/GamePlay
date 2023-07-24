@@ -10,7 +10,6 @@ public class GameProfile : Profile
     {
         CreateMap<CreateGameModel, Game>()
             .ForMember(g => g.AverageRating, map => map.MapFrom(g => 0));
-        ;
         CreateMap<UpdateGameModel, Game>();
         CreateMap<Game, GameModel>();
         CreateMap<GameModel, Game>();

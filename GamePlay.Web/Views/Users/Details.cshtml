@@ -61,6 +61,7 @@
         </div>
     </div>
 </div>
+<a class="btn btn-light mb-3" asp-controller="Collections" asp-action="Create">Create Collection</a>
 @if (Model.Collections.ToList().Count == 0)
 {
     @if (Model.IsCurrentUser)
@@ -112,7 +113,7 @@ else
         
         function random_bg_color() {
             let elements = document.getElementsByClassName("color");
-            for (let i = 0, len = elements.length - 1; i < len; i++) {
+            for (let i = 0, len = elements.length - 1; i <= len; i++) {
                 let x = Math.floor(Math.random() * 256);
                 let y = Math.floor(Math.random() * 256);
                 let z = Math.floor(Math.random() * 256);

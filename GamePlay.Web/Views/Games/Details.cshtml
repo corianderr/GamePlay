@@ -1,3 +1,4 @@
+@using Duende.IdentityServer.Extensions
 @model GameDetailsViewModel
 
 @{
@@ -17,16 +18,19 @@
                 <i>Required minimum age: @Model.Game.MinAge</i><br/>
                 <strong>Average rating: @Model.Game.AverageRating.ToString("#.##")</strong>
             </p>
-            <div class="my-3">
-                @if (Model.AvailableCollections.ToList().Count == 0)
-                {
-                    <p>The game is already in your collections.</p>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addCollectionModal">Add to collection</button>
-                }
-            </div>
+            @if (User.IsAuthenticated())
+            {
+                <div class="my-3">
+                    @if (Model.AvailableCollections.ToList().Count == 0)
+                    {
+                        <p>The game is already in your collections.</p>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addCollectionModal">Add to collection</button>
+                    }
+                </div>
+            }
             <div>
                 @if (User.IsInRole("admin"))
                 {

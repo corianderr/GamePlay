@@ -61,11 +61,11 @@
         </div>
     </div>
 </div>
-<a class="btn btn-light mb-3" asp-controller="Collections" asp-action="Create">Create Collection</a>
 @if (Model.Collections.ToList().Count == 0)
 {
     @if (Model.IsCurrentUser)
     {
+        <a class="btn btn-light mb-3" asp-controller="Collections" asp-action="Create">Create Collection</a>
         <h5>I don't have any collections yet :(</h5>
     }
     else
@@ -77,6 +77,7 @@ else
 {
     @if (Model.IsCurrentUser)
     {
+        <a class="btn btn-light mb-3" asp-controller="Collections" asp-action="Create">Create Collection</a>
         <h3>My Collections</h3>
     }
     else

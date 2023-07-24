@@ -24,7 +24,7 @@ public class CollectionService : ICollectionService
 
     public async Task<CollectionModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var collection = await _collectionRepository.GetFirstAsync(g => g.Id.Equals(id));
+        var collection = await _collectionRepository.GetFirstAsync(g => g.Id.Equals(id), c => c.Games);
         return _mapper.Map<CollectionModel>(collection);
     }
 

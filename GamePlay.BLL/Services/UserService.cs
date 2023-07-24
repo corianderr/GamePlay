@@ -6,6 +6,7 @@ using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models;
+using GamePlay.Domain.Models.Collection;
 using GamePlay.Domain.Models.Game;
 using GamePlay.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
@@ -19,16 +20,18 @@ public class UserService : IUserService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserRepository _userRepository;
+    private readonly ICollectionService _collectionService;
 
     public UserService(IUserRepository userRepository,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IMapper mapper)
+        IMapper mapper, ICollectionService collectionService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userRepository = userRepository;
         _mapper = mapper;
+        _collectionService = collectionService;
     }
 
     public async Task<BaseModel> RegisterAsync(CreateUserModel createUserModel)
@@ -46,10 +49,13 @@ public class UserService : IUserService
 
         result = await _userManager.AddToRoleAsync(user, "user");
         if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
+
+        var userId = (await _userManager.FindByNameAsync(user.UserName)).Id;
+        await _collectionService.CreateAsync(new CreateCollectionModel() { Name = "My Collection", UserId = userId });
         
         return new BaseModel
         {
-            Id = Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id)
+            Id = Guid.Parse(userId)
         };
     }
 

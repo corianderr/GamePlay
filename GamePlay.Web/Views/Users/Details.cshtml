@@ -107,7 +107,7 @@ else
 {
     <script>
         function details(gameId) {
-                window.location.href = '@Url.Action("Details", "Games")?id=' + gameId;
+                window.location.href = '@Url.Action("Details", "Collections")?id=' + gameId;
         }
         
         function random_bg_color() {
@@ -122,7 +122,7 @@ else
             }
         }
         
-        $(document).ready(function(){
+        document.addEventListener('DOMContentLoaded', function() {
             random_bg_color()
         });
     </script>

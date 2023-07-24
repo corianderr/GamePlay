@@ -7,7 +7,7 @@
 }
 <div class="row">
     <h1 class="col-6">Games</h1>
-    @if (User.IsAuthenticated())
+    @if (User.IsInRole("admin"))
     {
         <p class="col-2 my-auto ms-auto">
             <a asp-action="Create" class="ms-auto btn btn-secondary px-4">Create New</a>

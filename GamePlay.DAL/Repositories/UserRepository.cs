@@ -15,13 +15,14 @@ public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
         DbRelationsSet = Context.Set<UserRelation>();
     }
 
-    public async Task AddGameAsync(Guid gameId, string userId)
-    {
-        var user = await GetFirstAsync(u => u.Id.Equals(userId));
-        var game = await Context.Games.FirstOrDefaultAsync(g => g.Id.Equals(gameId));
-        user.Games.Add(game);
-        await Context.SaveChangesAsync();
-    }
+    // TODO: Fix to collections implementation
+    // public async Task AddGameAsync(Guid gameId, string userId)
+    // {
+    //     var user = await GetFirstAsync(u => u.Id.Equals(userId));
+    //     var game = await Context.Games.FirstOrDefaultAsync(g => g.Id.Equals(gameId));
+    //     user.Games.Add(game);
+    //     await Context.SaveChangesAsync();
+    // }
 
     public async Task<UserRelation> AddSubscriptionAsync(UserRelation entity)
     {

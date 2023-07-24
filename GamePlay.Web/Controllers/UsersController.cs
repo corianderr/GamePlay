@@ -53,7 +53,8 @@ public class UsersController : Controller
         }
 
         userDetailsViewModel.User = await _userService.GetFirstAsync(id);
-        userDetailsViewModel.Games = (await _userService.GetUsersGames(id)).ToList();
+        // TODO: Fix to collections implementation
+        //userDetailsViewModel.Games = (await _userService.GetUsersGames(id)).ToList();
         
         userDetailsViewModel.IsCurrentUser = User.Identity.GetUserId().Equals(userDetailsViewModel.User.Id);
         return View(userDetailsViewModel);
@@ -131,12 +132,13 @@ public class UsersController : Controller
     }
 
     // POST: Users/AddGame
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<ActionResult> AddGame(Guid id)
-    {
-        string currentUserId = User.Identity.GetUserId();
-        await _userService.AddGameToUserAsync(id, currentUserId);
-        return RedirectToAction(nameof(Details), new { id = currentUserId });
-    }
+    // TODO: Fix to collections implementation
+    // [HttpPost]
+    // [ValidateAntiForgeryToken]
+    // public async Task<ActionResult> AddGame(Guid id)
+    // {
+    //     string currentUserId = User.Identity.GetUserId();
+    //     await _userService.AddGameToUserAsync(id, currentUserId);
+    //     return RedirectToAction(nameof(Details), new { id = currentUserId });
+    // }
 }

@@ -33,7 +33,8 @@ public class GamesController : Controller
         {
             Rating = await _ratingService.GetByUserAndGameAsync(User.Identity.GetUserId(), id),
             Game = await _gameService.GetByIdAsync(id),
-            IsInCollection = await _gameService.CheckIfTheUserHas(User.Identity.GetUserId(), id)
+            // TODO: Fix to collections implementation
+            // IsInCollection = await _gameService.CheckIfTheUserHas(User.Identity.GetUserId(), id)
         };
         return View(gameDetailsViewModel);
     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamePlay.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230721083344_AddPhotoPathAdminValue")]
-    partial class AddPhotoPathAdminValue
+    [Migration("20230724074615_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,19 +24,19 @@ namespace GamePlay.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("CollectionGame", b =>
                 {
+                    b.Property<Guid>("CollectionsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("GamesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("CollectionsId", "GamesId");
 
-                    b.HasKey("GamesId", "UsersId");
+                    b.HasIndex("GamesId");
 
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserGame");
+                    b.ToTable("CollectionGame");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.ApplicationUser", b =>
@@ -134,6 +134,36 @@ namespace GamePlay.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("GamePlay.Domain.Entities.BaseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BaseEntity");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Collection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Collections");
+                });
+
             modelBuilder.Entity("GamePlay.Domain.Entities.Game", b =>
                 {
                     b.Property<Guid>("Id")
@@ -200,6 +230,56 @@ namespace GamePlay.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("GameRatings");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Place")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("GameResults");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GameResultId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRegistered")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWinner")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameResultId");
+
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.UserRelation", b =>
@@ -386,19 +466,28 @@ namespace GamePlay.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("CollectionGame", b =>
                 {
+                    b.HasOne("GamePlay.Domain.Entities.Collection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GamePlay.Domain.Entities.Game", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("GamePlay.Domain.Entities.Collection", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Collections")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.GameRating", b =>
@@ -416,6 +505,28 @@ namespace GamePlay.DAL.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.GameResult", "GameResult")
+                        .WithMany()
+                        .HasForeignKey("GameResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GameResult");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.UserRelation", b =>
@@ -482,6 +593,11 @@ namespace GamePlay.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Collections");
                 });
 #pragma warning restore 612, 618
         }

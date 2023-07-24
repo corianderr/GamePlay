@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamePlay.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230719113425_Initial")]
-    partial class Initial
+    [Migration("20230724075255_AddUserFKToPlayer")]
+    partial class AddUserFKToPlayer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,19 +24,19 @@ namespace GamePlay.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("CollectionGame", b =>
                 {
+                    b.Property<Guid>("CollectionsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("GamesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("CollectionsId", "GamesId");
 
-                    b.HasKey("GamesId", "UsersId");
+                    b.HasIndex("GamesId");
 
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserGame");
+                    b.ToTable("CollectionGame");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.ApplicationUser", b =>
@@ -111,6 +111,57 @@ namespace GamePlay.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "964d01a4-af91-422a-9d7a-e88b02398b00",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c0ce3486-19bd-43d7-974c-973db66b3710",
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = false,
+                            FollowersCount = 0,
+                            FriendsCount = 0,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "admin@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAGuVdh7FUcxb+87xaMRVQR2ZtfZnFFct0B1o6UocOCvxM7WEWEByAzEXbB3yQZzHg==",
+                            PhoneNumberConfirmed = false,
+                            PhotoPath = "/avatars/default-user-avatar.jpg",
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.BaseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BaseEntity");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Collection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.Game", b =>
@@ -181,6 +232,61 @@ namespace GamePlay.DAL.Migrations
                     b.ToTable("GameRatings");
                 });
 
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Place")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("GameResults");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GameResultId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRegistered")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWinner")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameResultId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Players");
+                });
+
             modelBuilder.Entity("GamePlay.Domain.Entities.UserRelation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -230,6 +336,22 @@ namespace GamePlay.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b6a28f69-2c96-42fa-9261-91d0815a900e",
+                            ConcurrencyStamp = "677ab182-1188-4ce7-bc6d-dfed51865740",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = "064f3a21-31a4-4bee-861e-af3acba38b5b",
+                            ConcurrencyStamp = "4057cd4c-f12d-42f4-a9bb-da60da1b4b26",
+                            Name = "user",
+                            NormalizedName = "user"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -319,6 +441,13 @@ namespace GamePlay.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "964d01a4-af91-422a-9d7a-e88b02398b00",
+                            RoleId = "b6a28f69-2c96-42fa-9261-91d0815a900e"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -342,19 +471,28 @@ namespace GamePlay.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("CollectionGame", b =>
                 {
+                    b.HasOne("GamePlay.Domain.Entities.Collection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GamePlay.Domain.Entities.Game", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("GamePlay.Domain.Entities.Collection", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Collections")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.GameRating", b =>
@@ -370,6 +508,34 @@ namespace GamePlay.DAL.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Game");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
+                {
+                    b.HasOne("GamePlay.Domain.Entities.GameResult", "GameResult")
+                        .WithMany()
+                        .HasForeignKey("GameResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("GameResult");
 
                     b.Navigation("User");
                 });
@@ -438,6 +604,11 @@ namespace GamePlay.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Collections");
                 });
 #pragma warning restore 612, 618
         }

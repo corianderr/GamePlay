@@ -12,6 +12,6 @@ public class GameRatingRepository : BaseRepository<GameRating>, IGameRatingRepos
     }
     public int GetGameRatingsCount(Expression<Func<GameRating, bool>>? predicate = null)
     {
-        return Context.GameRatings.Count(predicate);
+        return DbSet.Count(predicate);
     }
 }

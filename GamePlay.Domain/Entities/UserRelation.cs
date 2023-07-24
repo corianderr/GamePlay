@@ -1,7 +1,8 @@
 namespace GamePlay.Domain.Entities;
 
-public class UserRelation : BaseEntity
+public class UserRelation
 {
+    public Guid Id { get; set; }
     public string? SubscriberId { get; set; }
     public ApplicationUser? Subscriber { get; set; }
     public string? UserId { get; set; }

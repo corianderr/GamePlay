@@ -15,18 +15,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Game>? Games { get; set; }
     public DbSet<UserRelation>? UserRelations { get; set; }
     public DbSet<GameRating>? GameRatings { get; set; }
+    public DbSet<Collection>? Collections { get; set; }
+    public DbSet<GameResult>? GameResults { get; set; }
+    public DbSet<Player>? Players { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        ConfigureEntityId<BaseEntity>(modelBuilder);
+        ConfigureEntityId<Collection>(modelBuilder);
         ConfigureEntityId<Game>(modelBuilder);
-        ConfigureEntityId<UserRelation>(modelBuilder);
         ConfigureEntityId<GameRating>(modelBuilder);
+        ConfigureEntityId<GameResult>(modelBuilder);
+        ConfigureEntityId<Player>(modelBuilder);
+        ConfigureEntityId<UserRelation>(modelBuilder);
         
         modelBuilder.Seed();
     }
 
-    private void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : BaseEntity
+    private static void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : class
     {
         modelBuilder.Entity<T>(b =>
         {

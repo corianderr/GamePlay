@@ -66,9 +66,10 @@ public class GameService : IGameService
         return _mapper.Map<IEnumerable<GameModel>>(games);
     }
     
-    public async Task<bool> CheckIfTheUserHas(string userId, Guid gameId)
-    {
-        var users = (await _gameRepository.GetFirstAsync(g => g.Id.Equals(gameId), g => g.Users)).Users;
-        return users.Exists(u => u.Id.Equals(userId));
-    }
+    // TODO: Fix to collections implementation
+    // public async Task<bool> CheckIfTheUserHas(string userId, Guid gameId)
+    // {
+    //     var users = (await _gameRepository.GetFirstAsync(g => g.Id.Equals(gameId), g => g.Users)).Users;
+    //     return users.Exists(u => u.Id.Equals(userId));
+    // }
 }

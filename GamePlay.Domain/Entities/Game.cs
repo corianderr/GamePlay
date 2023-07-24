@@ -1,12 +1,8 @@
 namespace GamePlay.Domain.Entities;
 
-public class Game : BaseEntity
+public class Game
 {
-    public Game()
-    {
-        Users = new List<ApplicationUser>();
-    }
-
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? NameRu { get; set; }
     public string? NameEn { get; set; }
@@ -18,5 +14,9 @@ public class Game : BaseEntity
     public int MaxPlayTime { get; set; }
     public int YearOfRelease { get; set; }
     public double AverageRating { get; set; }
-    public List<ApplicationUser> Users { get; set; }
+    public List<Collection> Collections { get; set; }
+    public Game()
+    {
+        Collections = new List<Collection>();
+    }
 }

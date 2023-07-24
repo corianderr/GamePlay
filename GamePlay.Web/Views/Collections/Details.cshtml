@@ -1,3 +1,4 @@
+@using Microsoft.AspNet.Identity
 @model GamePlay.Domain.Models.Collection.CollectionModel
 
 @{
@@ -26,11 +27,14 @@ else
                             <i>Required minimum age: @item.MinAge</i><br/>
                             <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
                         </p>
-                        @if (User.IsInRole("admin"))
+                        @if (@Model.UserId.Equals(User.Identity.GetUserId()))
                         {
                             <div>
-                                <a class="btn btn-light" asp-controller="Games" asp-action="Edit" asp-route-id="@item?.Id">Edit</a>
-                                <a class="btn btn-light" asp-controller="Games" asp-action="Delete" asp-route-id="@item?.Id">Delete</a>
+                                <form asp-controller="Collections" asp-action="DeleteFromCollection">
+                                    <input type="hidden" name="id" value="@item?.Id"/>
+                                    <input type="hidden" name="collectionId" value="@Model.Id"/>
+                                    <input type="submit" value="Remove from collection" class="btn btn-danger btn-sm follow"/>
+                                </form>
                             </div>
                         }
                     </div>

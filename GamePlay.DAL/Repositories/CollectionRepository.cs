@@ -20,7 +20,7 @@ public class CollectionRepository : BaseRepository<Collection>, ICollectionRepos
 
     public async Task DeleteGameAsync(Game game, Guid collectionId)
     {
-        var collection = await GetFirstAsync(c => c.Id.Equals(collectionId));
+        var collection = await GetFirstAsync(c => c.Id.Equals(collectionId), c => c.Games);
         collection.Games.Remove(game);
         await Context.SaveChangesAsync();
     }

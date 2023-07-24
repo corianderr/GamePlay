@@ -18,16 +18,13 @@
                 <strong>Average rating: @Model.Game.AverageRating.ToString("#.##")</strong>
             </p>
             <div class="my-3">
-                @if (!Model.IsInCollection)
+                @if (Model.AvailableCollections.ToList().Count == 0)
                 {
-                    <form asp-controller="Users" asp-action="AddGame">
-                        <input type="hidden" name="id" value="@Model.Game.Id"/>
-                        <input type="submit" value="Add in my collection" class="btn btn-warning"/>
-                    </form>
+                    <p>The game is already in your collections.</p>
                 }
                 else
                 {
-                    <p>The game is already in your collection.</p>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addCollectionModal">Add to collection</button>
                 }
             </div>
             <div>
@@ -87,6 +84,37 @@
             Released in @Model.Game.YearOfRelease<br/>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="addCollectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add in collection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form asp-controller="Collections" asp-action="AddGame">
+              <input type="hidden" name="id" value="@Model.Game.Id"/>
+              <div class="form-group">
+                  <label for="collectionSelect">Example select</label>
+                  <select class="form-control" id="collectionSelect" name="collectionId">
+                      @foreach (var collection in Model.AvailableCollections)
+                      {
+                          <option value="@collection.Id">@collection.Name</option>
+                      }
+                  </select>
+                </div>
+              <input type="submit" value="Add to collection" class="btn btn-warning"/>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 @section Scripts

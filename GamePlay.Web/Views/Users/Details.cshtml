@@ -61,46 +61,39 @@
         </div>
     </div>
 </div>
-@if (Model.Games.Count == 0)
+@if (Model.Collections.ToList().Count == 0)
 {
     @if (Model.IsCurrentUser)
     {
-        <h5>I don't have any games yet :(</h5>
+        <h5>I don't have any collections yet :(</h5>
     }
     else
     {
-        <h5>@Model.User.Username does not have any games yet :(</h5>
+        <h5>@Model.User.Username does not have any collections yet :(</h5>
     }
 }
 else
 {
     @if (Model.IsCurrentUser)
     {
-        <h3>My Games</h3>
+        <h3>My Collections</h3>
     }
     else
     {
-        <h3>@Model.User.Username's Games</h3>
+        <h3>@Model.User.Username's Collections</h3>
     }
     <div class="row">
-        @foreach (var item in Model.Games)
+        @foreach (var item in Model.Collections)
         {
             <div class="col-sm-4 mb-3">
-                <div class="card h-100 text-center" onclick="Details('@item.Id')" style="cursor: pointer">
-                    <img class="card-img-top" src="@item.PhotoPath" alt="Game image">
-                    <div class="card-body my-auto">
+                <div class="card h-100 text-center" onclick="details('@item.Id')" style="cursor: pointer">
+                    <div class="card-body my-auto color">
                         <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text">
-                            From @item.MinPlayers to @item.MaxPlayers participants<br/>
-                            Time: @item.MinPlayTime - @item.MaxPlayTime minutes<br/>
-                            <i>Required minimum age: @item.MinAge</i><br/>
-                            <strong>Average rating: @item.AverageRating.ToString("#.##")</strong>
-                        </p>
-                        @if (User.IsInRole("admin"))
+                        @if (Model.IsCurrentUser)
                         {
                             <div>
-                                <a class="btn btn-light" asp-action="Edit" asp-controller="Games" asp-route-id="@item?.Id">Edit</a>
-                                <a class="btn btn-light" asp-action="Delete" asp-controller="Games" asp-route-id="@item?.Id">Delete</a>
+                                <a class="btn btn-light" asp-action="Edit" asp-controller="Collections" asp-route-id="@item?.Id">Edit</a>
+                                <a class="btn btn-light" asp-action="Delete" asp-controller="Collections" asp-route-id="@item?.Id">Delete</a>
                             </div>
                         }
                     </div>
@@ -113,8 +106,24 @@ else
 @section Scripts
 {
     <script>
-        function Details(gameId) {
+        function details(gameId) {
                 window.location.href = '@Url.Action("Details", "Games")?id=' + gameId;
         }
+        
+        function random_bg_color() {
+            let elements = document.getElementsByClassName("color");
+            for (let i = 0, len = elements.length - 1; i < len; i++) {
+                let x = Math.floor(Math.random() * 256);
+                let y = Math.floor(Math.random() * 256);
+                let z = Math.floor(Math.random() * 256);
+                let bgColor = "rgb(" + x + "," + y + "," + z + ")";
+                console.log(bgColor);
+                elements[i].style.background = bgColor;
+            }
+        }
+        
+        $(document).ready(function(){
+            random_bg_color()
+        });
     </script>
 }

@@ -12,11 +12,13 @@ public class GamesController : Controller
 {
     private readonly IGameService _gameService;
     private readonly IGameRatingService _ratingService;
+    private readonly ICollectionService _collectionService;
 
-    public GamesController(IGameService gameService, IGameRatingService ratingService)
+    public GamesController(IGameService gameService, IGameRatingService ratingService, ICollectionService collectionService)
     {
         _gameService = gameService;
         _ratingService = ratingService;
+        _collectionService = collectionService;
     }
 
     // GET: Games
@@ -33,8 +35,7 @@ public class GamesController : Controller
         {
             Rating = await _ratingService.GetByUserAndGameAsync(User.Identity.GetUserId(), id),
             Game = await _gameService.GetByIdAsync(id),
-            // TODO: Fix to collections implementation
-            // IsInCollection = await _gameService.CheckIfTheUserHas(User.Identity.GetUserId(), id)
+            AvailableCollections = await _collectionService.GetAllWhereMissing(id)
         };
         return View(gameDetailsViewModel);
     }

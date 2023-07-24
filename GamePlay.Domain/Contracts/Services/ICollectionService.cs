@@ -18,7 +18,7 @@ public interface ICollectionService
     Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     // TODO: In API version return UpdateGameModel type
-    Task UpdateAsync(Guid id, CollectionModel updateGameModel,
+    Task UpdateAsync(Guid id, CollectionModel updateCollectionModel,
         CancellationToken cancellationToken = default);
     Task<IEnumerable<GameModel>> GetGamesByIdAsync(Guid collectionId, CancellationToken cancellationToken = default);
     Task AddGameAsync(Guid gameId, Guid collectionId);

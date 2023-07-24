@@ -78,12 +78,6 @@ public class UserService : IUserService
         };
     }
 
-    // TODO: Fix to collections implementation
-    // public async Task AddGameToUserAsync(Guid gameId, string userId)
-    // {
-    //     await _userRepository.AddGameAsync(gameId, userId);
-    // }
-
     public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
     {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
@@ -95,14 +89,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         return _mapper.Map<UserModel>(user);
     }
-
-    // TODO: Fix to collections implementation
-    // public async Task<IEnumerable<GameModel>> GetUsersGames(string userId, CancellationToken cancellationToken = default)
-    // {
-    //     var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId), u => u.Games);
-    //     return _mapper.Map<IEnumerable<GameModel>>(user.Games);
-    // }
-
+    
     public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,
         CancellationToken cancellationToken = default)
     {

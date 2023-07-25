@@ -14,4 +14,5 @@ public interface IGameRoundService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<GameRoundModel>> GetAllAsync();
+    Task<IEnumerable<string>> GetDistinctPlacesAsync(string userId);
 }

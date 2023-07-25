@@ -11,4 +11,6 @@ public class CreateGameRoundModel
     [Required(ErrorMessage = "Please enter place name using less than 50 characters.")]
     [StringLength(50)]
     public string? Place { get; set; }
+
+    public List<Entities.Player>? Players { get; set; }
 }

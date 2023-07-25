@@ -28,15 +28,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Users</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="GameRounds" asp-action="Index">Round Results</a>
+                        </li>
                         <li class="nav-item ms-auto">
                             <a class="nav-link text-dark" asp-controller="Users" asp-action="ShowNotifications"
                                asp-route-userId="@User.Identity.GetUserId()" asp-route-isFriend="false">
                                 <span>Notifications</span>
                                 <div class='notification-dot'></div>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="GameRounds" asp-action="Index">Round Results</a>
                         </li>
                     }
                 </ul>

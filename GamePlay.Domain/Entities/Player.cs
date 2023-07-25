@@ -9,6 +9,7 @@ public class Player
     public Guid GameRoundId { get; set; }
     [Column("GameRound")]
     public GameRound? GameRound { get; set; }
+    public string Name { get; set; }
     public int Score { get; set; }
     public bool IsWinner { get; set; }
     public string? Role { get; set; }

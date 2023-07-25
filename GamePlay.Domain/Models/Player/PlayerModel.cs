@@ -4,6 +4,7 @@ public class PlayerModel
 {
     public Guid Id { get; set; }
     public Guid GameRoundId { get; set; }
+    public string Name { get; set; }
     public int Score { get; set; }
     public bool IsWinner { get; set; }
     public string? Role { get; set; }

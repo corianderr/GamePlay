@@ -1,0 +1,49 @@
+@model GameRoundModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<div class="card">
+    <div class="card-header">Round Id: @Model.Id</div>
+    <div class="card-body">
+        Game: @Model.Game.Name <br/>
+        Date: @Model.Date.ToString("dd.MM.yyyy") <br/>
+        <h4>Participants: </h4><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Score</th>
+                <th scope="col">Is Winner?</th>
+                <th scope="col">User Profile Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var participant in Model.Players)
+                    {
+                        <tr>
+                            <td>@participant.Name</td>
+                            <td>@participant.Role</td>
+                            <td>@participant.Score</td>
+                            <td>@participant.IsWinner</td>
+                            <td>
+                                @if (@participant.IsRegistered)
+                                {
+                                    <a asp-controller="Users" asp-action="Details" asp-route-id="@participant.UserId">Profile</a>
+                                }
+                                else
+                                {
+                                    <span>User is not registered.</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+        
+    </div>
+</div>

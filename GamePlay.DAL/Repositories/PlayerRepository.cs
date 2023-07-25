@@ -6,7 +6,7 @@ namespace GamePlay.DAL.Repositories;
 
 public class PlayerRepository : BaseRepository<Player>, IPlayerRepository
 {
-    protected PlayerRepository(ApplicationDbContext context) : base(context)
+    public PlayerRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

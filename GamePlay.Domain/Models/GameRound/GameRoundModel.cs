@@ -8,5 +8,5 @@ public class GameRoundModel
     public Guid GameId { get; set; }
     public DateTime Date { get; set; }
     public string? Place { get; set; }
-    public List<Player> Players { get; set; }
+    public List<Entities.Player> Players { get; set; }
 }

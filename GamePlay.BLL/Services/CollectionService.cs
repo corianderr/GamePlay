@@ -60,13 +60,6 @@ public class CollectionService : ICollectionService
         await _collectionRepository.UpdateAsync(collection);
     }
 
-    public async Task<IEnumerable<GameModel>> GetGamesByIdAsync(Guid collectionId, CancellationToken cancellationToken = default)
-    {
-        var collection = await _collectionRepository.GetFirstAsync(g => g.Id.Equals(collectionId), c => c.Games);
-        var games = _mapper.Map<IEnumerable<GameModel>>(collection.Games);
-        return games;
-    }
-
     public async Task AddGameAsync(Guid gameId, Guid collectionId)
     {
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(gameId));

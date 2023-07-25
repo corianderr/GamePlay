@@ -230,7 +230,7 @@ namespace GamePlay.DAL.Migrations
                     b.ToTable("GameRatings");
                 });
 
-            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameRound", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,7 +249,7 @@ namespace GamePlay.DAL.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("GameResults");
+                    b.ToTable("GameRounds");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
@@ -258,8 +258,9 @@ namespace GamePlay.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GameResultId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("GameRoundId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("GameRoundId");
 
                     b.Property<bool>("IsRegistered")
                         .HasColumnType("bit");
@@ -278,7 +279,7 @@ namespace GamePlay.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameResultId");
+                    b.HasIndex("GameRoundId");
 
                     b.HasIndex("UserId");
 
@@ -510,7 +511,7 @@ namespace GamePlay.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GamePlay.Domain.Entities.GameResult", b =>
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameRound", b =>
                 {
                     b.HasOne("GamePlay.Domain.Entities.Game", "Game")
                         .WithMany()
@@ -523,9 +524,9 @@ namespace GamePlay.DAL.Migrations
 
             modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
                 {
-                    b.HasOne("GamePlay.Domain.Entities.GameResult", "GameResult")
-                        .WithMany()
-                        .HasForeignKey("GameResultId")
+                    b.HasOne("GamePlay.Domain.Entities.GameRound", "GameRound")
+                        .WithMany("Players")
+                        .HasForeignKey("GameRoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -533,7 +534,7 @@ namespace GamePlay.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("GameResult");
+                    b.Navigation("GameRound");
 
                     b.Navigation("User");
                 });
@@ -607,6 +608,11 @@ namespace GamePlay.DAL.Migrations
             modelBuilder.Entity("GamePlay.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Collections");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.GameRound", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,7 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<UserRelation>? UserRelations { get; set; }
     public DbSet<GameRating>? GameRatings { get; set; }
     public DbSet<Collection>? Collections { get; set; }
-    public DbSet<GameResult>? GameResults { get; set; }
+    public DbSet<GameRound>? GameRounds { get; set; }
     public DbSet<Player>? Players { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         ConfigureEntityId<Collection>(modelBuilder);
         ConfigureEntityId<Game>(modelBuilder);
         ConfigureEntityId<GameRating>(modelBuilder);
-        ConfigureEntityId<GameResult>(modelBuilder);
+        ConfigureEntityId<GameRound>(modelBuilder);
         ConfigureEntityId<Player>(modelBuilder);
         ConfigureEntityId<UserRelation>(modelBuilder);
         

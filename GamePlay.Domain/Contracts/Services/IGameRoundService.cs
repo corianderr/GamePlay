@@ -1,3 +1,4 @@
+using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.GameRound;
 
@@ -14,5 +15,6 @@ public interface IGameRoundService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<GameRoundModel>> GetAllAsync();
-    Task<IEnumerable<string>> GetDistinctPlacesAsync(string userId);
+    Task<IEnumerable<string>> GetDistinctPlacesAsync();
+    Task<IEnumerable<Player>> GetDistinctPlayersAsync();
 }

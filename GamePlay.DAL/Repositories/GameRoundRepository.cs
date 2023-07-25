@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using GamePlay.DAL.Data;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Entities;
@@ -11,8 +12,8 @@ public class GameRoundRepository : BaseRepository<GameRound>, IGameRoundReposito
     {
     }
 
-    public async Task<IEnumerable<string?>> GetDistinctPlacesAsync(string userId)
+    public async Task<IEnumerable<object?>> GetDistinctColumnAsync(Expression<Func<GameRound, object>> column)
     {
-        return await DbSet.Select(r => r.Place).Distinct().ToListAsync();
+        return await DbSet.Select(column).Distinct().ToListAsync();
     }
 }

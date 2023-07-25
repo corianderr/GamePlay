@@ -1,3 +1,4 @@
+using System.Collections;
 using AutoMapper;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Contracts.Services;
@@ -17,7 +18,7 @@ public class GameRoundService : IGameRoundService
         _gameRoundRepository = gameRoundRepository;
         _mapper = mapper;
     }
-    
+
     public async Task<BaseModel> AddAsync(CreateGameRoundModel entity)
     {
         var gameRound = _mapper.Map<GameRound>(entity);
@@ -32,15 +33,22 @@ public class GameRoundService : IGameRoundService
         var rounds = await _gameRoundRepository.GetAllAsync(r => r.GameId.Equals(gameId));
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
+
     public async Task<IEnumerable<GameRoundModel>> GetAllAsync()
     {
         var rounds = await _gameRoundRepository.GetAllAsync(null, r => r.Game);
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
-    
-    public async Task<IEnumerable<string?>> GetDistinctPlacesAsync(string userId)
+
+    public async Task<IEnumerable<string>> GetDistinctPlacesAsync()
     {
-        return await _gameRoundRepository.GetDistinctPlacesAsync(userId);
+        return (IEnumerable<string?>)await _gameRoundRepository.GetDistinctColumnAsync(r => r.Place);
+    }
+
+    public async Task<IEnumerable<Player>> GetDistinctPlayersAsync()
+    {
+        return ((IEnumerable<IEnumerable<Player>>)await _gameRoundRepository.GetDistinctColumnAsync(r => r.Players))
+            .SelectMany(p => p);
     }
 
     public async Task<GameRoundModel> GetByIdAsync(Guid id)
@@ -55,7 +63,8 @@ public class GameRoundService : IGameRoundService
         await _gameRoundRepository.DeleteAsync(round);
     }
 
-    public async Task UpdateAsync(Guid id, CreateGameRoundModel updateModel, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Guid id, CreateGameRoundModel updateModel,
+        CancellationToken cancellationToken = default)
     {
         var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id));
         _mapper.Map(updateModel, round);

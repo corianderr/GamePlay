@@ -10,5 +10,6 @@ public class PlayerProfile : Profile
     {
         CreateMap<CreatePlayerModel, Player>();
         CreateMap<Player, PlayerModel>();
+        CreateMap<PlayerModel, Player>();
     }
 }

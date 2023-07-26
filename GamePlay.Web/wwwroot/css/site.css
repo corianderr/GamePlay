@@ -310,4 +310,9 @@ body {
     position: relative;
     top: -8px;
     left: -8px;
-}   
+}
+
+.error
+{
+    border: 1px solid red;
+}

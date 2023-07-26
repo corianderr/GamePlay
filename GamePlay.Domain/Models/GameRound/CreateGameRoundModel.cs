@@ -8,7 +8,7 @@ public class CreateGameRoundModel
     [Required]
     public Guid GameId { get; set; }
 
-    public GameModel Game { get; set; }
+    public GameModel? Game { get; set; }
     [Required]
     public DateTime Date { get; set; }
     [Required(ErrorMessage = "Please enter place name using less than 50 characters.")]

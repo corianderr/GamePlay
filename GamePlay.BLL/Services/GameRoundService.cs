@@ -30,7 +30,7 @@ public class GameRoundService : IGameRoundService
 
     public async Task<IEnumerable<GameRoundModel>> GetAllByGameIdAsync(Guid gameId)
     {
-        var rounds = await _gameRoundRepository.GetAllAsync(r => r.GameId.Equals(gameId));
+        var rounds = await _gameRoundRepository.GetAllAsync(r => r.GameId.Equals(gameId), r => r.Game);
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
 

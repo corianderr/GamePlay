@@ -9,10 +9,12 @@ namespace GamePlay.Web.Controllers;
 public class GameRoundsController : Controller
 {
     private readonly IGameRoundService _gameRoundService;
+    private readonly IGameService _gameService;
 
-    public GameRoundsController(IGameRoundService gameRoundService)
+    public GameRoundsController(IGameRoundService gameRoundService, IGameService gameService)
     {
         _gameRoundService = gameRoundService;
+        _gameService = gameService;
     }
     // GET
     public async Task<IActionResult> Index(Guid? gameId = null)
@@ -43,7 +45,7 @@ public class GameRoundsController : Controller
         {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
             PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
-            GameRound = new CreateGameRoundModel(){GameId = gameId}
+            GameRound = new CreateGameRoundModel{GameId = gameId, Game = await _gameService.GetByIdAsync(gameId)}
         };
         return View(createViewModel);
     }

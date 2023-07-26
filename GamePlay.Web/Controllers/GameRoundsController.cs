@@ -15,9 +15,17 @@ public class GameRoundsController : Controller
         _gameRoundService = gameRoundService;
     }
     // GET
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(Guid? gameId = null)
     {
-        var rounds = await _gameRoundService.GetAllAsync();
+        IEnumerable<GameRoundModel> rounds;
+        if (gameId.Equals(null))
+        {
+            rounds = await _gameRoundService.GetAllAsync();
+        }
+        else
+        {
+            rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
+        }
         return View(rounds.ToList());
     }
     
@@ -33,9 +41,11 @@ public class GameRoundsController : Controller
     {
         var createViewModel = new CreateGameRoundViewModel()
         {
-            PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(User.Identity.GetUserId()),
+            PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
+            PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            GameRound = new CreateGameRoundModel(){GameId = gameId}
         };
-        return View();
+        return View(createViewModel);
     }
 
     // POST: GameRounds/Create

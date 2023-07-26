@@ -5,11 +5,11 @@
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2>Round Details</h2>
 <div class="card">
     <div class="card-header">Round Id: @Model.Id</div>
     <div class="card-body">
-        Game: @Model.Game.Name <br/>
+        Game: <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.Game.Id">@Model.Game.Name</a><br/>
         Date: @Model.Date.ToString("dd.MM.yyyy") <br/>
         <h4>Participants: </h4><br/>
         <table class="table table-striped">
@@ -29,7 +29,14 @@
                             <td>@participant.Name</td>
                             <td>@participant.Role</td>
                             <td>@participant.Score</td>
-                            <td>@participant.IsWinner</td>
+                            <td>@if (@participant.IsWinner)
+                                {
+                                    <span>YES</span>
+                                }
+                                else
+                                {
+                                    <span>NO</span>
+                                }</td>
                             <td>
                                 @if (@participant.IsRegistered)
                                 {

@@ -128,6 +128,7 @@ $('#gameForm').submit(function (e) {
             console.log(response);
             if (response.success) {
                 console.log("OK");
+                window.location.href = response.redirectToUrl;
             }
         });
 });

@@ -17,8 +17,8 @@ public class GameRoundRepository : BaseRepository<GameRound>, IGameRoundReposito
         return await DbSet.Select(r => r.Place).Distinct().ToListAsync();
     }
 
-    public async Task<IEnumerable<Player>> GetDistinctPlayersAsync()
+    public async Task<IEnumerable<string>> GetDistinctPlayersAsync()
     {
-        return await DbSet.SelectMany(r => r.Players).Distinct().ToListAsync();
+        return await DbSet.SelectMany(r => r.Players).Select(p => p.Name).Distinct().ToListAsync();
     }
 }

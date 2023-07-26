@@ -56,7 +56,7 @@ public class GameRoundService : IGameRoundService
         return await _gameRoundRepository.GetDistinctPlacesAsync();
     }
 
-    public async Task<IEnumerable<Player>> GetDistinctPlayersAsync()
+    public async Task<IEnumerable<string>> GetDistinctPlayersAsync()
     {
         return await _gameRoundRepository.GetDistinctPlayersAsync();
     }

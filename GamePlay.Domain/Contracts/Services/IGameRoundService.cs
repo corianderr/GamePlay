@@ -16,5 +16,5 @@ public interface IGameRoundService
 
     Task<IEnumerable<GameRoundModel>> GetAllAsync();
     Task<IEnumerable<string?>> GetDistinctPlacesAsync();
-    Task<IEnumerable<Player>> GetDistinctPlayersAsync();
+    Task<IEnumerable<string>> GetDistinctPlayersAsync();
 }

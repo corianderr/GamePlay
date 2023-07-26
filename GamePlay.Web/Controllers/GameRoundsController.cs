@@ -63,7 +63,7 @@ public class GameRoundsController : Controller
             if (!ModelState.IsValid) return View(createViewModel);
 
             await _gameRoundService.AddAsync(createViewModel.GameRound);
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, redirectToUrl = Url.Action("Index", "GameRounds", new {gameId = createViewModel.GameRound.GameId}) });;
         }
         catch
         {

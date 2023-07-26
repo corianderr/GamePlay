@@ -22,6 +22,15 @@ $(document).on('click', '#show-new-player', function () {
     toggleNewPlayer();
 });
 
+$("#player-is-registered").change(function() {
+    if (this.checked) {
+        $("#user-select-div").show();
+    } else {
+        $('#user-select-div select option[value="none"]').attr("selected", true);
+        $("#user-select-div").hide();
+    }
+});
+
 function toggleNewPlayer() {
     const newPlayer = $('#newPlayer');
     
@@ -39,6 +48,8 @@ function clearNewPlayer() {
     $('#player-score').val('');
     $('#player-is-winner').prop('checked', false);
     $('#player-is-registered').prop('checked', false);
+    $('#user-select-div select option[value="none"]').attr("selected", true);
+    $("#user-select-div").hide();
 }
 
 $(document).on('click', '#add-player-button', function () {
@@ -49,33 +60,36 @@ function addPlayer() {
     const name = $('#player-name').val().trim();
     const role = $('#player-role').val().trim();
     const score = $('#player-score').val().trim();
+    const userId = $( "#player-user-id" ).val();
+    console.log(userId);
+    const isRegistered = $('#player-is-registered').prop('checked');
 
-    if (name !== '' && role !== '' && score !== '') {
+    if (name !== '' && role !== '' && score !== '' && (!isRegistered || userId !== 'none')) {
         const isWinner = $('#player-is-winner').prop('checked');
-        const isRegistered = $('#player-is-registered').prop('checked');
 
         const rowHtml = `<tr><td>${name}</td><td>${role}</td><td>${score}</td>
             <td><input type="checkbox" disabled ${isWinner ? 'checked' : ''}/></td>
             <td><input type="checkbox" disabled ${isRegistered ? 'checked' : ''}/></td>
+            <td>${isRegistered ? userId : ''}</td>
             <td><input type="button" value="✖" class="btn btn-danger float-right delete-button"/></td>
             </tr>`;
         $('#player-table tbody').append(rowHtml);
         currentPlayerCount++;
         toggleNewPlayer()
-    } else {
-        validatePlayer();
     }
+    validatePlayer();
 }
 
 function validatePlayer(){
     validate('#player-name');
     validate('#player-role');
     validate('#player-score');
+    validate('#player-user-id');
 }
 
 function validate(id){
     const playerNameInput = $(id);
-    playerNameInput.val() === '' ? playerNameInput.addClass('error') : playerNameInput.removeClass('error');
+    (playerNameInput.val() === '' || playerNameInput.val() === 'none') ? playerNameInput.addClass('error') : playerNameInput.removeClass('error');
 }
 
 $(document).on('click', '.delete-button', function () {
@@ -126,7 +140,8 @@ function collectPlayers(){
             Role: $(this).find('td').eq(1).text(),
             Score: $(this).find('td').eq(2).text(),
             IsWinner: $(this).find('td').eq(3).find('input').is(":checked"),
-            IsRegistered: $(this).find('td').eq(4).find('input').is(":checked")
+            IsRegistered: $(this).find('td').eq(4).find('input').is(":checked"),
+            UserId: $(this).find('td').eq(5).text()
         };
         players.push(player);
     });

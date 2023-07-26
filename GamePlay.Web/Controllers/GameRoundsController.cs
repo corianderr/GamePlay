@@ -10,11 +10,13 @@ public class GameRoundsController : Controller
 {
     private readonly IGameRoundService _gameRoundService;
     private readonly IGameService _gameService;
+    private readonly IUserService _userService;
 
-    public GameRoundsController(IGameRoundService gameRoundService, IGameService gameService)
+    public GameRoundsController(IGameRoundService gameRoundService, IGameService gameService, IUserService userService)
     {
         _gameRoundService = gameRoundService;
         _gameService = gameService;
+        _userService = userService;
     }
     // GET
     public async Task<IActionResult> Index(Guid? gameId = null)
@@ -45,7 +47,8 @@ public class GameRoundsController : Controller
         {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
             PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
-            GameRound = new CreateGameRoundModel{GameId = gameId, Game = await _gameService.GetByIdAsync(gameId)}
+            GameRound = new CreateGameRoundModel{GameId = gameId, Game = await _gameService.GetByIdAsync(gameId)},
+            Users = await _userService.GetAllAsync()
         };
         return View(createViewModel);
     }

@@ -31,18 +31,20 @@
                     }
                 </div>
             }
+            <div class="my-3">
+                @if (User.IsAuthenticated())
+                {
+                    <a class="btn btn-secondary" asp-controller="GameRounds" asp-action="Index" asp-route-gameId="@Model.Game.Id">@Model.Game.Name Round Results</a>
+                }
+                <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+            </div>
             <div>
                 @if (User.IsInRole("admin"))
                 {
+                    <a class="btn btn-secondary" asp-controller="GameRounds" asp-action="Create" asp-route-gameId="@Model.Game.Id">Add a Round Result</a>
                     <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model.Game.Id">Edit</a>
                     <a class="btn btn-light" asp-action="Delete" asp-route-id="@Model.Game.Id">Delete</a>
                 }
-                @if (User.IsAuthenticated())
-                {
-                    <a class="btn btn-secondary" asp-controller="GameRounds" asp-action="Create" asp-route-gameId="@Model.Game.Id">Add a Round Result</a>
-                    <a class="btn btn-secondary" asp-controller="GameRounds" asp-action="Index" asp-route-gameId="@Model.Game.Id">Open @Model.Game.Name Round Results</a>
-                }
-                <a class="btn btn-secondary" asp-action="Index">Back to List</a>
             </div>
             <div class="text-center d-flex">
                 @if (Model.Rating == null)

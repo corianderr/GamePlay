@@ -2,6 +2,7 @@ using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Models.GameRound;
 using GamePlay.Web.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamePlay.Web.Controllers;
@@ -33,6 +34,7 @@ public class GameRoundsController : Controller
         return View(rounds.ToList());
     }
     
+    [Authorize]
     // GET: GameRounds/Details/5
     public async Task<IActionResult> Details(Guid id)
     {
@@ -41,6 +43,7 @@ public class GameRoundsController : Controller
     }
     
     // GET: GameRounds/Create
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult> Create(Guid gameId)
     {
         var createViewModel = new CreateGameRoundViewModel()
@@ -54,6 +57,7 @@ public class GameRoundsController : Controller
     }
 
     // POST: GameRounds/Create
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Create(CreateGameRoundViewModel createViewModel)
@@ -70,6 +74,4 @@ public class GameRoundsController : Controller
             return View(createViewModel);
         }
     }
-
-
 }

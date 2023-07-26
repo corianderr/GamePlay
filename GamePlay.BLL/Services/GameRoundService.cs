@@ -26,13 +26,7 @@ public class GameRoundService : IGameRoundService
     {
         var gameRound = _mapper.Map<GameRound>(entity);
         var gameRoundId = (await _gameRoundRepository.AddAsync(gameRound)).Id;
-
-        foreach (var player in entity.Players)
-        {
-            player.GameRoundId = gameRoundId;
-            await _playerRepository.AddAsync(player);
-        }
-
+        
         return new BaseModel()
         {
             Id = gameRoundId

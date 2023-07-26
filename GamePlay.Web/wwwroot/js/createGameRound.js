@@ -1,10 +1,7 @@
-
 let minPlayerCount, maxPlayerCount, currentPlayerCount;
 
-let createGameRound = {
+const createGameRound = {
     initialize: function (min, max) {
-        console.log(min);
-        console.log(max);
         currentPlayerCount = 0;
         minPlayerCount = min;
         maxPlayerCount = max;
@@ -14,7 +11,7 @@ let createGameRound = {
 document.addEventListener('DOMContentLoaded', function() {
     let now = new Date(),
         maxDate = now.toISOString().substring(0,10);
-    $('#my-date-input').prop('max', maxDate);
+    $('#GameRound_Date').prop('max', maxDate);
 });
 
 $(document).on('click', '#show-new-player', function () {
@@ -101,7 +98,30 @@ $('#gameForm').submit(function (e) {
         return;
     }
     
-    let players = collectPlayers();
+    const players = collectPlayers();
+    const data = {
+        'GameRound': {
+            'GameId': $('#GameRound_GameId').val(),
+            'Date': $('#GameRound_Date').val(),
+            'Place': $('#GameRound_Place').val(),
+            'Players': players
+        }
+    };
+    console.log(data)
+
+    const form = $('#__AjaxAntiForgeryForm');
+    const token = $('input[name="__RequestVerificationToken"]', form).val();
+    $.post("Create", 
+        {
+            __RequestVerificationToken: token, 
+            createViewModel: data
+        })
+        .done(function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log("OK");
+            }
+        });
 });
 
 function collectPlayers(){

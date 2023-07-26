@@ -46,9 +46,6 @@ $(document).on('click', '#add-player-button', function () {
 });
 
 function addPlayer() {
-    console.log(currentPlayerCount)
-    
-    removeValidation();
     const name = $('#player-name').val().trim();
     const role = $('#player-role').val().trim();
     const score = $('#player-score').val().trim();
@@ -66,22 +63,19 @@ function addPlayer() {
         currentPlayerCount++;
         toggleNewPlayer()
     } else {
-        if (name === '') {
-            $('#player-name').addClass('error');
-        }
-        if (role === '') {
-            $('#player-role').addClass('error');
-        }
-        if (score === '') {
-            $('#player-score').addClass('error');
-        }
+        validatePlayer();
     }
 }
 
-function removeValidation(){
-    $('#player-name').removeClass('error');
-    $('#player-role').removeClass('error');
-    $('#player-score').removeClass('error');
+function validatePlayer(){
+    validate('#player-name');
+    validate('#player-role');
+    validate('#player-score');
+}
+
+function validate(id){
+    const playerNameInput = $(id);
+    playerNameInput.val() === '' ? playerNameInput.addClass('error') : playerNameInput.removeClass('error');
 }
 
 $(document).on('click', '.delete-button', function () {

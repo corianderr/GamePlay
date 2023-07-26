@@ -12,8 +12,13 @@ public class GameRoundRepository : BaseRepository<GameRound>, IGameRoundReposito
     {
     }
 
-    public async Task<IEnumerable<object?>> GetDistinctColumnAsync(Expression<Func<GameRound, object>> column)
+    public async Task<IEnumerable<string?>> GetDistinctPlacesAsync()
     {
-        return await DbSet.Select(column).Distinct().ToListAsync();
+        return await DbSet.Select(r => r.Place).Distinct().ToListAsync();
+    }
+
+    public async Task<IEnumerable<Player>> GetDistinctPlayersAsync()
+    {
+        return await DbSet.SelectMany(r => r.Players).Distinct().ToListAsync();
     }
 }

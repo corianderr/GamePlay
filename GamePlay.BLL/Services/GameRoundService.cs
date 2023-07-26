@@ -40,15 +40,14 @@ public class GameRoundService : IGameRoundService
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
 
-    public async Task<IEnumerable<string>> GetDistinctPlacesAsync()
+    public async Task<IEnumerable<string?>> GetDistinctPlacesAsync()
     {
-        return (IEnumerable<string?>)await _gameRoundRepository.GetDistinctColumnAsync(r => r.Place);
+        return await _gameRoundRepository.GetDistinctPlacesAsync();
     }
 
     public async Task<IEnumerable<Player>> GetDistinctPlayersAsync()
     {
-        return ((IEnumerable<IEnumerable<Player>>)await _gameRoundRepository.GetDistinctColumnAsync(r => r.Players))
-            .SelectMany(p => p);
+        return await _gameRoundRepository.GetDistinctPlayersAsync();
     }
 
     public async Task<GameRoundModel> GetByIdAsync(Guid id)

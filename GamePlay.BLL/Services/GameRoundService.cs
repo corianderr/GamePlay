@@ -70,7 +70,7 @@ public class GameRoundService : IGameRoundService
     public async Task UpdateAsync(Guid id, GameRoundModel updateModel,
         CancellationToken cancellationToken = default)
     {
-        var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id));
+        var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id), r => r.Players);
         _mapper.Map(updateModel, round);
         await _gameRoundRepository.UpdateAsync(round);
     }

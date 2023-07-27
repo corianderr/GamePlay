@@ -113,6 +113,23 @@ function collectPlayers(){
     return players;
 }
 
+function collectEditPlayers(){
+    let players = [];
+    $('#player-table tbody tr').each(function () {
+        console.log($(this).find('td').eq(6).text());
+        let player = {
+            Name: $(this).find('td').eq(0).text(),
+            Role: $(this).find('td').eq(1).text(),
+            Score: $(this).find('td').eq(2).text(),
+            IsWinner: $(this).find('td').eq(3).find('input').is(":checked"),
+            IsRegistered: $(this).find('td').eq(4).find('input').is(":checked"),
+            UserId: $(this).find('td').eq(5).text(),
+            Id: ($(this).find('td').eq(6).text() !== '' ? $(this).find('td').eq(6).text() : '00000000-0000-0000-0000-000000000000')
+        };
+        players.push(player);
+    });
+    return players;
+}
 
 $('#gameForm').submit(function (e) {
     console.log('submit');
@@ -159,7 +176,7 @@ $('#game-edit-form').submit(function (e) {
         return;
     }
 
-    const players = collectPlayers();
+    const players = collectEditPlayers();
     const roundId = $('#GameRound_Id').val();
     const data = {
         'GameRound': {

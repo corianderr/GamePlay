@@ -1,8 +1,8 @@
 let minPlayerCount, maxPlayerCount, currentPlayerCount;
 
 const createGameRound = {
-    initialize: function (min, max) {
-        currentPlayerCount = 0;
+    initialize: function (min, max, currentNumber) {
+        currentPlayerCount = currentNumber;
         minPlayerCount = min;
         maxPlayerCount = max;
     },
@@ -97,6 +97,23 @@ $(document).on('click', '.delete-button', function () {
     currentPlayerCount--;
 });
 
+function collectPlayers(){
+    let players = [];
+    $('#player-table tbody tr').each(function () {
+        let player = {
+            Name: $(this).find('td').eq(0).text(),
+            Role: $(this).find('td').eq(1).text(),
+            Score: $(this).find('td').eq(2).text(),
+            IsWinner: $(this).find('td').eq(3).find('input').is(":checked"),
+            IsRegistered: $(this).find('td').eq(4).find('input').is(":checked"),
+            UserId: $(this).find('td').eq(5).text()
+        };
+        players.push(player);
+    });
+    return players;
+}
+
+
 $('#gameForm').submit(function (e) {
     console.log('submit');
     e.preventDefault();
@@ -133,18 +150,41 @@ $('#gameForm').submit(function (e) {
         });
 });
 
-function collectPlayers(){
-    let players = [];
-    $('#player-table tbody tr').each(function () {
-        let player = {
-            Name: $(this).find('td').eq(0).text(),
-            Role: $(this).find('td').eq(1).text(),
-            Score: $(this).find('td').eq(2).text(),
-            IsWinner: $(this).find('td').eq(3).find('input').is(":checked"),
-            IsRegistered: $(this).find('td').eq(4).find('input').is(":checked"),
-            UserId: $(this).find('td').eq(5).text()
-        };
-        players.push(player);
-    });
-    return players;
-}
+$('#game-edit-form').submit(function (e) {
+    console.log('submit');
+    e.preventDefault();
+
+    if (currentPlayerCount < minPlayerCount) {
+        alert('Minimum number of players not met. Please add more players.');
+        return;
+    }
+
+    const players = collectPlayers();
+    const roundId = $('#GameRound_Id').val();
+    const data = {
+        'GameRound': {
+            'Id': roundId,
+            'GameId': $('#GameRound_GameId').val(),
+            'Date': $('#GameRound_Date').val(),
+            'Place': $('#GameRound_Place').val(),
+            'Players': players
+        }
+    };
+    console.log(data)
+
+    const form = $('#__AjaxAntiForgeryForm');
+    const token = $('input[name="__RequestVerificationToken"]', form).val();
+    $.post("Edit",
+        {
+            __RequestVerificationToken: token,
+            id: roundId,
+            updateViewModel: data
+        })
+        .done(function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log("OK");
+                window.location.href = response.redirectToUrl;
+            }
+        });
+});

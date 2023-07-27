@@ -94,6 +94,6 @@
     <script>
         let min = @Html.Raw(Json.Serialize(Model.GameRound.Game.MinPlayers));
         let max = @Html.Raw(Json.Serialize(Model.GameRound.Game.MaxPlayers));
-        createGameRound.initialize(min, max);
+        createGameRound.initialize(min, max, 0);
     </script>
 }

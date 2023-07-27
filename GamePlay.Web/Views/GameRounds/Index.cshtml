@@ -35,7 +35,10 @@ else
                 <td>@Model[i].Place</td>
                 @if (User.IsInRole("admin"))
                 {
-                    <td><a asp-controller="GameRounds" asp-action="Edit" asp-route-gameRoundId="@Model[i].Id" class="btn btn-secondary">Edit</a></td>
+                    <td>
+                        <a asp-controller="GameRounds" asp-action="Edit" asp-route-gameRoundId="@Model[i].Id" class="btn btn-secondary">Edit</a>
+                        <a asp-controller="GameRounds" asp-action="Delete" asp-route-id="@Model[i].Id" class="btn btn-secondary">Delete</a>
+                    </td>
                 }
             </tr>
         }

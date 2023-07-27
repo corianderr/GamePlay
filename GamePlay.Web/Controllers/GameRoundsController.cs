@@ -75,7 +75,7 @@ public class GameRoundsController : Controller
         }
     }
     
-    // GET: GameRounds/Create
+    // GET: GameRounds/Edit
     [Authorize(Roles = "admin")]
     public async Task<ActionResult> Edit(Guid gameRoundId)
     {
@@ -89,7 +89,7 @@ public class GameRoundsController : Controller
         return View(createViewModel);
     }
 
-    // POST: GameRounds/Create
+    // POST: GameRounds/Edit
     [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -107,4 +107,29 @@ public class GameRoundsController : Controller
             return View(updateViewModel);
         }
     }
+    
+    // GET: GameRounds/Delete/5
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        var collection = await _gameRoundService.GetByIdAsync(id);
+        return View(collection);
+    }
+
+    // POST: GameRounds/Delete/5
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> DeleteConfirmed(Guid id)
+    {
+        try
+        {
+            await _gameRoundService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
+        }
+    }
+
 }

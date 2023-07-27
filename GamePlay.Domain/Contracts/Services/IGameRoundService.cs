@@ -11,7 +11,7 @@ public interface IGameRoundService
     Task<GameRoundModel> GetByIdAsync(Guid id);
     Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task UpdateAsync(Guid id, CreateGameRoundModel updateModel,
+    Task UpdateAsync(Guid id, GameRoundModel updateModel,
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<GameRoundModel>> GetAllAsync();

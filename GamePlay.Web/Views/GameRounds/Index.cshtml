@@ -19,6 +19,10 @@ else
             <th scope="col">Game</th>
             <th scope="col">Date</th>
             <th scope="col">Place</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th scope="col">Actions</th>
+            }
         </tr>
         </thead>
         <tbody>
@@ -29,6 +33,10 @@ else
                 <td>@Model[i].Game.Name</td>
                 <td>@Model[i].Date.ToString("dd.MM.yyyy")</td>
                 <td>@Model[i].Place</td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td><a asp-controller="GameRounds" asp-action="Edit" asp-route-gameRoundId="@Model[i].Id" class="btn btn-secondary">Edit</a></td>
+                }
             </tr>
         }
         </tbody>

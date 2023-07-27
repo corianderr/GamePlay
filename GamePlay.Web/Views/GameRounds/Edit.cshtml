@@ -1,0 +1,127 @@
+@model UpdateGameRoundViewModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center">Edit Game Round</h2>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <form id="game-edit-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="GameRound.Id">
+            <input type="hidden" asp-for="GameRound.GameId">
+            <div class="form-group">
+                <label asp-for="@Model.GameRound.Date" class="control-label"></label>
+                <input asp-for="@Model.GameRound.Date" class="form-control" type="date"/>
+                <span asp-validation-for="@Model.GameRound.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.GameRound.Place" class="control-label"></label>
+                <input asp-for="@Model.GameRound.Place" class="form-control" list="places"/>
+                <span asp-validation-for="@Model.GameRound.Place" class="text-danger"></span>
+                <datalist id="places">
+                    @foreach(var item in Model.PreviousPlaces)
+                    {
+                        <option value="@item"/>
+                    }
+                </datalist>
+            </div>
+            <div>
+                <h4 class="d-inline-block mr-3">Players (@Model.GameRound.Game.MinPlayers - @Model.GameRound.Game.MaxPlayers)</h4>
+                <input type="button" class="btn btn-primary rounded-circle" value="+" id="show-new-player" style="font-size: 15px;" />
+                <hr />
+                <div id="newPlayer" class="my-2" style="display: none;">
+                    <input id="player-name" class="form-control" placeholder="Enter name" list="players"/>
+                    <datalist id="players">
+                        @foreach(var item in Model.PreviousOpponents)
+                        {
+                            <option value="@item"/>
+                        }
+                    </datalist>
+                    <input id="player-role" class="form-control" placeholder="Enter role" />
+                    <input id="player-score" class="form-control" placeholder="Enter score" type="number"/>
+                    <div class="form-check">
+                        <input id="player-is-winner" class="form-check-input" type="checkbox"/>
+                        <label class="form-check-label" for="player-is-winner">Is Winner?</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="player-is-registered" class="form-check-input" type="checkbox"/>
+                        <label class="form-check-label" for="player-is-registered">Is Registered?</label>
+                    </div>
+                    <div class="form-group" style="display: none;" id="user-select-div">
+                        <select class="form-control" id="player-user-id">
+                            <option value="none" selected>Select User</option>
+                            @foreach (var item in Model.Users)
+                            {
+                                <option value="@item.Id">@item.Username</option>
+                            }
+                        </select>
+                    </div>
+                    <input type="button" value="Add" class="btn btn-light mt-2" id="add-player-button" />
+                </div>
+                <table class="table table-bordered" id="player-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Is Winner?</th>
+                            <th scope="col">Is Registered?</th>
+                            <th scope="col">User Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var player in Model.GameRound.Players)
+                        {
+                            <tr>
+                                <td>@player.Name</td>
+                                <td>@player.Role</td>
+                                <td>@player.Score</td>
+                                @if (player.IsWinner)
+                                {
+                                    <td><input type="checkbox" disabled checked/></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" disabled/></td>
+                                }
+                                @if (player.IsRegistered)
+                                {
+                                    <td><input type="checkbox" disabled checked/></td>
+                                    <td>@player.UserId</td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" disabled/></td>
+                                    <td></td>
+                                }
+                                <td><input type="button" value="✖" class="btn btn-danger float-right delete-button"/></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/createGameRound.js"></script>
+    <script>
+        let min = @Html.Raw(Json.Serialize(Model.GameRound.Game.MinPlayers));
+        let max = @Html.Raw(Json.Serialize(Model.GameRound.Game.MaxPlayers));
+        let current = @Html.Raw(Json.Serialize(Model.GameRound.Players.Count));
+        createGameRound.initialize(min, max, current);
+    </script>
+}

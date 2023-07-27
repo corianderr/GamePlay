@@ -67,7 +67,7 @@ public class GameRoundService : IGameRoundService
         await _gameRoundRepository.DeleteAsync(round);
     }
 
-    public async Task UpdateAsync(Guid id, CreateGameRoundModel updateModel,
+    public async Task UpdateAsync(Guid id, GameRoundModel updateModel,
         CancellationToken cancellationToken = default)
     {
         var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id));

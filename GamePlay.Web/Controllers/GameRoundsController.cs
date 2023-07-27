@@ -66,12 +66,45 @@ public class GameRoundsController : Controller
         {
             if (!ModelState.IsValid) return View(createViewModel);
 
-            await _gameRoundService.AddAsync(createViewModel.GameRound);
-            return Json(new { success = true, redirectToUrl = Url.Action("Index", "GameRounds", new {gameId = createViewModel.GameRound.GameId}) });;
+            var roundId = (await _gameRoundService.AddAsync(createViewModel.GameRound)).Id;
+            return Json(new { success = true, redirectToUrl = Url.Action("Details", "GameRounds", new {id = roundId})});
         }
         catch
         {
             return View(createViewModel);
+        }
+    }
+    
+    // GET: GameRounds/Create
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult> Edit(Guid gameRoundId)
+    {
+        var createViewModel = new UpdateGameRoundViewModel()
+        {
+            PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
+            PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            GameRound = await _gameRoundService.GetByIdAsync(gameRoundId),
+            Users = await _userService.GetAllAsync()
+        };
+        return View(createViewModel);
+    }
+
+    // POST: GameRounds/Create
+    [Authorize(Roles = "admin")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Edit(Guid id, UpdateGameRoundViewModel updateViewModel)
+    {
+        try
+        {
+            if (!ModelState.IsValid) return View(updateViewModel);
+
+            await _gameRoundService.UpdateAsync(id, updateViewModel.GameRound);
+            return Json(new { success = true, redirectToUrl = Url.Action("Details", "GameRounds", new {id})});
+        }
+        catch
+        {
+            return View(updateViewModel);
         }
     }
 }

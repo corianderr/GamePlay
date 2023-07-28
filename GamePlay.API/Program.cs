@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using GamePlay.API.Data;
 using GamePlay.API.Models;
 using GamePlay.BLL;
 using GamePlay.DAL;
+using GamePlay.DAL.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

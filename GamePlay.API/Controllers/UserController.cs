@@ -1,4 +1,5 @@
 using GamePlay.API.ViewModels;
+using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Enums;
 using GamePlay.Domain.Models;
@@ -32,7 +33,7 @@ public class UserController : ApiController
     }
     
     // GET: Users/Details/5
-    [HttpGet]
+    [HttpGet("Details/{id:int}")]
     public async Task<IActionResult> Details(string id)
     {
         var userRelation = await _relationService.GetByUsersIdAsync(id, User.Identity.GetUserId());
@@ -61,5 +62,33 @@ public class UserController : ApiController
         return Ok(ApiResult<UserDetailsViewModel>.Success(userDetailsViewModel));
     }
     
+    // PUT: Users/Edit
+    [HttpPut]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Edit(UserModel userModel, IFormFile? avatar)
+    {
+        userModel.PhotoPath = await ImageUploadingHelper.ReuploadAndGetNewPathAsync("avatars",
+            "/avatars/default-user-avatar.jpg", avatar, userModel.PhotoPath);
+
+        await _userService.UpdateAsync(userModel.Id, userModel);
+        return Ok(ApiResult<UserModel>.Success(userModel));
+    }
     
+    // POST: Users/Follow
+    [HttpPost("Follow")]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Follow(string id)
+    {
+        await _relationService.SubscribeAsync(User.Identity.GetUserId(), id);
+        return Ok(ApiResult<string>.Success(id));
+    }
+
+    // POST: Users/BecomeFriends
+    [HttpPost("BecomeFriends")]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> BecomeFriends(string id)
+    {
+        await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());
+        return Ok(ApiResult<string>.Success(id));
+    }
 }

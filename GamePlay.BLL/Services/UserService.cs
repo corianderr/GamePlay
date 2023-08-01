@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq.Expressions;
 using AutoMapper;
+using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
@@ -11,6 +12,7 @@ using GamePlay.Domain.Models.Game;
 using GamePlay.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace GamePlay.BLL.Services;
 
@@ -21,17 +23,19 @@ public class UserService : IUserService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserRepository _userRepository;
     private readonly ICollectionService _collectionService;
+    private readonly IConfiguration _configuration;
 
     public UserService(IUserRepository userRepository,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IMapper mapper, ICollectionService collectionService)
+        IMapper mapper, ICollectionService collectionService, IConfiguration configuration)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userRepository = userRepository;
         _mapper = mapper;
         _collectionService = collectionService;
+        _configuration = configuration;
     }
 
     public async Task<BaseModel> RegisterAsync(CreateUserModel createUserModel)
@@ -59,7 +63,7 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel)
+    public async Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.EmailOrUsername) 
                    ?? await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.EmailOrUsername);
@@ -72,9 +76,13 @@ public class UserService : IUserService
         if (!signInResult.Succeeded)
             throw new BadRequestException("Username/email or password is incorrect");
 
-        return new LoginUserModel
+        var token = JwtHelper.GenerateToken(user, _configuration);
+        
+        return new LoginResponseModel
         {
-            EmailOrUsername = user.UserName
+            Username = user.UserName,
+            Email = user.Email,
+            Token = token
         };
     }
 

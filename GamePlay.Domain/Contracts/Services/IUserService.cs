@@ -8,7 +8,7 @@ namespace GamePlay.Domain.Contracts.Services;
 public interface IUserService
 {
     Task<BaseModel> RegisterAsync(CreateUserModel createUserModel);
-    Task<LoginUserModel> LoginAsync(LoginUserModel loginUserModel);
+    Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel);
     Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null);
     Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default);
 

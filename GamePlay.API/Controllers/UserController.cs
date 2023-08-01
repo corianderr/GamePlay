@@ -1,6 +1,7 @@
 using GamePlay.API.ViewModels;
 using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Services;
+using GamePlay.Domain.Entities;
 using GamePlay.Domain.Enums;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.User;
@@ -90,5 +91,32 @@ public class UserController : ApiController
     {
         await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());
         return Ok(ApiResult<string>.Success(id));
+    }
+    
+    // GET: Users/ShowRelations/2&true
+    [HttpGet("ShowRelations/{userId}&{isFriend:bool}")]
+    public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
+    {
+        IEnumerable<ApplicationUser?> users;
+        if (isFriend)
+        {
+            users = (await _relationService.GetAllAsync(userId, isFriend)).SelectMany(r =>
+                new[] { r.Subscriber, r.User });
+            users = users.Where(u => !u.Id.Equals(userId));
+        }
+        else
+        {
+            users = (await _relationService.GetAllAsync(userId, isFriend)).Select(r => r.Subscriber);
+        }
+
+        return Ok(ApiResult<IEnumerable<ApplicationUser?>>.Success(users));
+    }
+
+    // GET: Users/ShowNotifications
+    [HttpGet("ShowNotifications")]
+    public async Task<ActionResult> ShowNotifications()
+    {
+        var subscribers = (await _relationService.GetAllAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
+        return Ok(ApiResult<IEnumerable<ApplicationUser?>>.Success(subscribers));
     }
 }

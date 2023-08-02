@@ -24,6 +24,20 @@ public class UserController : ApiController
         _relationService = relationService;
         _collectionService = collectionService;
     }
+    
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterAsync(CreateUserModel createUserModel)
+    {
+        return Ok(ApiResult<BaseModel>.Success(await _userService.RegisterAsync(createUserModel)));
+    }
+
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> LoginAsync(LoginUserModel loginUserModel)
+    {
+        return Ok(ApiResult<LoginResponseModel>.Success(await _userService.LoginAsync(loginUserModel)));
+    }
 
     // GET: Users
     [HttpGet]
@@ -34,7 +48,7 @@ public class UserController : ApiController
     }
     
     // GET: Users/Details/5
-    [HttpGet("Details/{id:int}")]
+    [HttpGet("details/{id}")]
     public async Task<IActionResult> Details(string id)
     {
         var userRelation = await _relationService.GetByUsersIdAsync(id, User.Identity.GetUserId());
@@ -63,7 +77,7 @@ public class UserController : ApiController
         return Ok(ApiResult<UserDetailsViewModel>.Success(userDetailsViewModel));
     }
     
-    [HttpGet("GetById/{id}")]
+    [HttpGet("getById/{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         var user = await _userService.GetFirstAsync(id);
@@ -72,7 +86,6 @@ public class UserController : ApiController
 
     // PUT: Users/Edit
     [HttpPut]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult> Edit(UserModel userModel, IFormFile? avatar)
     {
         userModel.PhotoPath = await ImageUploadingHelper.ReuploadAndGetNewPathAsync("avatars",
@@ -83,8 +96,7 @@ public class UserController : ApiController
     }
     
     // POST: Users/Follow
-    [HttpPost("Follow")]
-    [ValidateAntiForgeryToken]
+    [HttpPost("follow")]
     public async Task<ActionResult> Follow(string id)
     {
         await _relationService.SubscribeAsync(User.Identity.GetUserId(), id);
@@ -92,8 +104,7 @@ public class UserController : ApiController
     }
 
     // POST: Users/BecomeFriends
-    [HttpPost("BecomeFriends")]
-    [ValidateAntiForgeryToken]
+    [HttpPost("becomeFriends")]
     public async Task<ActionResult> BecomeFriends(string id)
     {
         await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());
@@ -101,7 +112,7 @@ public class UserController : ApiController
     }
     
     // GET: Users/ShowRelations/2&true
-    [HttpGet("ShowRelations/{userId}&{isFriend:bool}")]
+    [HttpGet("showRelations/{userId}&{isFriend:bool}")]
     public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
     {
         IEnumerable<ApplicationUser?> users;
@@ -120,7 +131,7 @@ public class UserController : ApiController
     }
 
     // GET: Users/ShowNotifications
-    [HttpGet("ShowNotifications")]
+    [HttpGet("showNotifications")]
     public async Task<ActionResult> ShowNotifications()
     {
         var subscribers = (await _relationService.GetAllAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);

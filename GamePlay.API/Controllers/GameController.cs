@@ -44,6 +44,13 @@ public class GameController : ApiController
         return Ok(ApiResult<GameDetailsViewModel>.Success(gameDetailsViewModel));
     }
 
+    [HttpGet("GetById/{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var game = await _gameService.GetByIdAsync(id);
+        return Ok(ApiResult<GameModel>.Success(game));
+    }
+
     // POST: Games/
     [Authorize(Roles = "admin")]
     [HttpPost]

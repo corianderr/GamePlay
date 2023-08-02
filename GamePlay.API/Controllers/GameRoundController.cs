@@ -39,8 +39,8 @@ public class GameRoundController : ApiController
     
     // GET: GameRounds/Details/5
     [Authorize]
-    [HttpGet("Details/{id:guid}")]
-    public async Task<IActionResult> Details(Guid id)
+    [HttpGet("GetById/{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var round = await _gameRoundService.GetByIdAsync(id);
         return Ok(ApiResult<GameRoundModel>.Success(round));
@@ -61,7 +61,7 @@ public class GameRoundController : ApiController
         return Ok(ApiResult<CreateGameRoundViewModel>.Success(createViewModel));
     }
 
-    // POST: GameRounds/Create
+    // POST: GameRounds
     [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -73,6 +73,7 @@ public class GameRoundController : ApiController
     
     // GET: GameRounds/Edit
     [Authorize(Roles = "admin")]
+    [HttpGet("Edit")]
     public async Task<ActionResult> Edit(Guid gameRoundId)
     {
         var updateViewModel = new UpdateGameRoundViewModel()
@@ -87,18 +88,15 @@ public class GameRoundController : ApiController
 
     // POST: GameRounds/Edit
     [Authorize(Roles = "admin")]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    [HttpPut("Edit")]
     public async Task<ActionResult> Edit(Guid id, UpdateGameRoundViewModel updateViewModel)
     {
         await _gameRoundService.UpdateAsync(id, updateViewModel.GameRound);
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = id}));
     }
 
-    // POST: GameRounds/Delete
-    [HttpDelete]
-    [ActionName("Delete")]
-    [ValidateAntiForgeryToken]
+    // POST: GameRounds/Delete/5
+    [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteConfirmed(Guid id)
     {
         await _gameRoundService.DeleteAsync(id);

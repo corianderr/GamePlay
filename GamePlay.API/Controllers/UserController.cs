@@ -63,6 +63,13 @@ public class UserController : ApiController
         return Ok(ApiResult<UserDetailsViewModel>.Success(userDetailsViewModel));
     }
     
+    [HttpGet("GetById/{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var user = await _userService.GetFirstAsync(id);
+        return Ok(ApiResult<UserModel>.Success(user));
+    }
+
     // PUT: Users/Edit
     [HttpPut]
     [ValidateAntiForgeryToken]

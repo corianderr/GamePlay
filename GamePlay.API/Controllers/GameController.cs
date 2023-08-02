@@ -47,7 +47,6 @@ public class GameController : ApiController
     // POST: Games/
     [Authorize(Roles = "admin")]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult> Create(CreateGameModel gameModel, IFormFile? gameImage)
     {
         try
@@ -68,7 +67,6 @@ public class GameController : ApiController
     // PUT: Games/Edit/5
     [Authorize(Roles = "admin")]
     [HttpPut]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult> Edit(Guid id, GameModel gameModel, IFormFile? gameImage)
     {
         gameModel.PhotoPath =
@@ -83,7 +81,6 @@ public class GameController : ApiController
     [Authorize(Roles = "admin")]
     [HttpDelete]
     [ActionName("Delete")]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult> DeleteConfirmed(Guid id)
     {
         await _gameService.DeleteAsync(id);
@@ -93,7 +90,6 @@ public class GameController : ApiController
     // POST: Games/RateGame/5
     [Authorize]
     [HttpPost("RateGame/{id:guid}&{rating:int}")]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult> RateGame(Guid id, int rating)
     {
         var gameRating = new CreateGameRatingModel

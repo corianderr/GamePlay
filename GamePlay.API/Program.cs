@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using GamePlay.API;
 using GamePlay.API.Filters;
 using GamePlay.API.Middleware;
@@ -8,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(
-    config => config.Filters.Add(typeof(ValidateModelAttribute))
-);
+builder.Services.AddControllers(config => config.Filters.Add(typeof(ValidateModelAttribute))).AddJsonOptions(options => 
+{ 
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();

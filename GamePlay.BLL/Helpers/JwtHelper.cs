@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Duende.IdentityServer;
 using GamePlay.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -9,7 +10,7 @@ namespace GamePlay.BLL.Helpers;
 
 public static class JwtHelper
 {
-    public static string GenerateToken(ApplicationUser user, IConfiguration configuration)
+    public static string GenerateToken(ApplicationUser user, IConfiguration configuration, IEnumerable<string> userRoles)
     {
         var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
 
@@ -29,6 +30,11 @@ public static class JwtHelper
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
+
+        foreach (var role in userRoles)
+        {
+            tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 

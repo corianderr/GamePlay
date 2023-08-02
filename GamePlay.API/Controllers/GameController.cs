@@ -87,16 +87,15 @@ public class GameController : ApiController
     // POST: Games/Delete/5
     [Authorize(Roles = "admin")]
     [HttpDelete]
-    [ActionName("Delete")]
-    public async Task<ActionResult> DeleteConfirmed(Guid id)
+    public async Task<ActionResult> Delete(Guid id)
     {
         await _gameService.DeleteAsync(id);
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = id}));
     }
 
-    // POST: Games/RateGame/5
+    // POST: Games/RateGame
     [Authorize]
-    [HttpPost("RateGame/{id:guid}&{rating:int}")]
+    [HttpPost("RateGame")]
     public async Task<ActionResult> RateGame(Guid id, int rating)
     {
         var gameRating = new CreateGameRatingModel
@@ -110,7 +109,7 @@ public class GameController : ApiController
 
     // POST: Games/DeleteRating/5
     [Authorize]
-    [HttpPost("DeleteRating/{id:guid}")]
+    [HttpDelete("DeleteRating/{id:guid}")]
     public async Task<ActionResult> DeleteRating(Guid id)
     {
         var gameId = (await _ratingService.GetByIdAsync(id)).GameId;

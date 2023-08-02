@@ -18,6 +18,7 @@ public class CollectionController : ApiController
     }
 
     // GET: Collections/Details/5
+    [HttpGet("GetById/{id:guid}")]
     public async Task<ActionResult> Details(Guid id)
     {
         var collection = await _collectionService.GetByIdAsync(id);
@@ -25,8 +26,7 @@ public class CollectionController : ApiController
     }
     
     // POST: Collections/AddGame
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    [HttpPost("AddGame")]
     public async Task<ActionResult> AddGame(Guid id, Guid collectionId)
     {
         await _collectionService.AddGameAsync(id, collectionId);
@@ -34,7 +34,7 @@ public class CollectionController : ApiController
     }
     
     // POST: Collections/DeleteFromCollection
-    [HttpPost]
+    [HttpPost("DeleteGame")]
     public async Task<ActionResult> DeleteFromCollection(Guid id, Guid collectionId)
     {
         await _collectionService.DeleteGameAsync(id, collectionId);

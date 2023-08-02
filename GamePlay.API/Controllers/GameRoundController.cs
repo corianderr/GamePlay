@@ -65,9 +65,9 @@ public class GameRoundController : ApiController
     [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Create(CreateGameRoundViewModel createViewModel)
+    public async Task<ActionResult> Create(CreateGameRoundModel createViewModel)
     {
-        var roundId = (await _gameRoundService.AddAsync(createViewModel.GameRound)).Id;
+        var roundId = (await _gameRoundService.AddAsync(createViewModel)).Id;
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = roundId}));
     }
     
@@ -89,9 +89,9 @@ public class GameRoundController : ApiController
     // POST: GameRounds/Edit
     [Authorize(Roles = "admin")]
     [HttpPut("Edit")]
-    public async Task<ActionResult> Edit(Guid id, UpdateGameRoundViewModel updateViewModel)
+    public async Task<ActionResult> Edit(Guid id, GameRoundModel updateViewModel)
     {
-        await _gameRoundService.UpdateAsync(id, updateViewModel.GameRound);
+        await _gameRoundService.UpdateAsync(id, updateViewModel);
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = id}));
     }
 

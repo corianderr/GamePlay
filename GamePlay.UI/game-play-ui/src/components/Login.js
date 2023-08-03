@@ -3,7 +3,6 @@ import useAuth from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import axios from '../api/axios';
-import Register from './Register';
 const LOGIN_URL = '/User/login';
 
 const Login = () => {
@@ -42,7 +41,8 @@ const Login = () => {
             console.log(response?.data);
             const accessToken = response?.data?.result.token;
             const roles = response?.data?.result.roles;
-            setAuth({ user, pwd, accessToken, roles });
+            const id = response?.data?.result.id;
+            setAuth({ user, pwd, accessToken, roles, id });
             setUser('');
             setPwd('');
             navigate(from, {replace: true});

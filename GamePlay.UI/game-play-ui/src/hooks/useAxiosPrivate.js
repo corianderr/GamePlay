@@ -2,6 +2,7 @@ import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import useAuth from "./useAuth";
 import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 const useAxiosPrivate = () => {
     const { auth } = useAuth();
@@ -11,7 +12,7 @@ const useAxiosPrivate = () => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
                 if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${auth?.token}`;
+                    config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
                 }
                 return config;
             }, (error) => Promise.reject(error)
@@ -21,9 +22,10 @@ const useAxiosPrivate = () => {
             response => response,
             async (error) => {
                 if (isAxiosError(error)) {
-                    if (error.response.status >= 400 && error.response.status < 500) {
+                    console.log(error)
+                    if (error?.response?.status >= 400 && error?.response?.status < 500) {
                         toast.error(JSON.stringify(error.response.data.errors).replace(/[{}[\]"]/g, ' '));
-                    } else if (error.response.status >= 500) {
+                    } else if (error?.response?.status >= 500) {
                         toast.error('Internal server error');
                     }
                     throw error;

@@ -1,11 +1,19 @@
-import Register from './Register';
-import Login from './Login';
+import Register from './components/Register';
+import Login from './components/Login';
+import Home from './components/Home';
+import RequireAuth from './components/RequireAuth';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 
 function App() {
   return (
-    <div className="App">
-      <Login/>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="login" element={<Login />}/>
+        <Route path="register" element={<Register />}/>
+        <Route path="/" element={<Home />}/>
+      </Route>
+    </Routes>
   );
 }
 

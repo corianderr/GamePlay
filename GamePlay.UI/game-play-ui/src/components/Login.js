@@ -3,6 +3,7 @@ import useAuth from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import axios from '../api/axios';
+import Register from './Register';
 const LOGIN_URL = '/User/login';
 
 const Login = () => {
@@ -40,7 +41,8 @@ const Login = () => {
             );
             console.log(response?.data);
             const accessToken = response?.data?.result.token;
-            setAuth({ user, pwd, accessToken });
+            const roles = response?.data?.result.roles;
+            setAuth({ user, pwd, accessToken, roles });
             setUser('');
             setPwd('');
             navigate(from, {replace: true});
@@ -87,8 +89,7 @@ const Login = () => {
             <p>
                 Need an Account?<br />
                 <span className="line">
-                    {/*put router link here*/}
-                    <a href="#">Sign Up</a>
+                    <Link to="/register">Sign Up</Link>
                 </span>
             </p>
         </section>

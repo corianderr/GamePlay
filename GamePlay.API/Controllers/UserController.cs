@@ -39,7 +39,7 @@ public class UserController : ApiController
         return Ok(ApiResult<LoginResponseModel>.Success(await _userService.LoginAsync(loginUserModel)));
     }
 
-    // GET: Users
+    // GET: User
     [HttpGet]
     public async Task<IActionResult> Index()
     {

@@ -84,7 +84,8 @@ public class UserService : IUserService
             Username = user.UserName,
             Email = user.Email,
             Token = token,
-            Roles = roles
+            Roles = roles,
+            Id = user.Id
         };
     }
 

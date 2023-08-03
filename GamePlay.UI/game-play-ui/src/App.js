@@ -1,5 +1,4 @@
-import './App.css';
-import './Register';
+import Register from './Register';
 
 function App() {
   return (

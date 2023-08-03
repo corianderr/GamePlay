@@ -14,6 +14,8 @@ builder.Services.AddControllers(config => config.Filters.Add(typeof(ValidateMode
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
+
+builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
@@ -34,10 +36,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(corsPolicyBuilder =>
-    corsPolicyBuilder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
+app.UseCors(
+    options => options.WithOrigins("http://localhost:3000")
+        .AllowAnyMethod().AllowAnyHeader().AllowCredentials()
 );
 
 app.UseAuthentication();

@@ -1,10 +1,10 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
+import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
-import { toast } from "react-toastify";
-import { isAxiosError } from "axios";
 
 const useAxiosPrivate = () => {
+    const refresh = useRefreshToken();
     const { auth } = useAuth();
 
     useEffect(() => {
@@ -21,15 +21,14 @@ const useAxiosPrivate = () => {
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => response,
             async (error) => {
-                if (isAxiosError(error)) {
-                    console.log(error)
-                    if (error?.response?.status >= 400 && error?.response?.status < 500) {
-                        toast.error(JSON.stringify(error.response.data.errors).replace(/[{}[\]"]/g, ' '));
-                    } else if (error?.response?.status >= 500) {
-                        toast.error('Internal server error');
-                    }
-                    throw error;
+                const prevRequest = error?.config;
+                if (error?.response?.status === 403 && !prevRequest?.sent) {
+                    prevRequest.sent = true;
+                    const newAccessToken = await refresh();
+                    prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                    return axiosPrivate(prevRequest);
                 }
+                return Promise.reject(error);
             }
         );
 
@@ -37,7 +36,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
-    }, [auth])
+    }, [auth, refresh])
 
     return axiosPrivate;
 }

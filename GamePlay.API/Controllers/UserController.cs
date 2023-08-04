@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using GamePlay.API.ViewModels;
 using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Services;
@@ -17,12 +19,15 @@ public class UserController : ApiController
     private readonly IUserService _userService;
     private readonly IUserRelationService _relationService;
     private readonly ICollectionService _collectionService;
+    private readonly IConfiguration _configuration;
 
-    public UserController(IUserService userService, IUserRelationService relationService, ICollectionService collectionService)
+    public UserController(IUserService userService, IUserRelationService relationService, ICollectionService collectionService,
+        IConfiguration configuration)
     {
         _userService = userService;
         _relationService = relationService;
         _collectionService = collectionService;
+        _configuration = configuration;
     }
     
     [HttpPost("register")]
@@ -36,9 +41,40 @@ public class UserController : ApiController
     [AllowAnonymous]
     public async Task<IActionResult> LoginAsync(LoginUserModel loginUserModel)
     {
-        return Ok(ApiResult<LoginResponseModel>.Success(await _userService.LoginAsync(loginUserModel)));
+        var loginModel = await _userService.LoginAsync(loginUserModel);
+        SetRefreshTokenCookie(loginModel.RefreshToken);
+        return Ok(ApiResult<LoginResponseModel>.Success(loginModel));
     }
+    
+    [HttpGet("refresh")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Refresh()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return Unauthorized("Refresh token not found.");
+        }
 
+        var responseModel = await _userService.RefreshIsValid(refreshToken);
+        if (responseModel == null)
+            return Forbid();
+        return Ok(ApiResult<RefreshResponseModel>.Success(responseModel));
+    }
+    
+    private void SetRefreshTokenCookie(string? refreshToken)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = DateTime.UtcNow.AddDays(JwtHelper.RefreshTokenExpirationDays),
+        };
+
+        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+    }
+    
     // GET: User
     [HttpGet]
     public async Task<IActionResult> Index()

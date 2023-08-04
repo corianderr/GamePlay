@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+import NavMenu from "./NavMenu";
 
 const Layout = () => {
   return (
-    <main className="App">
-        <Outlet />
-    </main>
+    <>
+      <NavMenu />
+      <main className="App">
+          <Outlet />
+      </main>
+    </>
   )
 }
 

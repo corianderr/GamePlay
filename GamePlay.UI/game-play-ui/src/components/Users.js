@@ -65,7 +65,7 @@ const Users = () => {
                                 <div className="candidate-list-info">
                                   <div className="candidate-list-title">
                                     <h5 className="mb-0">
-                                      {user.id === auth?.user.id && <span>My Profile: </span>}
+                                      {user.id === auth?.id && <span>My Profile: </span>}
                                       {/* Add link to detailed page */}
                                       <a href="#">{user.username}</a>
                                     </h5>

@@ -47,13 +47,8 @@ const Users = () => {
             <div className="col-lg-9 mt-4 mt-lg-0">
               <div className="row">
                 <div className="col-md-12">
-                  <div className="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                  <div className="user-dashboard-info-box table-responsive mb-0 bg-wheat p-4 shadow-sm">
                     <table className="table manage-candidates-top mb-0">
-                      <thead>
-                        <tr>
-                          <th>Username</th>
-                        </tr>
-                      </thead>
                       <tbody>
                         {users.map((user, i) => (
                           <tr className="candidates-list" key={i}>

@@ -14,4 +14,6 @@ public interface IUserService
 
     Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,
         CancellationToken cancellationToken = default);
+
+    Task<RefreshResponseModel?> RefreshIsValid(string refreshToken);
 }

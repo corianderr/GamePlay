@@ -1,5 +1,7 @@
 using System.Collections;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using AutoMapper;
 using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Repositories;
@@ -77,18 +79,41 @@ public class UserService : IUserService
             throw new BadRequestException("Username/email or password is incorrect");
 
         var roles = await _userManager.GetRolesAsync(user);
-        var token = JwtHelper.GenerateToken(user, _configuration, roles);
+        // TODO: Change helper to service
+        var token = JwtHelper.GenerateAccessToken(user, _configuration, roles);
+        var refreshToken = JwtHelper.GenerateRefreshToken(user.Id, _configuration);
         
         return new LoginResponseModel
         {
             Username = user.UserName,
             Email = user.Email,
-            Token = token,
+            AccessToken = token,
+            RefreshToken = refreshToken,
             Roles = roles,
             Id = user.Id
         };
     }
 
+    public async Task<RefreshResponseModel?> RefreshIsValid(string refreshToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(refreshToken);
+        var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        if (!JwtHelper.ValidateRefreshToken(refreshToken, _configuration)) return null;
+
+        var responseModel = new RefreshResponseModel()
+        {
+            AccessToken = JwtHelper.GenerateAccessToken(user, _configuration, roles),
+            Roles = roles,
+            Id = user.Id
+        };
+        return responseModel;
+
+    }
+    
     public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
     {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));

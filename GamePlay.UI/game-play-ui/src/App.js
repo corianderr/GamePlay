@@ -1,12 +1,12 @@
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
 import Home from "./components/Home";
-import Users from "./components/Users";
-import Unauthorized from "./components/Unauthorized";
-import RequireAuth from "./components/RequireAuth";
+import Users from "./components/user/Users";
+import Unauthorized from "./components/auth/Unauthorized";
+import RequireAuth from "./components/auth/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import PersistLogin from "./components/PersistLogin";
+import PersistLogin from "./components/auth/PersistLogin";
 
 const ROLES = {
   User: "user",

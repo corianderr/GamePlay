@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { axiosPrivate } from "../../api/axios";
 import { useEffect, useState } from "react";
 import RelationButton from "./RelationButton";
+import { Link } from "react-router-dom";
 
 const UserRow = ({user, relation}) => {
     const {auth} = useAuth();
@@ -18,8 +19,7 @@ const UserRow = ({user, relation}) => {
                 <div className="candidate-list-title">
                 <h5 className="mb-0">
                     {user.id === auth?.id && <span>My Profile: </span>}
-                    {/* Add link to detailed page */}
-                    <a href="#">{user.username}</a>
+                    <Link to={`/userDetails/${user.id}`}>{user.username}</Link>
                 </h5>
                 </div>
                 <div className="candidate-list-option">
@@ -29,7 +29,7 @@ const UserRow = ({user, relation}) => {
             </div>
         </td>
         <td id="button-row">
-            <RelationButton relation={relation} userId={user.Id}/>
+            <RelationButton relation={relation} userId={user.id}/>
         </td>
     </tr>
   )

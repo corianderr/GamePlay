@@ -83,7 +83,7 @@ public class UserController : ApiController
         return Ok(ApiResult<IEnumerable<UserModel>>.Success(users));
     }
     
-    // GET: Users/Details/5
+    // GET: User/Details/5
     [HttpGet("details/{id}")]
     public async Task<IActionResult> Details(string id)
     {

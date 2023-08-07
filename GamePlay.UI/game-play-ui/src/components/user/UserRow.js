@@ -1,7 +1,36 @@
+import { Button } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
+import { axiosPrivate } from "../../api/axios";
 
-const UserRow = ({user}) => {
+const UserRow = ({user, relation}) => {
     const {auth} = useAuth();
+
+    const follow = async () => {
+
+    }
+
+    const accept = async () => {
+        const response = await axiosPrivate.post(`User/becomeFriends?id=${user.id}`);
+        console.log(response);
+    }
+
+    
+    const chooseButton = () => {
+        console.log(relation)
+        switch(relation) {
+          case "doesNotExist":
+            return <Button onClick={() => follow()} color="primary" variant="contained" size="small">Follow</Button>;
+          case "pending":
+            return <Button disabled size="small">Is Pending...</Button>;
+          case "friends":
+            return <Button disabled size="small">Friends</Button>;
+          case "accept":
+            return <Button onClick={() => accept()} color="primary" variant="contained" size="small">Accept</Button>;
+          default:
+            return <></>;
+        }
+    };
+      
 
   return (
     <tr className="candidates-list">
@@ -23,6 +52,9 @@ const UserRow = ({user}) => {
                 </div>
             </div>
             </div>
+        </td>
+        <td>
+            {relation !== undefined ? chooseButton() : ''}
         </td>
     </tr>
   )

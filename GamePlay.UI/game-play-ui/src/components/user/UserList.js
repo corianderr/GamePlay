@@ -1,9 +1,9 @@
 import UserRow from "./UserRow";
 
-const UserList = ({users}) => {
+const UserList = ({header, users, relations}) => {
     return (
         <>
-          <h2>Users</h2>
+          <h2>{header}</h2>
           <div className="container mt-3 mb-4">
             <div className="col-lg-9 mt-4 mt-lg-0">
               <div className="row">
@@ -11,9 +11,14 @@ const UserList = ({users}) => {
                   <div className="user-dashboard-info-box table-responsive mb-0 bg-wheat p-4 shadow-sm">
                     <table className="table manage-candidates-top mb-0">
                       <tbody>
-                        {users.map((user, i) => (
-                          <UserRow user={user} key={i}/>
-                        ))}
+                        {relations !== undefined
+                          ? users.map((user, i) => (
+                            <UserRow user={user} key={i} relation={relations[i]}/>
+                          ))
+                          : users.map((user, i) => (
+                            <UserRow user={user} key={i}/>
+                        ))
+                        }
                       </tbody>
                     </table>
                   </div>

@@ -39,7 +39,7 @@ const Users = () => {
 
     return (
         <>
-        <UserList users={users}></UserList>
+        <UserList header={"Users"} users={users}></UserList>
         </>
       );
 };

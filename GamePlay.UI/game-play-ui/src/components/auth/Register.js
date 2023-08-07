@@ -55,7 +55,6 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if button enabled with JS hack
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
         const v3 = EMAIL_REGEX.test(email);
@@ -73,8 +72,6 @@ const Register = () => {
             );
             console.log(response?.data);
             setSuccess(true);
-            //clear state and controlled inputs
-            //need value attrib on inputs for this
             setUser('');
             setPwd('');
             setMatchPwd('');
@@ -93,14 +90,14 @@ const Register = () => {
     return (
         <>
             {success ? (
-                <section>
+                <section className='mx-auto'>
                     <h1>Success!</h1>
                     <p>
                         <a href="#">Sign In</a>
                     </p>
                 </section>
             ) : (
-                <section>
+                <section className='mx-auto'>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Register</h1>
                     <form onSubmit={handleSubmit}>

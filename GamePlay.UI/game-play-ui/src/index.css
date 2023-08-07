@@ -22,7 +22,6 @@ body {
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  align-items: center;
   min-height: 100vh; 
 }
 
@@ -408,7 +407,7 @@ body {
     text-decoration: none;
 }
 
-.candidate-list-title {
+.candidate-list-title a {
     color: black;
 }
 

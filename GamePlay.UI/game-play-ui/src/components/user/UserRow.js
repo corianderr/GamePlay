@@ -1,21 +1,32 @@
 import { Button } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { axiosPrivate } from "../../api/axios";
+import { useEffect, useState } from "react";
 
 const UserRow = ({user, relation}) => {
     const {auth} = useAuth();
+    const [button, setButton] = useState(null);
+
+
+    useEffect(() => {
+        setButton(chooseButton(relation));
+    }, [])
 
     const follow = async () => {
 
     }
 
     const accept = async () => {
+        console.log(relation);
         const response = await axiosPrivate.post(`User/becomeFriends?id=${user.id}`);
         console.log(response);
+        if(response.data.succeeded) 
+        {
+            setButton(chooseButton('friends'));
+        }
     }
-
     
-    const chooseButton = () => {
+    const chooseButton = (relation) => {
         console.log(relation)
         switch(relation) {
           case "doesNotExist":
@@ -53,8 +64,8 @@ const UserRow = ({user, relation}) => {
             </div>
             </div>
         </td>
-        <td>
-            {relation !== undefined ? chooseButton() : ''}
+        <td id="button-row">
+            {relation !== undefined ? button : ''}
         </td>
     </tr>
   )

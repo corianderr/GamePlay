@@ -75,6 +75,19 @@ public class UserController : ApiController
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
     
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+        };
+        Response.Cookies.Delete("refreshToken", cookieOptions);
+        return Ok(ApiResult<string>.Success("Refresh token is deleted!"));
+    }
+    
     // GET: User
     [HttpGet]
     public async Task<IActionResult> Index()

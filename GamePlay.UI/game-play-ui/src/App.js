@@ -8,6 +8,10 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import PersistLogin from "./components/auth/PersistLogin";
 import UserDetails from "./components/user/UserDetails";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import Notifications from "components/user/Notifications";
+
 
 const ROLES = {
   User: "user",
@@ -15,6 +19,8 @@ const ROLES = {
 };
 
 function App() {
+  library.add(faBell);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -26,6 +32,7 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>
             <Route path="/users" element={<Users />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
           </Route>
         </Route>

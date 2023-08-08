@@ -1,7 +1,12 @@
 import UserRow from "./UserRow";
 
-const UserList = ({header, users, relations}) => {
-    return (
+const UserList = ({ header, users, relations }) => {
+
+  return (
+    <>
+      {users?.length === 0 ? (
+        <h5 className="mt-3">There are no {header} yet..</h5>
+      ) : (
         <>
           <h2 className="text-center">{header}</h2>
           <div className="container mt-3 mb-4">
@@ -13,12 +18,15 @@ const UserList = ({header, users, relations}) => {
                       <tbody>
                         {relations !== undefined
                           ? users.map((user, i) => (
-                            <UserRow user={user} key={i} relation={relations[i]}/>
-                          ))
+                              <UserRow
+                                user={user}
+                                key={i}
+                                relation={relations[i]}
+                              />
+                            ))
                           : users.map((user, i) => (
-                            <UserRow user={user} key={i}/>
-                        ))
-                        }
+                              <UserRow user={user} key={i}/>
+                            ))}
                       </tbody>
                     </table>
                   </div>
@@ -27,7 +35,9 @@ const UserList = ({header, users, relations}) => {
             </div>
           </div>
         </>
-      );
-}
+      )}
+    </>
+  );
+};
 
-export default UserList
+export default UserList;

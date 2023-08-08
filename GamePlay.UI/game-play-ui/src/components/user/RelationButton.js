@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { axiosPrivate } from "../../api/axios";
 import { Button } from "@mui/material";
 
-const RelationButton = ({userId, relation, userUpdate}) => {
+const RelationButton = ({ userId, relation, userUpdate }) => {
   const [button, setButton] = useState(null);
 
   useEffect(() => {
@@ -13,7 +13,9 @@ const RelationButton = ({userId, relation, userUpdate}) => {
     const response = await axiosPrivate.post(`User/follow?id=${userId}`);
     if (response.data.succeeded) {
       setButton(chooseButton(1));
-      userUpdate();
+      if (userUpdate !== undefined) {
+        userUpdate();
+      }
     }
   };
 
@@ -21,7 +23,9 @@ const RelationButton = ({userId, relation, userUpdate}) => {
     const response = await axiosPrivate.post(`User/becomeFriends?id=${userId}`);
     if (response.data.succeeded) {
       setButton(chooseButton(3));
-      userUpdate();
+      if (userUpdate !== undefined) {
+        userUpdate();
+      }
     }
   };
 

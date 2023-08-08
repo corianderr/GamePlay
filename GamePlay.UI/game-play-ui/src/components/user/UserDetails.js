@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import RelationButton from "./RelationButton";
 import useAuth from "../../hooks/useAuth";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const UserDetails = () => {
   const { auth } = useAuth();
@@ -88,7 +89,7 @@ const UserDetails = () => {
             <div className="d-flex justify-content-between align-items-center mt-4 px-4">
               <div className="stats">
                 <h6 className="mb-0">Followers</h6>
-                <span>{user.followersCount}</span>
+                <span><Link to={`/followers/${user.id}`}>{user.followersCount}</Link></span>
               </div>
               <div className="stats">
                 <h6 className="mb-0">Friends</h6>
@@ -102,21 +103,16 @@ const UserDetails = () => {
       {collections.length === 0 ? (
         user.id === auth?.id ? (
           <>
-            <a className="btn btn-light mb-3" href="/Collections/Create">
-              Create Collection
-            </a>
-            <h5>I don't have any collections yet :(</h5>
+            <h5>I don't have any collections yet :( <br/>Add one <FontAwesomeIcon icon="fa-solid fa-square-plus" className="ms-2 opacity-75"/></h5>
           </>
         ) : (
           <h5>{user.username} does not have any collections yet :(</h5>
         )
       ) : user.id === auth?.id ? (
-        <>
-          <a className="btn btn-light mb-3" href="/Collections/Create">
-            Create Collection
-          </a>
-          <h3>My Collections</h3>
-        </>
+        <div className="d-flex">
+          <h3 >My Collections <FontAwesomeIcon icon="fa-solid fa-square-plus" className="ms-2 opacity-75"/></h3>
+          
+        </div>
       ) : (
         <h3>{user.username}'s Collections</h3>
       )}

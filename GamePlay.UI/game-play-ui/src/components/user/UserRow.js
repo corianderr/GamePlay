@@ -16,7 +16,7 @@ const UserRow = ({ user, relation }) => {
                 <div className="candidate-list-title">
                 <h5 className="mb-0">
                     {user.id === auth?.id && <span>My Profile: </span>}
-                    <Link to={`/userDetails/${user.id}`}>{user.username}</Link>
+                    <Link to={`/userDetails/${user.id}`}>{user.userName}</Link>
                 </h5>
                 </div>
                 <div className="candidate-list-option">

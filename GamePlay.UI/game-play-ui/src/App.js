@@ -9,8 +9,9 @@ import Layout from "./components/Layout";
 import PersistLogin from "./components/auth/PersistLogin";
 import UserDetails from "./components/user/UserDetails";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import Notifications from "components/user/Notifications";
+import Followers from "components/user/Followers";
 
 
 const ROLES = {
@@ -19,7 +20,7 @@ const ROLES = {
 };
 
 function App() {
-  library.add(faBell);
+  library.add(faBell, faSquarePlus);
 
   return (
     <Routes>
@@ -33,6 +34,7 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>
             <Route path="/users" element={<Users />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/followers/:userId" element={<Followers />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
           </Route>
         </Route>

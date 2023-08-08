@@ -3,7 +3,7 @@ import UserRow from "./UserRow";
 const UserList = ({header, users, relations}) => {
     return (
         <>
-          <h2>{header}</h2>
+          <h2 className="text-center">{header}</h2>
           <div className="container mt-3 mb-4">
             <div className="col-lg-9 mt-4 mt-lg-0 mx-auto">
               <div className="row">

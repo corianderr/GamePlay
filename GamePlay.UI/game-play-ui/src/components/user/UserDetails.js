@@ -7,11 +7,11 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const UserDetails = () => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  
+
   const [user, setUser] = useState({});
   const [relation, setRelation] = useState(-1);
   const [collections, setCollections] = useState([]);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,7 +26,6 @@ const UserDetails = () => {
         const response = await axiosPrivate.get(`/User/details/${userId}`, {
           signal: controller.signal,
         });
-        console.log(response.data);
         if (isMounted) {
           var data = response.data.result;
           setUser(data.user);
@@ -42,13 +41,24 @@ const UserDetails = () => {
         navigate("/login", { state: { from: location }, replace: true });
       }
     };
-    getUsers();
+
+    if (relation === -1) {
+      getUsers();
+    }
 
     return () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [userId, collections]);
+
+  const updateUser = () => {
+    const getUser = async () => {
+      const response = await axiosPrivate.get(`/User/getById/${userId}`);
+      setUser(response.data.result);
+    }
+    getUser();
+  };
 
   return (
     <>
@@ -72,7 +82,7 @@ const UserDetails = () => {
                 Edit profile
               </a>
             ) : (
-              <RelationButton relation={relation} userId={user.id}/>
+              <RelationButton relation={relation} userId={user.id} userUpdate={updateUser}/>
             )}
 
             <div className="d-flex justify-content-between align-items-center mt-4 px-4">

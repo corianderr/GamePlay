@@ -1,37 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { axiosPrivate } from "../../api/axios";
 import { Button } from "@mui/material";
 
-const RelationButton = ({userId, relation}) => {
+const RelationButton = ({userId, relation, userUpdate}) => {
   const [button, setButton] = useState(null);
 
   useEffect(() => {
-    console.log("RELATIONBUTTON");
-    console.log(relation);
-    console.log(userId);
     setButton(chooseButton(relation));
-  }, []);
+  }, [relation, userId]);
 
   const follow = async () => {
-    console.log(relation);
     const response = await axiosPrivate.post(`User/follow?id=${userId}`);
-    console.log(response);
     if (response.data.succeeded) {
       setButton(chooseButton(1));
+      userUpdate();
     }
   };
 
   const accept = async () => {
-    console.log(relation);
     const response = await axiosPrivate.post(`User/becomeFriends?id=${userId}`);
-    console.log(response);
     if (response.data.succeeded) {
       setButton(chooseButton(3));
+      userUpdate();
     }
   };
 
   const chooseButton = (relation) => {
-    console.log(relation);
     switch (relation) {
       case 0:
         return (

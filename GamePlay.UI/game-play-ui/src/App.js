@@ -12,6 +12,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBell, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import Notifications from "components/user/Notifications";
 import Followers from "components/user/Followers";
+import Friends from "components/user/Friends";
 
 
 const ROLES = {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/users" element={<Users />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/followers/:userId" element={<Followers />} />
+            <Route path="/friends/:userId" element={<Friends />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
           </Route>
         </Route>

@@ -93,7 +93,7 @@ const UserDetails = () => {
               </div>
               <div className="stats">
                 <h6 className="mb-0">Friends</h6>
-                <span>{user.friendsCount}</span>
+                <span><Link to={`/friends/${user.id}`}>{user.friendsCount}</Link></span>
               </div>
             </div>
           </div>

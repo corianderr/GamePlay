@@ -108,7 +108,8 @@ public class UserService : IUserService
         {
             AccessToken = JwtHelper.GenerateAccessToken(user, _configuration, roles),
             Roles = roles,
-            Id = user.Id
+            Id = user.Id,
+            Username = user.UserName
         };
         return responseModel;
 

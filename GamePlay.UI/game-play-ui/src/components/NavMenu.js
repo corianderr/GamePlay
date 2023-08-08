@@ -41,7 +41,10 @@ export default function NavMenu() {
             <Link to="/users">Users</Link>
           </Typography>
           {auth?.accessToken ? 
-          <span onClick={logout} style={{cursor:'pointer'}}>Logout</span> :
+          <>
+          <Link to={`/userDetails/${auth?.id}`} className='me-3'>Hello, {auth?.username}!</Link>
+          <span onClick={logout} style={{cursor:'pointer'}}>Logout</span>
+          </> :
           <Link to="/login">Login</Link>}
         </Toolbar>
       </AppBar>

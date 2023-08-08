@@ -1,9 +1,3 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
 import useAxiosPrivate from 'hooks/useAxiosPrivate';
@@ -26,28 +20,30 @@ export default function NavMenu() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar sx={{background: '#607d8b'}}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/users">Users</Link>
-          </Typography>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <Link to="/users" className="logo navbar-brand">Game Play</Link>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav w-100">
+      <li><a class="active" href="#" className='nav-link'>Games</a></li>
           {auth?.accessToken ? 
           <>
-          <Link to={`/userDetails/${auth?.id}`} className='me-3'>Hello, {auth?.username}!</Link>
-          <span onClick={logout} style={{cursor:'pointer'}}>Logout</span>
+          <li class="nav-item">
+            <Link to="/users" className='nav-link'>Users</Link></li>
+          <li class="nav-item">
+            <a className='nav-link' href="#">Game Rounds</a></li>
+          <li className='ms-auto nav-item'>
+          <Link to={`/userDetails/${auth?.id}`} className='nav-link'>Hello, {auth?.username}!</Link>
+          </li>
+          <li class="nav-item"><span onClick={logout} className='nav-link'>Logout</span></li>
           </> :
-          <Link to="/login">Login</Link>}
-        </Toolbar>
-      </AppBar>
-    </Box>
+          <li className='ms-auto nav-item'><Link to="/login" className='nav-link'>Login</Link></li>}
+      </ul>
+    </div>
+  </div>
+</nav>
   );
 }

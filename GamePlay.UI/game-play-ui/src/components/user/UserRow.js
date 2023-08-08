@@ -1,12 +1,9 @@
-import { Button } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
-import { axiosPrivate } from "../../api/axios";
-import { useEffect, useState } from "react";
 import RelationButton from "./RelationButton";
 import { Link } from "react-router-dom";
 
-const UserRow = ({user, relation}) => {
-    const {auth} = useAuth();
+const UserRow = ({ user, relation }) => {
+  const { auth } = useAuth();
 
   return (
     <tr className="candidates-list">
@@ -32,7 +29,7 @@ const UserRow = ({user, relation}) => {
             <RelationButton relation={relation} userId={user.id}/>
         </td>
     </tr>
-  )
-}
+  );
+};
 
-export default UserRow
+export default UserRow;

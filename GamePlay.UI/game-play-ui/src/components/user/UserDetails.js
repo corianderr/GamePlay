@@ -22,7 +22,7 @@ const UserDetails = () => {
     let isMounted = true;
     const controller = new AbortController();
 
-    const getUsers = async () => {
+    const getUser = async () => {
       try {
         const response = await axiosPrivate.get(`/User/details/${userId}`, {
           signal: controller.signal,
@@ -44,7 +44,7 @@ const UserDetails = () => {
     };
 
     if (relation === -1) {
-      getUsers();
+      getUser();
     }
 
     return () => {

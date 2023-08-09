@@ -38,11 +38,11 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(response?.data);
-            const accessToken = response?.data?.result.accessToken;
-            const roles = response?.data?.result.roles;
-            const id = response?.data?.result.id;
-            const username = response?.data?.result.username;
+            const data = response?.data?.result;
+            const accessToken = data.accessToken;
+            const roles = data.roles;
+            const id = data.id;
+            const username = data.username;
             setAuth({ user, pwd, accessToken, roles, id, username });
             setUser('');
             setPwd('');
@@ -73,7 +73,7 @@ const Login = () => {
         <section className='mx-auto'>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h1>Sign In</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='auth-form'>
                 <label htmlFor="username">Username Or Email:</label>
                 <input
                     type="text"

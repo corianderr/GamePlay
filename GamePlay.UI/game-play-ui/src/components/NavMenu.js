@@ -23,7 +23,7 @@ export default function NavMenu() {
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <Link to="/users" className="logo navbar-brand">
+        <Link to="/games" className="logo navbar-brand">
           Game Play
         </Link>
         <button

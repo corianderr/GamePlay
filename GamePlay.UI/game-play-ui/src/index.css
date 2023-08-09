@@ -16,8 +16,8 @@ body {
     background-color: #E0E0E2;
 }
 
-.bg-green{
-    background-color: #0B5563;
+a {
+    text-decoration: none;
 }
 
 .App {
@@ -44,7 +44,7 @@ section a{
     color: white;
 }
 
-form {
+.auth-form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -63,7 +63,7 @@ textarea {
   border-color: white;
 }
 
-label,
+.auth-form label,
 button {
   margin-top: 1rem;
 }
@@ -147,44 +147,7 @@ body {
     clear: both;
 }
 
-.rating {
-    font-size: 40px;
-    unicode-bidi: bidi-override;
-    direction: rtl;
-    text-align: center;
-    position: relative;
-}
 
-.rating > label {
-    float: right;
-    display: inline;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    width: 1.1em;
-    cursor: pointer;
-    color: #000;
-}
-
-.show-result > label {
-    cursor: default;
-}
-
-.choose > label:hover,
-.choose > label:hover ~ label,
-.rating > input.radio-btn:checked ~ label {
-    color: transparent;
-}
-
-.choose > label:hover:before,
-.choose > label:hover ~ label:before,
-.rating > input.radio-btn:checked ~ label:before,
-.rating > input.radio-btn:checked ~ label:before {
-    content: "\2605";
-    position: absolute;
-    left: 0;
-    color: #FFD700;
-}
 
 
 .notification-dot {
@@ -224,7 +187,6 @@ body {
 
 header a{
     color: white;
-    text-decoration: none;
 }
 
 .bell{

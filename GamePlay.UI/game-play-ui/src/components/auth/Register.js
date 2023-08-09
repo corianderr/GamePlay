@@ -70,7 +70,6 @@ const Register = () => {
                     withCredentials: true
                 }
             );
-            console.log(response?.data);
             setSuccess(true);
             setUser('');
             setPwd('');
@@ -100,7 +99,7 @@ const Register = () => {
                 <section className='mx-auto'>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Register</h1>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className='auth-form'>
                         <label htmlFor="username">
                             Username:
                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />

@@ -57,7 +57,7 @@ public class UserService : IUserService
         if (!result.Succeeded) throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
 
         var userId = (await _userManager.FindByNameAsync(user.UserName)).Id;
-        await _collectionService.CreateAsync(new CreateCollectionModel() { Name = "My Collection", UserId = userId });
+        await _collectionService.CreateAsync(new CreateCollectionModel() { Name = "My Collection", UserId = userId, IsDefault = true });
         
         return new BaseModel
         {

@@ -109,7 +109,7 @@ public class GameController : ApiController
 
     // POST: Games/DeleteRating/5
     [Authorize]
-    [HttpDelete("DeleteRating/{id:guid}")]
+    [HttpDelete("deleteRating/{id:guid}")]
     public async Task<ActionResult> DeleteRating(Guid id)
     {
         var gameId = (await _ratingService.GetByIdAsync(id)).GameId;

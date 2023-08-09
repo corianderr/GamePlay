@@ -51,7 +51,19 @@ const GameDetails = () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [rating]);
+
+  const deleteRating = (id) => {
+    const deleteAsync = async () => {
+      const response = await axiosPrivate.delete(`/Game/deleteRating/${id}`);
+      console.log(response);
+      if (response.data.succeeded) {
+        console.log("RESET RATING");
+        setRating(-1);
+      }
+    };
+    deleteAsync();
+  };
 
   return (
     <>
@@ -84,7 +96,14 @@ const GameDetails = () => {
                         isChangeable={false}
                         value={rating.rating}
                       />
-                      <span className="my-auto">{rating.rating}</span>
+                      <span className="my-auto">
+                        {rating.rating}
+                        <FontAwesomeIcon
+                          icon="fa-solid fa-trash"
+                          style={{ color: "#696e77", cursor: "pointer" }}
+                          onClick={() => deleteRating(rating.id)}
+                        />
+                      </span>
                     </>
                   )}
                 </div>

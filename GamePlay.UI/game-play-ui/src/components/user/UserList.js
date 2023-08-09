@@ -1,4 +1,5 @@
 import UserRow from "./UserRow";
+import "../styles/user.css"
 
 const UserList = ({ header, users, relations }) => {
 

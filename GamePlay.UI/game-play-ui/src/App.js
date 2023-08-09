@@ -13,6 +13,7 @@ import { faBell, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import Notifications from "components/user/Notifications";
 import Followers from "components/user/Followers";
 import Friends from "components/user/Friends";
+import Games from "components/game/Games";
 
 
 const ROLES = {
@@ -30,6 +31,7 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="/" element={<Home />} />
+        <Route path="/games" element={<Games />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>

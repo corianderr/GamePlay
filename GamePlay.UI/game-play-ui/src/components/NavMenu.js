@@ -40,9 +40,9 @@ export default function NavMenu() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav w-100">
             <li>
-              <a class="active" href="#" className="nav-link">
+              <Link to="/games" className="nav-link active">
                 Games
-              </a>
+              </Link>
             </li>
             {auth?.accessToken ? (
               <>

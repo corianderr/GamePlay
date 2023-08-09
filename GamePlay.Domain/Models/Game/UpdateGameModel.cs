@@ -20,6 +20,9 @@ public class UpdateGameModel
     [DisplayName("Name in english")]
     public string? NameEn { get; set; }
 
+    [Required(ErrorMessage = "Please enter game description.")]
+    public string? Description { get; set; }
+
     public string? PhotoPath { get; set; }
 
     [Range(1, 100, ErrorMessage = "Min players value must be between 1 and 100")]
@@ -52,7 +55,8 @@ public class UpdateGameModel
     public int MaxPlayTime { get; set; }
 
     [YearRange(1800,
-        ErrorMessage = "You definitely messed something up. Games in such a distant past have not yet been released. Enter a year between 1800 and the current year.")]
+        ErrorMessage =
+            "You definitely messed something up. Games in such a distant past have not yet been released. Enter a year between 1800 and the current year.")]
     [Required(ErrorMessage = "Please enter year of release.")]
     [DisplayName("Year of Release")]
     public int YearOfRelease { get; set; }

@@ -56,55 +56,54 @@ const GameDetails = () => {
   return (
     <>
       <div>
-        <h2 class="text-center">{game.name}</h2>
-        <div class="card h-100 w-75 mx-auto">
-          <img class="card-img-top" src={game.photoPath} alt="Game image" />
-          <div class="card-body my-auto">
+        <h2 className="text-center">{game.name}</h2>
+        <div className="card h-100 w-75 mx-auto">
+          <img className="card-img-top" src={game.photoPath} alt="Game image" />
+          <div className="card-body my-auto">
             <div className="d-flex">
               <div>
-                <h5 class="card-title">
+                <h4 className="card-title">
                   {game.nameRu} / {game.nameEn}{" "}
                   <span className="text-black-50">({game.minAge}+)</span>
-                </h5>
-                <p class="card-text">
+                </h4>
+                <p className="card-text">
                   From {game.minPlayers} to {game.maxPlayers} participants
                   <br />
                   Time: {game.minPlayTime} - {game.maxPlayTime} minutes
                   <br />
                 </p>
               </div>
-              <div class="d-flex ms-auto mb-auto">
-                {rating === null ? (
-                  <StarRating step={1} />
-                ) : (
-                  <label class="rating-label my-auto">
-                    <input
-                      class="rating"
-                      max="5"
-                      step="0.25"
-                      style={{ "--value": `${game.averageRating}` }}
-                      type="range"
-                      value={game.averageRating}
-                    />
-                  </label>
-                )}
-                {game.averageRating !== undefined && (
-                    <span className="my-auto">
-                      {game.averageRating.toFixed(2)}
-                    </span>
+              <div className="ms-auto mb-auto text-end">
+                <div className="d-flex">
+                  {rating === null ? (
+                    <StarRating step={1} isChangeable={true} />
+                  ) : (
+                    <>
+                      <StarRating
+                        step={0.1}
+                        isChangeable={false}
+                        value={rating.rating}
+                      />
+                      <span className="my-auto">{rating.rating}</span>
+                    </>
                   )}
+                </div>
+                {game.averageRating !== undefined && (
+                  <span className="my-auto">
+                    Average Rating: {game.averageRating.toFixed(2)}
+                  </span>
+                )}
               </div>
-              
             </div>
 
             {auth?.id && (
-              <div class="my-3">
+              <div className="my-3">
                 {availableCollections.length === 0 ? (
                   <p>The game is already in all your collections.</p>
                 ) : (
                   <button
                     type="button"
-                    class="btn btn-warning"
+                    className="btn btn-warning"
                     data-bs-toggle="modal"
                     data-bs-target="#addCollectionModal"
                   >
@@ -113,27 +112,27 @@ const GameDetails = () => {
                 )}
               </div>
             )}
-            <div class="my-3">
+            <div className="my-3">
               {auth?.id && (
-                <a class="btn btn-secondary btn-sm me-2">
+                <a className="btn btn-secondary btn-sm me-2">
                   {game.name} Round Results
                 </a>
               )}
-              <Link class="btn btn-secondary btn-sm" to="/games">
+              <Link className="btn btn-secondary btn-sm" to="/games">
                 Back to List
               </Link>
             </div>
             <div>
               {auth?.roles?.includes("admin") ?? (
                 <>
-                  <a class="btn btn-light">Add a Round Result</a>
-                  <a class="btn btn-light">Edit</a>
-                  <a class="btn btn-light">Delete</a>
+                  <a className="btn btn-light">Add a Round Result</a>
+                  <a className="btn btn-light">Edit</a>
+                  <a className="btn btn-light">Delete</a>
                 </>
               )}
             </div>
           </div>
-          <div class="card-footer text-body-secondary">
+          <div className="card-footer text-body-secondary">
             Released in {game.yearOfRelease}
             <br />
           </div>
@@ -141,28 +140,33 @@ const GameDetails = () => {
       </div>
 
       <div
-        class="modal fade"
+        className="modal fade"
         id="addCollectionModal"
         tabIndex="-1"
         role="dialog"
         aria-labelledby="addCollectionModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title fs-5" id="addCollectionModalLabel">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title fs-5" id="addCollectionModalLabel">
                 Add in collection
               </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <form>
                 <input type="hidden" name="id" value="@Model.Game.Id" />
-                <div class="form-group">
-                  <label for="collectionSelect">Select collection</label>
+                <div className="form-group">
+                  <label htmlFor="collectionSelect">Select collection</label>
                   <select
-                    class="form-control"
+                    className="form-control"
                     id="collectionSelect"
                     name="collectionId"
                   >
@@ -176,7 +180,7 @@ const GameDetails = () => {
                 <input
                   type="submit"
                   value="Add to collection"
-                  class="btn btn-warning"
+                  className="btn btn-warning"
                 />
               </form>
             </div>

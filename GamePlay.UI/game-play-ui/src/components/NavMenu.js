@@ -21,13 +21,13 @@ export default function NavMenu() {
   };
 
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
         <Link to="/games" className="logo navbar-brand">
           Game Play
         </Link>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -35,10 +35,10 @@ export default function NavMenu() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav w-100">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav w-100">
             <li>
               <Link to="/games" className="nav-link active">
                 Games
@@ -46,17 +46,17 @@ export default function NavMenu() {
             </li>
             {auth?.accessToken ? (
               <>
-                <li class="nav-item">
+                <li className="nav-item">
                   <Link to="/users" className="nav-link">
                     Users
                   </Link>
                 </li>
-                <li class="nav-item">
+                <li className="nav-item">
                   <a className="nav-link" href="#">
                     Game Rounds
                   </a>
                 </li>
-                <li class="ms-auto nav-item">
+                <li className="ms-auto nav-item">
                   <Link to={`/notifications`}>
                     <FontAwesomeIcon
                       icon="fa-solid fa-bell"
@@ -69,7 +69,7 @@ export default function NavMenu() {
                     Hello, {auth?.username}!
                   </Link>
                 </li>
-                <li class="nav-item">
+                <li className="nav-item">
                   <span
                     onClick={logout}
                     className="nav-link"

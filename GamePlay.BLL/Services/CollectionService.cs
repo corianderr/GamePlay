@@ -28,17 +28,22 @@ public class CollectionService : ICollectionService
         return _mapper.Map<CollectionModel>(collection);
     }
 
-    public async Task<IEnumerable<CollectionModel>> GetAllAsync(Expression<Func<CollectionModel, bool>>? predicate = null)
+    public async Task<IEnumerable<CollectionModel>> GetAllAsync(
+        Expression<Func<CollectionModel, bool>>? predicate = null)
     {
-        var collections = await _collectionRepository.GetAllAsync(_mapper.Map<Expression<Func<Collection, bool>>>(predicate));
+        var collections =
+            await _collectionRepository.GetAllAsync(_mapper.Map<Expression<Func<Collection, bool>>>(predicate));
         return _mapper.Map<IEnumerable<CollectionModel>>(collections);
     }
 
-    public async Task<BaseModel> CreateAsync(CreateCollectionModel createCollectionModel, CancellationToken cancellationToken = default)
+    public async Task<BaseModel> CreateAsync(CreateCollectionModel createCollectionModel,
+        CancellationToken cancellationToken = default)
     {
-        var isExist = await _collectionRepository.GetFirstAsync(g => g.Name.Equals(createCollectionModel.Name) && g.UserId.Equals(createCollectionModel.UserId)) != null;
+        var isExist = await _collectionRepository.GetFirstAsync(g =>
+            g.Name.Equals(createCollectionModel.Name) && g.UserId.Equals(createCollectionModel.UserId)) != null;
         if (isExist)
-            throw new ArgumentException("The collection with that name already exists, but you can create another one :)");
+            throw new ArgumentException(
+                "The collection with that name already exists, but you can create another one :)");
 
         var collection = _mapper.Map<Collection>(createCollectionModel);
         return new BaseModel
@@ -53,7 +58,8 @@ public class CollectionService : ICollectionService
         await _collectionRepository.DeleteAsync(collection);
     }
 
-    public async Task UpdateAsync(Guid id, CollectionModel updateCollectionModel, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Guid id, CollectionModel updateCollectionModel,
+        CancellationToken cancellationToken = default)
     {
         var collection = await _collectionRepository.GetFirstAsync(g => g.Id.Equals(id));
         _mapper.Map(updateCollectionModel, collection);
@@ -72,9 +78,11 @@ public class CollectionService : ICollectionService
         await _collectionRepository.DeleteGameAsync(game, collectionId);
     }
 
-    public async Task<IEnumerable<CollectionModel>> GetAllWhereMissing(Guid gameId)
+    public async Task<IEnumerable<CollectionModel>> GetAllWhereMissing(string userId, Guid gameId)
     {
-        var collections = await _collectionRepository.GetAllAsync(c => !c.Games.Any(g => g.Id.Equals(gameId)));
+        var collections =
+            await _collectionRepository.GetAllAsync(c =>
+                !c.Games.Any(g => g.Id.Equals(gameId)) && c.UserId.Equals(userId));
         return _mapper.Map<IEnumerable<CollectionModel>>(collections);
     }
 }

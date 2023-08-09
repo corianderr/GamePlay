@@ -39,7 +39,7 @@ public class GameController : ApiController
         {
             Rating = await _ratingService.GetByUserAndGameAsync(User.Identity.GetUserId(), id),
             Game = await _gameService.GetByIdAsync(id),
-            AvailableCollections = await _collectionService.GetAllWhereMissing(id)
+            AvailableCollections = await _collectionService.GetAllWhereMissing(User.Identity.GetUserId(), id)
         };
         return Ok(ApiResult<GameDetailsViewModel>.Success(gameDetailsViewModel));
     }

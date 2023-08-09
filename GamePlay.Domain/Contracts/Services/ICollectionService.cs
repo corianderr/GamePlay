@@ -22,6 +22,6 @@ public interface ICollectionService
         CancellationToken cancellationToken = default);
     Task AddGameAsync(Guid gameId, Guid collectionId);
     Task DeleteGameAsync(Guid gameId, Guid collectionId);
-    Task<IEnumerable<CollectionModel>> GetAllWhereMissing(Guid gameId);
+    Task<IEnumerable<CollectionModel>> GetAllWhereMissing(string userId, Guid gameId);
 
 }

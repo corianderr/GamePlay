@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import "../styles/game.css";
 
 const Games = () => {
@@ -53,9 +53,11 @@ const Games = () => {
                       <div class="d-flex flex-column ms-2">
                         <span>{game.name}</span>
                         <span class="text-black-50">{game.nameRu} ({game.minAge}+)</span>
+                        {game.averageRating !== undefined && (
                         <span class="ratings">
-                            {game.averageRating} <i class="fa fa-star"></i>
+                            {game.averageRating.toFixed(2)} <i class="fa fa-star"></i>
                         </span>
+                  )}
                       </div>
                     </div>
                     <h6 className="mb-3">
@@ -64,9 +66,9 @@ const Games = () => {
                     </h6>
                     <div class="d-flex justify-content-between install mt-auto">
                       <span>Released in {game.yearOfRelease}</span>
-                      <span class="text-primary">
+                      <Link class="text-primary" to={`/gameDetails/${game.id}`}>
                         View&nbsp;<i class="fa fa-angle-right"></i>
-                      </span>
+                      </Link>
                     </div>
                   </div>
                 </div>

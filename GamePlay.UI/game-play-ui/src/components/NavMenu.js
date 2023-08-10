@@ -52,9 +52,9 @@ export default function NavMenu() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to="/gameRounds">
                     Game Rounds
-                  </a>
+                  </Link>
                 </li>
                 <li className="ms-auto nav-item">
                   <Link to={`/notifications`}>

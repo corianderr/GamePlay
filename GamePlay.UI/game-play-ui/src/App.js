@@ -16,6 +16,7 @@ import Friends from "components/user/Friends";
 import Games from "components/game/Games";
 import GameDetails from "components/game/GameDetails";
 import CollectionDetails from "components/game/CollectionDetails";
+import GameRounds from "components/game/GameRounds";
 
 
 const ROLES = {
@@ -44,6 +45,7 @@ function App() {
             <Route path="/userDetails/:userId" element={<UserDetails />} />
             <Route path="/gameDetails/:gameId" element={<GameDetails />} />
             <Route path="/collectionDetails/:collectionId" element={<CollectionDetails />} />
+            <Route path="/gameRounds" element={<GameRounds />} />
           </Route>
         </Route>
       </Route>

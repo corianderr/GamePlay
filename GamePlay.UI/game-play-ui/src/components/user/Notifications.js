@@ -15,7 +15,7 @@ const Notifications = () => {
 
     const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get("/User/showNotifications", {
+        const response = await axiosPrivate.get("/user/showNotifications", {
           signal: controller.signal,
         });
         console.log(response.data);

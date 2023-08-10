@@ -27,7 +27,7 @@ const GameDetails = () => {
 
     const getGame = async () => {
       try {
-        const response = await axiosPrivate.get(`/Game/details/${gameId}`, {
+        const response = await axiosPrivate.get(`/game/details/${gameId}`, {
           signal: controller.signal,
         });
         if (isMounted) {

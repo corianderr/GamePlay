@@ -24,7 +24,7 @@ const UserDetails = () => {
 
     const getUser = async () => {
       try {
-        const response = await axiosPrivate.get(`/User/details/${userId}`, {
+        const response = await axiosPrivate.get(`/user/details/${userId}`, {
           signal: controller.signal,
         });
         if (isMounted) {
@@ -55,7 +55,7 @@ const UserDetails = () => {
 
   const updateUser = () => {
     const getUser = async () => {
-      const response = await axiosPrivate.get(`/User/getById/${userId}`);
+      const response = await axiosPrivate.get(`/user/getById/${userId}`);
       setUser(response.data.result);
     }
     getUser();
@@ -117,17 +117,15 @@ const UserDetails = () => {
         <h3>{user.userName}'s Collections</h3>
       )}
 
-      {/* TODO: Fix links in block above */}
       <div className="row">
         {collections.map((item) => (
           <div
             className="col-sm-4 mb-3"
             key={item.id}
-            style={{ cursor: "pointer" }}
           >
             <div className="card h-100 text-center">
               <div className="card-body my-auto color">
-                <h5 className="card-title">{item.name}</h5>
+                <h5 className="card-title"><Link to={`/collectionDetails/${item.id}`} className="text-black">{item.name}</Link></h5>
                 {user.id === auth?.id && (
                   <div>
                     <a

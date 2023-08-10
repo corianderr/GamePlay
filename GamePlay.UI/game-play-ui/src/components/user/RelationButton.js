@@ -10,7 +10,7 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
   }, [relation, userId]);
 
   const follow = async () => {
-    const response = await axiosPrivate.post(`User/follow?id=${userId}`);
+    const response = await axiosPrivate.post(`user/follow?id=${userId}`);
     if (response.data.succeeded) {
       setButton(chooseButton(1));
       if (userUpdate !== undefined) {
@@ -20,7 +20,7 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
   };
 
   const accept = async () => {
-    const response = await axiosPrivate.post(`User/becomeFriends?id=${userId}`);
+    const response = await axiosPrivate.post(`user/becomeFriends?id=${userId}`);
     if (response.data.succeeded) {
       setButton(chooseButton(3));
       if (userUpdate !== undefined) {

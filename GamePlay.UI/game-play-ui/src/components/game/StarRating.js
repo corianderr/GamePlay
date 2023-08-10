@@ -25,7 +25,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
 
   const deleteRating = (id) => {
     const deleteAsync = async () => {
-      const response = await axiosPrivate.delete(`/Game/deleteRating/${id}`);
+      const response = await axiosPrivate.delete(`/game/deleteRating/${id}`);
       console.log(response);
       if (response.data.succeeded) {
         setIsChangeable(true);

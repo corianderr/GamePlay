@@ -19,7 +19,7 @@ const Followers = () => {
   
       const getUsers = async () => {
         try {
-          const response = await axiosPrivate.get(`/User/showRelations/${userId}&false`, {
+          const response = await axiosPrivate.get(`/user/showRelations/${userId}&false`, {
             signal: controller.signal,
           });
           console.log(response.data);

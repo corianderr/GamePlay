@@ -15,6 +15,7 @@ import Followers from "components/user/Followers";
 import Friends from "components/user/Friends";
 import Games from "components/game/Games";
 import GameDetails from "components/game/GameDetails";
+import CollectionDetails from "components/game/CollectionDetails";
 
 
 const ROLES = {
@@ -42,6 +43,7 @@ function App() {
             <Route path="/friends/:userId" element={<Friends />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
             <Route path="/gameDetails/:gameId" element={<GameDetails />} />
+            <Route path="/collectionDetails/:collectionId" element={<CollectionDetails />} />
           </Route>
         </Route>
       </Route>

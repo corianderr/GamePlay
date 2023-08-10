@@ -15,7 +15,7 @@ const Users = () => {
 
     const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get("/User", {
+        const response = await axiosPrivate.get("/user", {
           signal: controller.signal,
         });
         console.log(response.data);
@@ -39,7 +39,7 @@ const Users = () => {
 
   return (
     <>
-      <UserList header={"Users"} users={users}></UserList>
+      <UserList header={"Users"} users={users} />
     </>
   );
 };

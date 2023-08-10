@@ -51,3 +51,7 @@
     display: block;
     font-family: ui-sans-serif, system-ui, sans-serif;
   }
+
+.save-button {
+  font-size: 0.7rem;
+}

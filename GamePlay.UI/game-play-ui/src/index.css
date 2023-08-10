@@ -63,7 +63,7 @@ textarea {
   border-color: white;
 }
 
-.auth-form label,
+.auth-form label, .auth-form
 button {
   margin-top: 1rem;
 }
@@ -146,9 +146,6 @@ body {
     float: none;
     clear: both;
 }
-
-
-
 
 .notification-dot {
     height: 12px;

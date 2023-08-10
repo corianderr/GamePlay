@@ -95,7 +95,7 @@ public class GameController : ApiController
 
     // POST: Games/RateGame
     [Authorize]
-    [HttpPost("RateGame")]
+    [HttpPost("rateGame")]
     public async Task<ActionResult> RateGame(Guid id, int rating)
     {
         var gameRating = new CreateGameRatingModel

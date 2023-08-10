@@ -53,16 +53,9 @@ const GameDetails = () => {
     };
   }, [rating]);
 
-  const deleteRating = (id) => {
-    const deleteAsync = async () => {
-      const response = await axiosPrivate.delete(`/Game/deleteRating/${id}`);
-      console.log(response);
-      if (response.data.succeeded) {
-        console.log("RESET RATING");
-        setRating(-1);
-      }
-    };
-    deleteAsync();
+  const resetRating = () => {
+    console.log("RESET RATING");
+    setRating(-1);
   };
 
   return (
@@ -86,32 +79,18 @@ const GameDetails = () => {
                 </p>
               </div>
               <div className="ms-auto mb-auto text-end">
-                <div className="d-flex">
                   {rating === null ? (
-                    <StarRating step={1} isChangeable={true} />
+                    <StarRating isEditable={true} resetRating={resetRating} game={game} />
                   ) : (
                     <>
                       <StarRating
-                        step={0.1}
-                        isChangeable={false}
-                        value={rating.rating}
+                        isEditable={false}
+                        value={rating}
+                        game={game} resetRating={resetRating}
                       />
-                      <span className="my-auto">
-                        {rating.rating}
-                        <FontAwesomeIcon
-                          icon="fa-solid fa-trash"
-                          style={{ color: "#696e77", cursor: "pointer" }}
-                          onClick={() => deleteRating(rating.id)}
-                        />
-                      </span>
+                      
                     </>
                   )}
-                </div>
-                {game.averageRating !== undefined && (
-                  <span className="my-auto">
-                    Average Rating: {game.averageRating.toFixed(2)}
-                  </span>
-                )}
               </div>
             </div>
 

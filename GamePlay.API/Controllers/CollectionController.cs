@@ -17,32 +17,32 @@ public class CollectionController : ApiController
         _collectionService = collectionService;
     }
 
-    // GET: Collections/Details/5
-    [HttpGet("GetById/{id:guid}")]
+    // GET: Collections/getById/5
+    [HttpGet("getById/{id:guid}")]
     public async Task<ActionResult> Details(Guid id)
     {
         var collection = await _collectionService.GetByIdAsync(id);
         return Ok(ApiResult<CollectionModel>.Success(collection));
     }
     
-    // POST: Collections/AddGame
-    [HttpPost("AddGame")]
+    // POST: Collections/addGame
+    [HttpPost("addGame")]
     public async Task<ActionResult> AddGame(Guid id, Guid collectionId)
     {
         await _collectionService.AddGameAsync(id, collectionId);
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = collectionId}));
     }
     
-    // POST: Collections/DeleteFromCollection
-    [HttpPost("DeleteGame")]
+    // POST: Collections/deleteGame
+    [HttpPost("deleteGame")]
     public async Task<ActionResult> DeleteFromCollection(Guid id, Guid collectionId)
     {
         await _collectionService.DeleteGameAsync(id, collectionId);
         return Ok(ApiResult<BaseModel>.Success(new BaseModel(){Id = collectionId}));
     }
 
-    // POST: Collections/Create
-    [HttpPost]
+    // POST: Collections/create
+    [HttpPost("create")]
     public async Task<ActionResult> Create(CreateCollectionModel collectionModel)
     {
         try

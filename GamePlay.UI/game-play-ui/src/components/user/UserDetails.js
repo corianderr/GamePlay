@@ -76,7 +76,7 @@ const UserDetails = () => {
             </div>
           </div>
           <div className="mt-2 text-center">
-            <h4 className="mb-0">{user.username}</h4>
+            <h4 className="mb-0">{user.userName}</h4>
             <span className="text-muted d-block mb-2">{user.email}</span>
             {user.id === auth?.id ? (
               <a className="btn btn-primary btn-sm follow" href="/Users/Edit">
@@ -106,7 +106,7 @@ const UserDetails = () => {
             <h5>I don't have any collections yet :( <br/>Add one <FontAwesomeIcon icon="fa-solid fa-square-plus" className="ms-2 opacity-75"/></h5>
           </>
         ) : (
-          <h5>{user.username} does not have any collections yet :(</h5>
+          <h5>{user.userName} does not have any collections yet :(</h5>
         )
       ) : user.id === auth?.id ? (
         <div className="d-flex">
@@ -114,7 +114,7 @@ const UserDetails = () => {
           
         </div>
       ) : (
-        <h3>{user.username}'s Collections</h3>
+        <h3>{user.userName}'s Collections</h3>
       )}
 
       {/* TODO: Fix links in block above */}

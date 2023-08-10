@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRating from "./StarRating";
+import { toast } from "react-toastify";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -12,6 +13,8 @@ const GameDetails = () => {
   const [game, setGame] = useState({});
   const [rating, setRating] = useState(-1);
   const [availableCollections, setAvailableCollections] = useState([]);
+  const [collectionId, setCollectionId] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,6 +61,28 @@ const GameDetails = () => {
     setRating(-1);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if(collectionId === null){
+      setErrMsg("You should choose at least one collection.");
+      return;
+    }
+
+    const response = await axiosPrivate.post(
+      `collection/addGame?id=${gameId}&collectionId=${collectionId}`,
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    resetRating();
+  };
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [collectionId])
+
   return (
     <>
       <div>
@@ -79,18 +104,22 @@ const GameDetails = () => {
                 </p>
               </div>
               <div className="ms-auto mb-auto text-end">
-                  {rating === null ? (
-                    <StarRating isEditable={true} resetRating={resetRating} game={game} />
-                  ) : (
-                    <>
-                      <StarRating
-                        isEditable={false}
-                        value={rating}
-                        game={game} resetRating={resetRating}
-                      />
-                      
-                    </>
-                  )}
+                {rating === null ? (
+                  <StarRating
+                    isEditable={true}
+                    resetRating={resetRating}
+                    game={game}
+                  />
+                ) : (
+                  <>
+                    <StarRating
+                      isEditable={false}
+                      value={rating}
+                      game={game}
+                      resetRating={resetRating}
+                    />
+                  </>
+                )}
               </div>
             </div>
 
@@ -159,15 +188,23 @@ const GameDetails = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <form>
-                <input type="hidden" name="id" value="@Model.Game.Id" />
+            <p  className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+              <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="collectionSelect">Select collection</label>
                   <select
                     className="form-control"
                     id="collectionSelect"
                     name="collectionId"
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      setCollectionId(e.target.value);
+                    }}
+                    required
                   >
+                    <option selected="true" disabled="disabled">
+                      Choose Collection
+                    </option>
                     {availableCollections.map((collection, i) => (
                       <option value={collection.id} key={i}>
                         {collection.name}
@@ -175,11 +212,7 @@ const GameDetails = () => {
                     ))}
                   </select>
                 </div>
-                <input
-                  type="submit"
-                  value="Add to collection"
-                  className="btn btn-warning"
-                />
+                <button className="btn btn-warning">Add to collection</button>
               </form>
             </div>
           </div>

@@ -32,7 +32,7 @@ public class GameController : ApiController
     }
 
     // GET: Games/Details/5
-    [HttpGet("Details/{id:guid}")]
+    [HttpGet("details/{id:guid}")]
     public async Task<ActionResult> Details(Guid id)
     {
         var gameDetailsViewModel = new GameDetailsViewModel()
@@ -44,7 +44,7 @@ public class GameController : ApiController
         return Ok(ApiResult<GameDetailsViewModel>.Success(gameDetailsViewModel));
     }
 
-    [HttpGet("GetById/{id:guid}")]
+    [HttpGet("getById/{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var game = await _gameService.GetByIdAsync(id);

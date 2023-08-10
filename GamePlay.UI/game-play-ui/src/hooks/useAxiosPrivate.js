@@ -29,10 +29,11 @@ const useAxiosPrivate = () => {
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                     return axiosPrivate(prevRequest);
                 }
-                else{
+                else if (error?.response?.status !== 200){
                     console.log("RESPONSE ERROR")
                     console.log(error?.response)
-                    toast.error(error?.response?.data?.Errors);
+                    console.log(error?.response?.data?.errors)
+                    toast.error(error?.response?.data?.errors);
                 }
                 return Promise.reject(error);
             }

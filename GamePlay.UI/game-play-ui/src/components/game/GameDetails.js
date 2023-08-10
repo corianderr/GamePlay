@@ -141,13 +141,10 @@ const GameDetails = () => {
             )}
             <div className="my-3">
               {auth?.id && (
-                <a className="btn btn-secondary btn-sm me-2">
-                  {game.name} Round Results
-                </a>
+                <Link className="btn-sm me-2 text-black-50">
+                  <FontAwesomeIcon icon="fa-solid fa-square-poll-vertical" size="2xl" style={{color: "#fdce3f",}} /> Results
+                </Link>
               )}
-              <Link className="btn btn-secondary btn-sm" to="/games">
-                Back to List
-              </Link>
             </div>
             <div>
               {auth?.roles?.includes("admin") ?? (

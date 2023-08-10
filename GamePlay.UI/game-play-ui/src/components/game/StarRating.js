@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import React, { useEffect, useReducer, useState } from "react";
+import { toast } from "react-toastify";
 
 const StarRating = ({ isEditable, value, game, resetRating }) => {
   const [ratingId, setRatingId] = useState(0);
@@ -36,6 +37,11 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
   };
 
   const addRating = (gameId, rating) => {
+    if (rating === undefined){
+      toast.error("Rate before saving!");
+      return;
+    }
+
     const addAsync = async () => {
       const response = await axiosPrivate.post(
         `/Game/rateGame?id=${gameId}&rating=${rating}`

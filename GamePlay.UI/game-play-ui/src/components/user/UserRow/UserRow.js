@@ -1,5 +1,5 @@
-import useAuth from "../../hooks/useAuth";
-import RelationButton from "./RelationButton";
+import useAuth from "../../../hooks/useAuth";
+import RelationButton from "../RelationButton/RelationButton";
 import { Link } from "react-router-dom";
 
 const UserRow = ({ user, relation }) => {

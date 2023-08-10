@@ -1,22 +1,22 @@
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
+import Register from "./components/auth/Register/Register";
+import Login from "./components/auth/Login/Login";
 import Home from "./components/Home";
-import Users from "./components/user/Users";
-import Unauthorized from "./components/auth/Unauthorized";
-import RequireAuth from "./components/auth/RequireAuth";
+import Users from "./containers/Users/Users";
+import Unauthorized from "./components/auth/Unauthorized/Unauthorized";
+import RequireAuth from "./components/auth/RequireAuth/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import PersistLogin from "./components/auth/PersistLogin";
-import UserDetails from "./components/user/UserDetails";
+import PersistLogin from "./components/auth/PersistLogin/PersistLogin";
+import UserDetails from "./containers/UserDetails/UserDetails";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBell, faSquarePlus, faTrash, faSquarePollVertical } from '@fortawesome/free-solid-svg-icons';
-import Notifications from "components/user/Notifications";
-import Followers from "components/user/Followers";
-import Friends from "components/user/Friends";
-import Games from "components/game/Games";
-import GameDetails from "components/game/GameDetails";
-import CollectionDetails from "components/game/CollectionDetails";
-import GameRounds from "components/game/GameRounds";
+import Notifications from "containers/Notifications/Notifications";
+import Friends from "containers/Friends/Friends";
+import Followers from "containers/Followers/Followers";
+import CollectionDetails from "containers/CollectionDetails/CollectionDetails";
+import GameDetails from "containers/GameDetails/GameDetails";
+import Games from "containers/Games/Games";
+import GameRounds from "components/game/GameRounds/GameRounds";
 
 
 const ROLES = {

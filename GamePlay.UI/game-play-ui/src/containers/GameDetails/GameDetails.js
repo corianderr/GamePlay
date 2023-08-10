@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import StarRating from "./StarRating";
+import StarRating from "../../components/game/StarRating/StarRating";
 import { toast } from "react-toastify";
 
 const GameDetails = () => {

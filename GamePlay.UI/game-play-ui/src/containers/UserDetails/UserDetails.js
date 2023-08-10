@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RelationButton from "./RelationButton";
+import RelationButton from "../../components/user/RelationButton/RelationButton";
 import useAuth from "../../hooks/useAuth";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";

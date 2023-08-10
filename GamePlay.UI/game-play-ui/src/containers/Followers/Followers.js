@@ -1,7 +1,7 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import UserList from "./UserList";
+import UserList from "../../components/user/UserList/UserList";
 import useAuth from "hooks/useAuth";
 
 const Followers = () => {

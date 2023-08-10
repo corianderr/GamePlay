@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
-import UserList from "./UserList";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import UserList from "../../components/user/UserList/UserList";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
+const Notifications = () => {
+  const [subscribers, setSubscribers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,11 +15,11 @@ const Users = () => {
 
     const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get("/user", {
+        const response = await axiosPrivate.get("/user/showNotifications", {
           signal: controller.signal,
         });
         console.log(response.data);
-        isMounted && setUsers(response.data.result);
+        isMounted && setSubscribers(response.data.result);
       } catch (err) {
         if (err.name === "CanceledError") {
           return;
@@ -39,9 +39,9 @@ const Users = () => {
 
   return (
     <>
-      <UserList header={"Users"} users={users} />
+      <UserList header={"Notifications"} users={subscribers} relations={Array(subscribers.length).fill(2)}/>
     </>
   );
-};
+}
 
-export default Users;
+export default Notifications

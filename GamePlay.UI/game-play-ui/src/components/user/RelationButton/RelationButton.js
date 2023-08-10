@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { axiosPrivate } from "../../api/axios";
+import { axiosPrivate } from "../../../api/axios";
 import { Button } from "@mui/material";
 
 const RelationButton = ({ userId, relation, userUpdate }) => {

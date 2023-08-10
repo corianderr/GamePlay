@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import GameList from "./GameList";
+import { useNavigate, useLocation } from "react-router-dom";
+import GameList from "../../components/game/GameList/GameList";
 
-const CollectionDetails = () => {
-  const [collection, setCollection] = useState({games: [], name: ""});
+const Games = () => {
+  const [games, setGames] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { collectionId } = useParams();
 
   useEffect(() => {
     let isMounted = true;
@@ -17,14 +15,11 @@ const CollectionDetails = () => {
 
     const getGames = async () => {
       try {
-        const response = await axiosPrivate.get(
-          `/collection/getById/${collectionId}`,
-          {
-            signal: controller.signal,
-          }
-        );
+        const response = await axiosPrivate.get("/game", {
+          signal: controller.signal,
+        });
         console.log(response.data);
-        isMounted && setCollection(response.data.result);
+        isMounted && setGames(response.data.result);
       } catch (err) {
         if (err.name === "CanceledError") {
           return;
@@ -42,7 +37,11 @@ const CollectionDetails = () => {
     };
   }, []);
 
-  return <GameList games={collection.games} header={collection.name}/>;
+  return (
+    <>
+      <GameList games={games} header={"Games"}/>
+    </>
+  );
 };
 
-export default CollectionDetails;
+export default Games;

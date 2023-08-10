@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../styles/game.css";
+import "./GameList.css";
 
 const GameList = ({ header, games }) => {
   return (

@@ -2,6 +2,7 @@ import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import { toast } from "react-toastify";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -27,6 +28,11 @@ const useAxiosPrivate = () => {
                     const newAccessToken = await refresh();
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                     return axiosPrivate(prevRequest);
+                }
+                else{
+                    console.log("RESPONSE ERROR")
+                    console.log(error?.response)
+                    toast.error(error?.response?.data?.Errors);
                 }
                 return Promise.reject(error);
             }

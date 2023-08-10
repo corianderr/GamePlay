@@ -23,15 +23,18 @@ public class GameRoundController : ApiController
     
     // GET
     [HttpGet]
-    public async Task<IActionResult> Index(Guid? gameId = null)
+    public async Task<IActionResult> Index(Guid? gameId = null, string? userId = null)
     {
         IEnumerable<GameRoundModel> rounds;
         if (gameId.Equals(null))
         {
             rounds = await _gameRoundService.GetAllAsync();
         }
-        else
+        else if (userId != null)
         {
+            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.Id.Equals(userId)));
+        }
+        else {
             rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
         }
         return Ok(ApiResult<IEnumerable<GameRoundModel>>.Success(rounds));

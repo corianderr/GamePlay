@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq.Expressions;
 using AutoMapper;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Contracts.Services;
@@ -26,7 +27,7 @@ public class GameRoundService : IGameRoundService
     {
         var gameRound = _mapper.Map<GameRound>(entity);
         var gameRoundId = (await _gameRoundRepository.AddAsync(gameRound)).Id;
-        
+
         return new BaseModel()
         {
             Id = gameRoundId
@@ -39,9 +40,10 @@ public class GameRoundService : IGameRoundService
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
 
-    public async Task<IEnumerable<GameRoundModel>> GetAllAsync()
+    public async Task<IEnumerable<GameRoundModel>> GetAllAsync(Expression<Func<GameRoundModel, bool>>? predicate = null)
     {
-        var rounds = await _gameRoundRepository.GetAllAsync(null, r => r.Game);
+        var rounds = await _gameRoundRepository.GetAllAsync(_mapper.Map<Expression<Func<GameRound, bool>>?>(predicate),
+            r => r.Game);
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
 

@@ -44,7 +44,14 @@ public class GameRatingService : IGameRatingService
         var rating = await _ratingRepository.GetFirstAsync(g => g.Id.Equals(id));
         var game = await _gameRepository.GetFirstAsync(g => g.Id.Equals(rating.GameId));
         var numberOfRatings = _ratingRepository.GetGameRatingsCount(r => r.GameId.Equals(game.Id));
-        game.AverageRating = (game.AverageRating * numberOfRatings - rating.Rating) / (numberOfRatings - 1);
+        if (numberOfRatings <= 1)
+        {
+            game.AverageRating = 0;
+        }
+        else
+        {
+            game.AverageRating = (game.AverageRating * numberOfRatings - rating.Rating) / (numberOfRatings - 1);
+        }
         
         return new BaseModel
         {

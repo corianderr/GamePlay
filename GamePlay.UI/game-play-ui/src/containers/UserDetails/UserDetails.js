@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from "react-toastify";
 
 const UserDetails = () => {
   const { auth } = useAuth();
@@ -57,9 +58,21 @@ const UserDetails = () => {
     const getUser = async () => {
       const response = await axiosPrivate.get(`/user/getById/${userId}`);
       setUser(response.data.result);
-    }
+    };
     getUser();
   };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this collection?")) {
+        const response = await axiosPrivate.delete(`collection/${id}`);
+        if (response.data.succeeded){
+          toast.success('Collection has been deleted');
+          setCollections([]);
+        }else{
+
+        }
+    }
+}
 
   return (
     <>
@@ -83,17 +96,27 @@ const UserDetails = () => {
                 Edit profile
               </a>
             ) : (
-              <RelationButton relation={relation} userId={user.id} userUpdate={updateUser}/>
+              <RelationButton
+                relation={relation}
+                userId={user.id}
+                userUpdate={updateUser}
+              />
             )}
 
             <div className="d-flex justify-content-between align-items-center mt-4 px-4">
               <div className="stats">
                 <h6 className="mb-0">Followers</h6>
-                <span><Link to={`/followers/${user.id}`}>{user.followersCount}</Link></span>
+                <span>
+                  <Link to={`/followers/${user.id}`}>
+                    {user.followersCount}
+                  </Link>
+                </span>
               </div>
               <div className="stats">
                 <h6 className="mb-0">Friends</h6>
-                <span><Link to={`/friends/${user.id}`}>{user.friendsCount}</Link></span>
+                <span>
+                  <Link to={`/friends/${user.id}`}>{user.friendsCount}</Link>
+                </span>
               </div>
             </div>
           </div>
@@ -103,43 +126,62 @@ const UserDetails = () => {
       {collections.length === 0 ? (
         user.id === auth?.id ? (
           <>
-            <h5>I don't have any collections yet :( <br/>Add one <FontAwesomeIcon icon="fa-solid fa-square-plus" className="ms-2 opacity-75"/></h5>
+            <h5>
+              I don't have any collections yet :( <br />
+              Add one{" "}
+              <Link className="text-black">
+                <FontAwesomeIcon
+                  icon="fa-solid fa-square-plus"
+                  className="ms-2 opacity-75"
+                />
+              </Link>
+            </h5>
           </>
         ) : (
           <h5>{user.userName} does not have any collections yet :(</h5>
         )
       ) : user.id === auth?.id ? (
         <div className="d-flex">
-          <h3 >My Collections <FontAwesomeIcon icon="fa-solid fa-square-plus" className="ms-2 opacity-75"/></h3>
-          
+          <h3>
+            My Collections{" "}
+            <Link className="text-black">
+              <FontAwesomeIcon
+                icon="fa-solid fa-square-plus"
+                className="ms-2 opacity-75"
+              />
+            </Link>
+          </h3>
         </div>
       ) : (
         <h3>{user.userName}'s Collections</h3>
       )}
-
       <div className="row">
         {collections.map((item) => (
-          <div
-            className="col-sm-4 mb-3"
-            key={item.id}
-          >
+          <div className="col-sm-4 mb-3" key={item.id}>
             <div className="card h-100 text-center">
               <div className="card-body my-auto color">
-                <h5 className="card-title"><Link to={`/collectionDetails/${item.id}`} className="text-black">{item.name}</Link></h5>
+                <h5 className="card-title">
+                  <Link
+                    to={`/collectionDetails/${item.id}`}
+                    className="text-black"
+                  >
+                    {item.name}
+                  </Link>
+                </h5>
                 {user.id === auth?.id && (
                   <div>
-                    <a
+                    <Link
                       className="btn btn-light"
-                      href={`/Collections/Edit/${item.id}`}
+                      to={`/collections/edit/${item.id}`}
                     >
                       Edit
-                    </a>
-                    <a
-                      className="btn btn-light"
-                      href={`/Collections/Delete/${item.id}`}
+                    </Link>
+                    <button
+                      className="btn btn-light "
+                      onClick={() => handleDelete(item.id)}
                     >
                       Delete
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>

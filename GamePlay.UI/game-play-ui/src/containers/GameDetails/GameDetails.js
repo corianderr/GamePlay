@@ -70,6 +70,18 @@ const GameDetails = () => {
     resetRating();
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this game?")) {
+      const response = await axiosPrivate.delete(`/game/${id}`);
+      console.log(response);
+      if (response.data.succeeded) {
+        console.log(response.data)
+        toast.success("Game has been deleted");
+        navigate("/games", { state: { from: location }, replace: true });
+      }
+    }
+  };
+
   return (
     <>
       <div>
@@ -142,7 +154,7 @@ const GameDetails = () => {
                 <>
                   <a className="btn btn-dark btn-sm">Add a Round Result</a>
                   <a className="btn btn-dark btn-sm ms-2">Edit</a>
-                  <a className="btn btn-dark btn-sm ms-2">Delete</a>
+                  <button className="btn btn-dark btn-sm ms-2" onClick={() => handleDelete(gameId)}>Delete</button>
                 </>
               )}
             </div>

@@ -86,7 +86,7 @@ public class GameController : ApiController
     
     // POST: Games/Delete/5
     [Authorize(Roles = "admin")]
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(Guid id)
     {
         await _gameService.DeleteAsync(id);

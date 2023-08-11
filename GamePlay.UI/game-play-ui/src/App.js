@@ -18,6 +18,7 @@ import GameDetails from "containers/GameDetails/GameDetails";
 import Games from "containers/Games/Games";
 import Rounds from "containers/Rounds/Rounds";
 import GameRounds from "containers/GameRounds/GameRounds";
+import RoundDetails from "containers/RoundDetails/RoundDetails";
 
 const ROLES = {
   User: "user",
@@ -44,6 +45,7 @@ function App() {
             <Route path="/friends/:userId" element={<Friends />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
             <Route path="/gameDetails/:gameId" element={<GameDetails />} />
+            <Route path="/roundDetails/:roundId" element={<RoundDetails />} />
             <Route path="/collectionDetails/:collectionId" element={<CollectionDetails />} />
             <Route path="/rounds" element={<Rounds />} />
             <Route path="/gameRounds/:gameId/:gameName" element={<GameRounds />} />

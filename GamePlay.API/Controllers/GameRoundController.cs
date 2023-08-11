@@ -46,7 +46,7 @@ public class GameRoundController : ApiController
     
     // GET: GameRounds/Details/5
     [Authorize]
-    [HttpGet("GetById/{id:guid}")]
+    [HttpGet("getById/{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var round = await _gameRoundService.GetByIdAsync(id);
@@ -55,7 +55,7 @@ public class GameRoundController : ApiController
     
     // GET: GameRounds/Create
     [Authorize(Roles = "admin")]
-    [HttpGet("Create/{gameId:guid}")]
+    [HttpGet("create/{gameId:guid}")]
     public async Task<ActionResult> Create(Guid gameId)
     {
         var createViewModel = new CreateGameRoundViewModel()
@@ -80,7 +80,7 @@ public class GameRoundController : ApiController
     
     // GET: GameRounds/Edit
     [Authorize(Roles = "admin")]
-    [HttpGet("Edit")]
+    [HttpGet("edit")]
     public async Task<ActionResult> Edit(Guid gameRoundId)
     {
         var updateViewModel = new UpdateGameRoundViewModel()
@@ -95,7 +95,7 @@ public class GameRoundController : ApiController
 
     // POST: GameRounds/Edit
     [Authorize(Roles = "admin")]
-    [HttpPut("Edit")]
+    [HttpPut("edit")]
     public async Task<ActionResult> Edit(Guid id, GameRoundModel updateViewModel)
     {
         await _gameRoundService.UpdateAsync(id, updateViewModel);

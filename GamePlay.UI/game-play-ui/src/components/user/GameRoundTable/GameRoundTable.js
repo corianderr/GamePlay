@@ -1,4 +1,5 @@
 import useAuth from "hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const GameRoundTable = ({ header, rounds }) => {
   const { auth } = useAuth();
@@ -24,7 +25,7 @@ const GameRoundTable = ({ header, rounds }) => {
               {rounds.map((round, i) => (
                 <tr>
                   <th scope="row">{i + 1}</th>
-                  <td>{round.game.name}</td>
+                  <td><Link to={`/roundDetails/${round.id}`}>{round.game.name}</Link></td>
                   <td>{round.date}</td>
                   <td>{round.place}</td>
                   {auth?.roles.includes("admin") && (

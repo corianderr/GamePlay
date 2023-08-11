@@ -3,6 +3,7 @@ using AutoMapper;
 using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
+using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Collection;
 using GamePlay.Domain.Models.Game;
@@ -55,6 +56,7 @@ public class CollectionService : ICollectionService
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var collection = await _collectionRepository.GetFirstAsync(g => g.Id.Equals(id));
+        if (collection.IsDefault) throw new BadRequestException("Default collections can not be deleted!");
         await _collectionRepository.DeleteAsync(collection);
     }
 

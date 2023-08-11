@@ -1,4 +1,5 @@
 using GamePlay.Domain.Contracts.Services;
+using GamePlay.Domain.Exceptions;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Collection;
 using Microsoft.AspNet.Identity;
@@ -69,7 +70,14 @@ public class CollectionController : ApiController
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteConfirmed(Guid id)
     {
-        await _collectionService.DeleteAsync(id);
+        try
+        {
+            await _collectionService.DeleteAsync(id);
+        }
+        catch (BadRequestException ex)
+        {
+            return Ok(ApiResult<string>.Failure(new []{ex.Message}));
+        }
         return Ok(ApiResult<BaseModel>.Success(new BaseModel{Id = id}));
     }
 }

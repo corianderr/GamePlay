@@ -68,6 +68,9 @@ const UserDetails = () => {
       if (response.data.succeeded) {
         toast.success("Collection has been deleted");
         setCollections([]);
+      }else{
+        console.log(response.data);
+        toast.error(JSON.stringify(response.data.errors).replace(/[{}[\]"]/g, ' '))
       }
     }
   };

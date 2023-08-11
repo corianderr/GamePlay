@@ -5,6 +5,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRating from "../../components/game/StarRating/StarRating";
 import { toast } from "react-toastify";
+import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollectionForm";
+import { Button, Modal } from "react-bootstrap";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -13,8 +15,10 @@ const GameDetails = () => {
   const [game, setGame] = useState({});
   const [rating, setRating] = useState(-1);
   const [availableCollections, setAvailableCollections] = useState([]);
-  const [collectionId, setCollectionId] = useState(null);
-  const [errMsg, setErrMsg] = useState('');
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,27 +65,10 @@ const GameDetails = () => {
     setRating(-1);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if(collectionId === null){
-      setErrMsg("You should choose at least one collection.");
-      return;
-    }
-
-    const response = await axiosPrivate.post(
-      `collection/addGame?id=${gameId}&collectionId=${collectionId}`,
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
+  const handleSubmit = () => {
+    handleClose();
     resetRating();
   };
-
-  useEffect(() => {
-    setErrMsg('');
-  }, [collectionId])
 
   return (
     <>
@@ -131,8 +118,7 @@ const GameDetails = () => {
                   <button
                     type="button"
                     className="btn btn-warning"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addCollectionModal"
+                    onClick={handleShow}
                   >
                     Add to collection
                   </button>
@@ -142,7 +128,12 @@ const GameDetails = () => {
             <div className="my-3">
               {auth?.id && (
                 <Link className="btn-sm me-2 text-black-50">
-                  <FontAwesomeIcon icon="fa-solid fa-square-poll-vertical" size="2xl" style={{color: "#fdce3f",}} /> Results
+                  <FontAwesomeIcon
+                    icon="fa-solid fa-square-poll-vertical"
+                    size="2xl"
+                    style={{ color: "#fdce3f" }}
+                  />{" "}
+                  Results
                 </Link>
               )}
             </div>
@@ -163,58 +154,18 @@ const GameDetails = () => {
         </div>
       </div>
 
-      <div
-        className="modal fade"
-        id="addCollectionModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="addCollectionModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title fs-5" id="addCollectionModalLabel">
-                Add in collection
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-            <p  className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="collectionSelect">Select collection</label>
-                  <select
-                    className="form-control"
-                    id="collectionSelect"
-                    name="collectionId"
-                    onChange={(e) => {
-                      console.log(e.target.value);
-                      setCollectionId(e.target.value);
-                    }}
-                    required
-                  >
-                    <option selected="true" disabled="disabled">
-                      Choose Collection
-                    </option>
-                    {availableCollections.map((collection, i) => (
-                      <option value={collection.id} key={i}>
-                        {collection.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <button className="btn btn-warning">Add to collection</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add game to collection</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddToCollectionForm
+            handleSubmit={handleSubmit}
+            availableCollections={availableCollections}
+            gameId={gameId}
+          />
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

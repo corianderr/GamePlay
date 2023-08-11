@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import GameRoundTable from "components/user/GameRoundTable/GameRoundTable";
+import GameRoundTable from "components/game/GameRoundTable/GameRoundTable";
 
 const Rounds = () => {
   const [rounds, setRounds] = useState([]);
@@ -14,39 +14,30 @@ const Rounds = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getRounds = async () => {
-      try {
-        const response = await axiosPrivate.get(
-          `/gameRound?userId=${auth?.id}`,
-          {
-            signal: controller.signal,
-          }
-        );
-        console.log(response.data);
-        isMounted && setRounds(response.data.result);
-      } catch (err) {
-        if (err.name === "CanceledError") {
-          return;
-        }
-
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
     getRounds();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
   }, []);
+
+  const getRounds = async () => {
+    try {
+      const response = await axiosPrivate.get(
+        `/gameRound?userId=${auth?.id}`
+      );
+      if (response.data.succeeded) {
+        setRounds(response.data.result);
+      }
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
+      }
+
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
 
   return (
     <>
-      <GameRoundTable header={"My Rounds"} rounds={rounds} />
+      <GameRoundTable header={"My Rounds"} rounds={rounds} resetRounds={getRounds} />
     </>
   );
 };

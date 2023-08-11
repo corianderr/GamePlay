@@ -64,15 +64,13 @@ const UserDetails = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this collection?")) {
-        const response = await axiosPrivate.delete(`collection/${id}`);
-        if (response.data.succeeded){
-          toast.success('Collection has been deleted');
-          setCollections([]);
-        }else{
-
-        }
+      const response = await axiosPrivate.delete(`collection/${id}`);
+      if (response.data.succeeded) {
+        toast.success("Collection has been deleted");
+        setCollections([]);
+      }
     }
-}
+  };
 
   return (
     <>

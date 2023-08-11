@@ -1,8 +1,21 @@
 import useAuth from "hooks/useAuth";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const GameRoundTable = ({ header, rounds }) => {
+const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this round?")) {
+      const response = await axiosPrivate.delete(`gameRound/${id}`);
+      if (response.data.succeeded) {
+        toast.success("Round has been deleted");
+        resetRounds();
+      }
+    }
+  };
 
   return (
     <>
@@ -38,14 +51,12 @@ const GameRoundTable = ({ header, rounds }) => {
                       >
                         Edit
                       </a>
-                      <a
-                        asp-controller="GameRounds"
-                        asp-action="Delete"
-                        asp-route-id="@Model[i].Id"
+                      <button
                         class="btn btn-secondary ms-2"
+                        onClick={()  => handleDelete(round.id)}
                       >
                         Delete
-                      </a>
+                      </button>
                     </td>
                   )}
                 </tr>

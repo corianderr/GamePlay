@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
+import { Button, Form, Modal } from "react-bootstrap";
 
 const UserDetails = () => {
   const { auth } = useAuth();
@@ -13,6 +14,13 @@ const UserDetails = () => {
   const [user, setUser] = useState({});
   const [relation, setRelation] = useState(-1);
   const [collections, setCollections] = useState([]);
+  const [editShow, setEditShow] = useState(false);
+  const [form, setForm] = useState({
+    id: "",
+    name: "",
+    userId: "",
+    isDefault: false,
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,39 +28,27 @@ const UserDetails = () => {
   const { userId } = useParams();
 
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getUser = async () => {
-      try {
-        const response = await axiosPrivate.get(`/user/details/${userId}`, {
-          signal: controller.signal,
-        });
-        if (isMounted) {
-          var data = response.data.result;
-          setUser(data.user);
-          setRelation(data.relationOption);
-          setCollections(data.collections);
-        }
-      } catch (err) {
-        if (err.name === "CanceledError") {
-          return;
-        }
-
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
     if (relation === -1) {
       getUser();
     }
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
   }, [userId, collections]);
+
+  const getUser = async () => {
+    try {
+      const response = await axiosPrivate.get(`/user/details/${userId}`);
+      var data = response.data.result;
+      setUser(data.user);
+      setRelation(data.relationOption);
+      setCollections(data.collections);
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
+      }
+
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
 
   const updateUser = () => {
     const getUser = async () => {
@@ -68,11 +64,54 @@ const UserDetails = () => {
       if (response.data.succeeded) {
         toast.success("Collection has been deleted");
         setCollections([]);
-      }else{
+      } else {
         console.log(response.data);
-        toast.error(JSON.stringify(response.data.errors).replace(/[{}[\]"]/g, ' '))
+        toast.error(
+          JSON.stringify(response.data.errors).replace(/[{}[\]"]/g, " ")
+        );
       }
     }
+  };
+
+  const handleEditShow = async (id) => {
+    const result = await axiosPrivate.get(`collection/getById/${id}`);
+    if (result.data.succeeded) {
+      console.log(result.data.result);
+      setForm(result.data.result);
+      setEditShow(true);
+    }
+  };
+
+  const handleEditClose = async () => {
+    setEditShow(false);
+  };
+
+  const handleEdit = async (e, id) => {
+    e.preventDefault();
+    console.log(form);
+    try {
+      const response = await axiosPrivate.put(`collection/${id}`, form);
+      if (response.data.succeeded) {
+        getUser();
+        setEditShow(false);
+        toast.success("Collection has been updated");
+        cleanForm();
+      }
+    } catch (err) {}
+  };
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const cleanForm = () => {
+    setForm({
+      id: "",
+      name: "",
+      userId: "",
+      isDefault: false,
+    });
   };
 
   return (
@@ -173,7 +212,7 @@ const UserDetails = () => {
                   <div>
                     <Link
                       className="btn btn-light"
-                      to={`/collections/edit/${item.id}`}
+                      onClick={() => handleEditShow(item.id)}
                     >
                       Edit
                     </Link>
@@ -190,6 +229,26 @@ const UserDetails = () => {
           </div>
         ))}
       </div>
+
+      <Modal show={editShow} onHide={handleEditClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit collection</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => handleEdit(e, form.id)}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Collection Name</Form.Label>
+              <Form.Control
+                placeholder="Enter name"
+                name="name"
+                value={form.name}
+                onChange={onChange}
+              />
+            </Form.Group>
+            <Button type="submit">Edit</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

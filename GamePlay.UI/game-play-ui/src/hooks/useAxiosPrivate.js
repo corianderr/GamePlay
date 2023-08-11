@@ -29,14 +29,14 @@ const useAxiosPrivate = () => {
           const newAccessToken = await refresh();
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return axiosPrivate(prevRequest);
-        } else if (isAxiosError(error)) {
+        } else if (isAxiosError(error) && !prevRequest?.sent) {
+          prevRequest.sent = true;
             if (error?.response?.status >= 400 && error?.response?.status < 500) {
                 console.log(error?.response?.data)
-                toast.error(JSON.stringify(error?.response?.data?.errors));
+                toast.error(JSON.stringify(error?.response?.data?.errors).replace(/[{}[\]"]/g, ' '));
             } else if (error?.response?.status >= 500) {
                 toast.error('Internal server error');
             }
-            throw error;
         }
         return Promise.reject(error);
       }

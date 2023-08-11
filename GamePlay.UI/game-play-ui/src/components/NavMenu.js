@@ -52,8 +52,8 @@ export default function NavMenu() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/gameRounds">
-                    Game Rounds
+                  <Link className="nav-link" to="/rounds">
+                    My Rounds
                   </Link>
                 </li>
                 <li className="ms-auto nav-item">

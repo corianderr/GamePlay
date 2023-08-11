@@ -26,16 +26,20 @@ public class GameRoundController : ApiController
     public async Task<IActionResult> Index(Guid? gameId = null, string? userId = null)
     {
         IEnumerable<GameRoundModel> rounds;
-        if (gameId.Equals(null))
+        if (userId == null && gameId.Equals(null))
         {
             rounds = await _gameRoundService.GetAllAsync();
         }
         else if (userId != null)
         {
-            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.Id.Equals(userId)));
+            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.UserId.Equals(userId)));
         }
-        else {
+        else if (!gameId.Equals(null)) {
             rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
+        }
+        else
+        {
+            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.UserId.Equals(userId)) && r.GameId.Equals(gameId));
         }
         return Ok(ApiResult<IEnumerable<GameRoundModel>>.Success(rounds));
     }

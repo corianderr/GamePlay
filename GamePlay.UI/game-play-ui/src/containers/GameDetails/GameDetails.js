@@ -127,7 +127,7 @@ const GameDetails = () => {
             )}
             <div className="my-3">
               {auth?.id && (
-                <Link className="btn-sm me-2 text-black-50">
+                <Link className="btn-sm me-2 text-black-50" to={`/gameRounds/${gameId}/${game.name}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-square-poll-vertical"
                     size="2xl"
@@ -138,11 +138,11 @@ const GameDetails = () => {
               )}
             </div>
             <div>
-              {auth?.roles?.includes("admin") ?? (
+              {auth?.roles?.includes("admin") && (
                 <>
-                  <a className="btn btn-light">Add a Round Result</a>
-                  <a className="btn btn-light">Edit</a>
-                  <a className="btn btn-light">Delete</a>
+                  <a className="btn btn-dark btn-sm">Add a Round Result</a>
+                  <a className="btn btn-dark btn-sm ms-2">Edit</a>
+                  <a className="btn btn-dark btn-sm ms-2">Delete</a>
                 </>
               )}
             </div>

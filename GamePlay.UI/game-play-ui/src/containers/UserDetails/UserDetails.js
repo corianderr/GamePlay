@@ -15,6 +15,7 @@ const UserDetails = () => {
   const [relation, setRelation] = useState(-1);
   const [collections, setCollections] = useState([]);
   const [editShow, setEditShow] = useState(false);
+  const [addShow, setAddShow] = useState(false);
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -84,6 +85,28 @@ const UserDetails = () => {
 
   const handleEditClose = async () => {
     setEditShow(false);
+  };
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await axiosPrivate.post(`collection/create`, form);
+      if (result.data.succeeded) {
+        console.log(result.data.result);
+        toast.success("Collection was added successfully!");
+        setAddShow(false);
+        getUser();
+      }
+    } catch (err) {}
+  };
+
+  const handleAddShow = async () => {
+    setAddShow(true);
+    cleanForm();
+  };
+
+  const handleAddClose = async () => {
+    setAddShow(false);
   };
 
   const handleEdit = async (e, id) => {
@@ -169,12 +192,12 @@ const UserDetails = () => {
             <h5>
               I don't have any collections yet :( <br />
               Add one{" "}
-              <Link className="text-black">
+              <Button onClick={handleAddShow}>
                 <FontAwesomeIcon
                   icon="fa-solid fa-square-plus"
                   className="ms-2 opacity-75"
                 />
-              </Link>
+              </Button>
             </h5>
           </>
         ) : (
@@ -184,12 +207,12 @@ const UserDetails = () => {
         <div className="d-flex">
           <h3>
             My Collections{" "}
-            <Link className="text-black">
+            <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon
                 icon="fa-solid fa-square-plus"
                 className="ms-2 opacity-75"
               />
-            </Link>
+            </span>
           </h3>
         </div>
       ) : (
@@ -236,7 +259,7 @@ const UserDetails = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => handleEdit(e, form.id)}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Collection Name</Form.Label>
               <Form.Control
                 placeholder="Enter name"
@@ -246,6 +269,26 @@ const UserDetails = () => {
               />
             </Form.Group>
             <Button type="submit">Edit</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={addShow} onHide={handleAddClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add collection</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => handleAdd(e, form.id)}>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Collection Name</Form.Label>
+              <Form.Control
+                placeholder="Enter name"
+                name="name"
+                value={form.name}
+                onChange={onChange}
+              />
+            </Form.Group>
+            <Button type="submit">Add</Button>
           </Form>
         </Modal.Body>
       </Modal>

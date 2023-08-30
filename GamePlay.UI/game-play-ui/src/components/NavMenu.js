@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function NavMenu() {
@@ -44,18 +44,18 @@ export default function NavMenu() {
                 Games
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/users" className="nav-link">
+                Users
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/rounds">
+                My Rounds
+              </Link>
+            </li>
             {auth?.accessToken ? (
               <>
-                <li className="nav-item">
-                  <Link to="/users" className="nav-link">
-                    Users
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/rounds">
-                    My Rounds
-                  </Link>
-                </li>
                 <li className="ms-auto nav-item">
                   <Link to={`/notifications`}>
                     <FontAwesomeIcon

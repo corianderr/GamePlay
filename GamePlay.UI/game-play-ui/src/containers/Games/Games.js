@@ -9,37 +9,28 @@ const Games = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getGames = async () => {
-      try {
-        const response = await axiosPrivate.get("/game", {
-          signal: controller.signal,
-        });
-        console.log(response.data);
-        isMounted && setGames(response.data.result);
-      } catch (err) {
-        if (err.name === "CanceledError") {
-          return;
-        }
-
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
+  const getGames = async () => {
+    try {
+      const response = await axiosPrivate.get("/game");
+      console.log(response.data);
+      setGames(response.data.result);
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
       }
-    };
-    getGames();
 
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
+
+  useEffect(() => {
+    getGames();
   }, []);
 
   return (
     <>
-      <GameList games={games} header={"Games"}/>
+      <GameList games={games} header={"Games"} updateGames={getGames} />
     </>
   );
 };

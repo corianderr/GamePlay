@@ -188,18 +188,16 @@ const UserDetails = () => {
 
       {collections.length === 0 ? (
         user.id === auth?.id ? (
-          <>
             <h5>
               I don't have any collections yet :( <br />
-              Add one{" "}
-              <Button onClick={handleAddShow}>
-                <FontAwesomeIcon
-                  icon="fa-solid fa-square-plus"
-                  className="ms-2 opacity-75"
-                />
-              </Button>
+              Add one
+              <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
+              <FontAwesomeIcon
+                icon="fa-solid fa-square-plus"
+                className="ms-2 opacity-75"
+              />
+            </span>
             </h5>
-          </>
         ) : (
           <h5>{user.userName} does not have any collections yet :(</h5>
         )

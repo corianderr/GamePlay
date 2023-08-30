@@ -33,7 +33,7 @@ const useAxiosPrivate = () => {
           prevRequest.sent = true;
             if (error?.response?.status >= 400 && error?.response?.status < 500) {
                 console.log(error?.response?.data)
-                toast.error(JSON.stringify(error?.response?.data?.errors).replace(/[{}[\]"]/g, ' '));
+                toast.error(JSON.stringify(error?.response?.data?.errors)?.replace(/[{}[\]"]/g, ' '));
             } else if (error?.response?.status >= 500) {
                 toast.error('Internal server error');
             }

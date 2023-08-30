@@ -14,8 +14,7 @@ public interface IGameService
 
     Task<BaseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    // TODO: In API version return UpdateGameModel type
-    Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel,
+    Task<BaseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel,
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<GameModel>> GetAllAsync(Expression<Func<GameModel, bool>>? predicate = null);

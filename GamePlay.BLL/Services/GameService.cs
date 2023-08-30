@@ -48,7 +48,7 @@ public class GameService : IGameService
         };
     }
 
-    public async Task<BaseModel> UpdateAsync(Guid id, GameModel updateGameModel,
+    public async Task<BaseModel> UpdateAsync(Guid id, UpdateGameModel updateGameModel,
         CancellationToken cancellationToken = default)
     {
         var game = await _gameRepository.GetFirstAsync(e => e.Id == id);

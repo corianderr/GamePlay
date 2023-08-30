@@ -15,6 +15,8 @@ public class GameController : ApiController {
     private readonly IGameService _gameService;
     private readonly IGameRatingService _ratingService;
     private readonly ICollectionService _collectionService;
+    private const string GameCoverDefaultPath = "/gameCovers/default-game-cover.jpg";
+    private const string GameCoverDirectoryName = "gameCovers";
 
     public GameController(IGameService gameService, IGameRatingService ratingService, ICollectionService collectionService) {
         _gameService = gameService;
@@ -51,14 +53,18 @@ public class GameController : ApiController {
     [HttpPost]
     public async Task<ActionResult> Create([FromForm] CreateGameViewModel createModel) {
         try {
-            createModel.GameModel = JsonConvert.DeserializeObject<CreateGameModel>(createModel.GameModelJson);
+            createModel.GameModel = JsonConvert.DeserializeObject<CreateGameModel>(createModel.GameModelJson!);
 
             var validationResults = Validate(createModel.GameModel, out var isValid);
             if (isValid) {
-                createModel.GameModel.PhotoPath =
-                    await ImageUploadingHelper.UploadImageAsync("gameCovers", "/gameCovers/default-game-cover.jpg",
-                        createModel.GameImage);
+                var photoPath =
+                    ImageUploadingHelper.GeneratePhotoPath(GameCoverDirectoryName, createModel.GameImage, GameCoverDefaultPath);
+                createModel.GameModel!.PhotoPath = photoPath;
+
                 await _gameService.CreateAsync(createModel.GameModel);
+                if (!photoPath.Equals(GameCoverDefaultPath)) {
+                    await ImageUploadingHelper.UploadAsync(createModel.GameImage!, photoPath);
+                }
             }
             else {
                 return Ok(ApiResult<CreateGameModel>.Failure(validationResults.Select(r => r.ErrorMessage)));
@@ -66,6 +72,7 @@ public class GameController : ApiController {
         }
         catch (ArgumentException ex) {
             ModelState.AddModelError("Name", ex.Message);
+            return Ok(ApiResult<CreateGameModel>.Failure(new[] { ex.Message }));
         }
 
         return Ok(ApiResult<CreateGameModel>.Success(createModel.GameModel));
@@ -81,13 +88,31 @@ public class GameController : ApiController {
     // PUT: Games/Edit/5
     [Authorize(Roles = "admin")]
     [HttpPut]
-    public async Task<ActionResult> Edit(Guid id, GameModel gameModel, IFormFile? gameImage) {
-        gameModel.PhotoPath =
-            await ImageUploadingHelper.ReuploadAndGetNewPathAsync("gameCovers",
-                "/gameCovers/default-game-cover.jpg", gameImage, gameModel.PhotoPath);
+    public async Task<ActionResult> Edit(UpdateGameViewModel updateModel) {
+        try {
+            updateModel.GameModel = JsonConvert.DeserializeObject<CreateGameModel>(updateModel.GameModelJson!);
 
-        await _gameService.UpdateAsync(id, gameModel);
-        return Ok(ApiResult<GameModel>.Success(gameModel));
+            var validationResults = Validate(updateModel.GameModel, out var isValid);
+            if (isValid) {
+                var photoPath =
+                    ImageUploadingHelper.GeneratePhotoPath(GameCoverDirectoryName, updateModel.GameImage, GameCoverDefaultPath);
+                updateModel.GameModel!.PhotoPath = photoPath;
+
+                await _gameService.UpdateAsync(updateModel.Id, updateModel.GameModel);
+                if (!photoPath.Equals(GameCoverDefaultPath)) {
+                    await ImageUploadingHelper.UploadAsync(updateModel.GameImage!, photoPath);
+                }
+            }
+            else {
+                return Ok(ApiResult<CreateGameModel>.Failure(validationResults.Select(r => r.ErrorMessage)));
+            }
+        }
+        catch (ArgumentException ex) {
+            ModelState.AddModelError("Name", ex.Message);
+            return Ok(ApiResult<CreateGameModel>.Failure(new[] { ex.Message }));
+        }
+
+        return Ok(ApiResult<Guid>.Success(updateModel.Id));
     }
 
     // POST: Games/Delete/5

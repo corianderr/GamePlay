@@ -22,7 +22,7 @@ public class ApiResult<T>
         return new ApiResult<T>(true, result, new List<string>());
     }
 
-    public static ApiResult<T?> Failure(IEnumerable<string> errors)
+    public static ApiResult<T?> Failure(IEnumerable<string?> errors)
     {
         return new ApiResult<T?>(false, default, errors);
     }

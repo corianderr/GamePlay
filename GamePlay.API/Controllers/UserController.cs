@@ -1,5 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using GamePlay.API.ViewModels;
 using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Services;
@@ -14,45 +12,38 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamePlay.API.Controllers;
 
 [Authorize]
-public class UserController : ApiController
-{
+public class UserController : ApiController {
     private readonly IUserService _userService;
     private readonly IUserRelationService _relationService;
     private readonly ICollectionService _collectionService;
-    private readonly IConfiguration _configuration;
+    private const string AvatarDefaultPath = "/avatars/default-user-avatar.jpg";
+    private const string AvatarDirectoryName = "avatars";
 
-    public UserController(IUserService userService, IUserRelationService relationService, ICollectionService collectionService,
-        IConfiguration configuration)
-    {
+    public UserController(IUserService userService, IUserRelationService relationService, ICollectionService collectionService) {
         _userService = userService;
         _relationService = relationService;
         _collectionService = collectionService;
-        _configuration = configuration;
     }
-    
+
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterAsync(CreateUserModel createUserModel)
-    {
+    public async Task<IActionResult> RegisterAsync(CreateUserModel createUserModel) {
         return Ok(ApiResult<BaseModel>.Success(await _userService.RegisterAsync(createUserModel)));
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> LoginAsync(LoginUserModel loginUserModel)
-    {
+    public async Task<IActionResult> LoginAsync(LoginUserModel loginUserModel) {
         var loginModel = await _userService.LoginAsync(loginUserModel);
         SetRefreshTokenCookie(loginModel.RefreshToken);
         return Ok(ApiResult<LoginResponseModel>.Success(loginModel));
     }
-    
+
     [HttpGet("refresh")]
     [AllowAnonymous]
-    public async Task<IActionResult> Refresh()
-    {
+    public async Task<IActionResult> Refresh() {
         var refreshToken = Request.Cookies["refreshToken"];
-        if (string.IsNullOrEmpty(refreshToken))
-        {
+        if (string.IsNullOrEmpty(refreshToken)) {
             return Unauthorized("Refresh token not found.");
         }
 
@@ -61,11 +52,9 @@ public class UserController : ApiController
             return Forbid();
         return Ok(ApiResult<RefreshResponseModel>.Success(responseModel));
     }
-    
-    private void SetRefreshTokenCookie(string? refreshToken)
-    {
-        var cookieOptions = new CookieOptions
-        {
+
+    private void SetRefreshTokenCookie(string? refreshToken) {
+        var cookieOptions = new CookieOptions {
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
@@ -74,12 +63,10 @@ public class UserController : ApiController
 
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
-    
+
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        var cookieOptions = new CookieOptions
-        {
+    public IActionResult Logout() {
+        var cookieOptions = new CookieOptions {
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
@@ -87,24 +74,21 @@ public class UserController : ApiController
         Response.Cookies.Delete("refreshToken", cookieOptions);
         return Ok(ApiResult<string>.Success("Refresh token is deleted!"));
     }
-    
+
     // GET: User
     [HttpGet]
-    public async Task<IActionResult> Index()
-    {
+    public async Task<IActionResult> Index() {
         var users = await _userService.GetAllAsync();
         return Ok(ApiResult<IEnumerable<UserModel>>.Success(users));
     }
-    
+
     // GET: User/Details/5
     [HttpGet("details/{id}")]
-    public async Task<IActionResult> Details(string id)
-    {
+    public async Task<IActionResult> Details(string id) {
         var userRelation = await _relationService.GetByUsersIdAsync(id, User.Identity.GetUserId());
 
         var userDetailsViewModel = new UserDetailsViewModel();
-        if (userRelation == null)
-        {
+        if (userRelation == null) {
             var oppositeRelation = await _relationService.GetByUsersIdAsync(User.Identity.GetUserId(), id);
             userDetailsViewModel.RelationOption = oppositeRelation == null
                 ? RelationOptions.DoesNotExist
@@ -112,8 +96,7 @@ public class UserController : ApiController
                     ? RelationOptions.Friends
                     : RelationOptions.Pending;
         }
-        else
-        {
+        else {
             userDetailsViewModel.RelationOption = userRelation.IsFriend
                 ? RelationOptions.Friends
                 : RelationOptions.Accept;
@@ -121,58 +104,56 @@ public class UserController : ApiController
 
         userDetailsViewModel.User = await _userService.GetFirstAsync(id);
         userDetailsViewModel.Collections = await _collectionService.GetAllAsync(c => c.UserId.Equals(id));
-        
+
         userDetailsViewModel.IsCurrentUser = User.Identity.GetUserId().Equals(userDetailsViewModel.User.Id);
         return Ok(ApiResult<UserDetailsViewModel>.Success(userDetailsViewModel));
     }
-    
+
     [HttpGet("getById/{id}")]
-    public async Task<IActionResult> GetById(string id)
-    {
+    public async Task<IActionResult> GetById(string id) {
         var user = await _userService.GetFirstAsync(id);
         return Ok(ApiResult<UserModel>.Success(user));
     }
 
     // PUT: Users/Edit
     [HttpPut]
-    public async Task<ActionResult> Edit(UserModel userModel, IFormFile? avatar)
-    {
-        userModel.PhotoPath = await ImageUploadingHelper.ReuploadAndGetNewPathAsync("avatars",
-            "/avatars/default-user-avatar.jpg", avatar, userModel.PhotoPath);
+    public async Task<ActionResult> Edit(UpdateUserViewModel userModel) {
+        var photoPath = ImageUploadingHelper.GeneratePhotoPath(AvatarDirectoryName, userModel.Avatar, AvatarDefaultPath);
+        if (photoPath.Equals(userModel.PreviousPhotoPath)) {
+            return Ok(ApiResult<string>.Success(userModel.Id));
+        }
 
-        await _userService.UpdateAsync(userModel.Id, userModel);
-        return Ok(ApiResult<UserModel>.Success(userModel));
+        await ImageUploadingHelper.ReuploadAsync(AvatarDirectoryName, AvatarDefaultPath, userModel.Avatar, userModel.PreviousPhotoPath);
+        var user = await _userService.GetFirstAsync(userModel.Id);
+        user.PhotoPath = photoPath;
+        await _userService.UpdateAsync(userModel.Id, user);
+        return Ok(ApiResult<string>.Success(userModel.Id));
     }
-    
+
     // POST: Users/Follow
     [HttpPost("follow")]
-    public async Task<ActionResult> Follow(string id)
-    {
+    public async Task<ActionResult> Follow(string id) {
         await _relationService.SubscribeAsync(User.Identity.GetUserId(), id);
         return Ok(ApiResult<string>.Success(id));
     }
 
     // POST: Users/BecomeFriends
     [HttpPost("becomeFriends")]
-    public async Task<ActionResult> BecomeFriends(string id)
-    {
+    public async Task<ActionResult> BecomeFriends(string id) {
         await _relationService.BecomeFriendsAsync(id, User.Identity.GetUserId());
         return Ok(ApiResult<string>.Success(id));
     }
-    
+
     // GET: Users/ShowRelations/2&true
     [HttpGet("showRelations/{userId}&{isFriend:bool}")]
-    public async Task<ActionResult> ShowRelations(string userId, bool isFriend)
-    {
+    public async Task<ActionResult> ShowRelations(string userId, bool isFriend) {
         IEnumerable<ApplicationUser?> users;
-        if (isFriend)
-        {
+        if (isFriend) {
             users = (await _relationService.GetAllAsync(userId, isFriend)).SelectMany(r =>
                 new[] { r.Subscriber, r.User });
             users = users.Where(u => !u.Id.Equals(userId));
         }
-        else
-        {
+        else {
             users = (await _relationService.GetAllAsync(userId, isFriend)).Select(r => r.Subscriber);
         }
 
@@ -181,8 +162,7 @@ public class UserController : ApiController
 
     // GET: Users/ShowNotifications
     [HttpGet("showNotifications")]
-    public async Task<ActionResult> ShowNotifications()
-    {
+    public async Task<ActionResult> ShowNotifications() {
         var subscribers = (await _relationService.GetAllAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
         return Ok(ApiResult<IEnumerable<ApplicationUser?>>.Success(subscribers));
     }

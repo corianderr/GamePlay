@@ -29,8 +29,8 @@ const CreateGameForm = ({ handleClose, updateGames }) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
+  const handleAdd = async (event) => {
+    event.preventDefault();
     const formData = new FormData();
     console.log(form);
     console.log(file);
@@ -57,7 +57,7 @@ const CreateGameForm = ({ handleClose, updateGames }) => {
   };
 
   return (
-    <form onSubmit={handleAdd}>
+    <form onSubmit={(e) => handleAdd(e)}>
       <div className="form-group">
         <input className="form-control" type="file" onChange={saveFile} />
       </div>

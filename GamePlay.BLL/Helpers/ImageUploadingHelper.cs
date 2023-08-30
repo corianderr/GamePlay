@@ -10,7 +10,7 @@ public static class ImageUploadingHelper
     {
         if (image == null) return previousPath;
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + previousPath);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "../GamePlay.UI/game-play-ui/public" + previousPath);
         if (File.Exists(path) && !previousPath.Equals(defaultPath)) File.Delete(path);
 
         return await UploadImageAsync(directory, defaultPath, image);
@@ -22,7 +22,7 @@ public static class ImageUploadingHelper
 
         var name = GenerateCode() + Path.GetExtension(image.FileName);
         await using var fileStream =
-            new FileStream(Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/{directory}/{name}"),
+            new FileStream(Path.Combine(Directory.GetCurrentDirectory(), $"../GamePlay.UI/game-play-ui/public/{directory}/{name}"),
                 FileMode.Create);
         await image.CopyToAsync(fileStream);
 

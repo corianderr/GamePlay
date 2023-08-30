@@ -82,7 +82,7 @@ const GameList = ({ header, games, updateGames }) => {
               <Modal.Body>
                 <CreateGameForm
                   handleClose={handleClose}
-                  updateGames={updateGames}
+                  updateData={updateGames}
                 />
               </Modal.Body>
             </Modal>

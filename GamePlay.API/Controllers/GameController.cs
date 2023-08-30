@@ -78,17 +78,10 @@ public class GameController : ApiController {
         return Ok(ApiResult<CreateGameModel>.Success(createModel.GameModel));
     }
 
-    private static IEnumerable<ValidationResult> Validate<TModel>(TModel model, out bool isValid) {
-        var context = new ValidationContext(model, serviceProvider: null, items: null);
-        var validationResults = new List<ValidationResult>();
-        isValid = Validator.TryValidateObject(model, context, validationResults, true);
-        return validationResults;
-    }
-
     // PUT: Games/Edit/5
     [Authorize(Roles = "admin")]
-    [HttpPut]
-    public async Task<ActionResult> Edit(UpdateGameViewModel updateModel) {
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult> Edit(Guid id, [FromForm] UpdateGameViewModel updateModel) {
         try {
             updateModel.GameModel = JsonConvert.DeserializeObject<CreateGameModel>(updateModel.GameModelJson!);
 
@@ -96,12 +89,12 @@ public class GameController : ApiController {
             if (isValid) {
                 var photoPath =
                     ImageUploadingHelper.GeneratePhotoPath(GameCoverDirectoryName, updateModel.GameImage, GameCoverDefaultPath);
+                var previousPath = updateModel.GameModel!.PhotoPath;
                 updateModel.GameModel!.PhotoPath = photoPath;
 
-                await _gameService.UpdateAsync(updateModel.Id, updateModel.GameModel);
-                if (!photoPath.Equals(GameCoverDefaultPath)) {
-                    await ImageUploadingHelper.UploadAsync(updateModel.GameImage!, photoPath);
-                }
+                await _gameService.UpdateAsync(id, updateModel.GameModel);
+                await ImageUploadingHelper.ReuploadAsync(photoPath, GameCoverDefaultPath, updateModel.GameImage!,
+                    previousPath!);
             }
             else {
                 return Ok(ApiResult<CreateGameModel>.Failure(validationResults.Select(r => r.ErrorMessage)));
@@ -112,7 +105,7 @@ public class GameController : ApiController {
             return Ok(ApiResult<CreateGameModel>.Failure(new[] { ex.Message }));
         }
 
-        return Ok(ApiResult<Guid>.Success(updateModel.Id));
+        return Ok(ApiResult<Guid>.Success(id));
     }
 
     // POST: Games/Delete/5
@@ -143,5 +136,12 @@ public class GameController : ApiController {
         await _ratingService.DeleteAsync(id);
 
         return Ok(ApiResult<BaseModel>.Success(new BaseModel() { Id = (Guid)gameId }));
+    }
+
+    private static IEnumerable<ValidationResult> Validate<TModel>(TModel model, out bool isValid) {
+        var context = new ValidationContext(model, serviceProvider: null, items: null);
+        var validationResults = new List<ValidationResult>();
+        isValid = Validator.TryValidateObject(model, context, validationResults, true);
+        return validationResults;
     }
 }

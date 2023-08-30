@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Http;
 namespace GamePlay.BLL.Helpers;
 
 public static class ImageUploadingHelper {
-    public static async Task ReuploadAsync(string directory, string defaultPath, IFormFile image,
+    public static async Task ReuploadAsync(string photoPath, string defaultPath, IFormFile? image,
         string previousPath) {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "../GamePlay.UI/game-play-ui/public" + previousPath);
         if (File.Exists(path) && !previousPath.Equals(defaultPath)) File.Delete(path);
-        var name = GenerateCode() + Path.GetExtension(image.FileName);
-        var photoPath = $"{directory}/{name}";
 
-        if (photoPath.Equals(defaultPath)) {
+        if (image == null) {
             return;
         }
 

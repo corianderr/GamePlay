@@ -7,6 +7,7 @@ import StarRating from "../../components/game/StarRating/StarRating";
 import { toast } from "react-toastify";
 import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollectionForm";
 import { Button, Modal } from "react-bootstrap";
+import UpdateGameForm from "components/game/UpdateGameForm/UpdateGameForm";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -16,6 +17,10 @@ const GameDetails = () => {
   const [rating, setRating] = useState(-1);
   const [availableCollections, setAvailableCollections] = useState([]);
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+
+  const handleEditClose = () => setShowEdit(false);
+  const handleEditShow = () => setShowEdit(true);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -26,39 +31,27 @@ const GameDetails = () => {
   const { gameId } = useParams();
 
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getGame = async () => {
-      try {
-        const response = await axiosPrivate.get(`/game/details/${gameId}`, {
-          signal: controller.signal,
-        });
-        if (isMounted) {
-          var data = response.data.result;
-          setGame(data.game);
-          setRating(data.rating);
-          setAvailableCollections(data.availableCollections);
-        }
-      } catch (err) {
-        if (err.name === "CanceledError") {
-          return;
-        }
-
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
-
     if (rating === -1) {
       getGame();
     }
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
   }, [rating]);
+
+  const getGame = async () => {
+    try {
+      const response = await axiosPrivate.get(`/game/details/${gameId}`);
+      var data = response.data.result;
+      setGame(data.game);
+      setRating(data.rating);
+      setAvailableCollections(data.availableCollections);
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
+      }
+
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
 
   const resetRating = () => {
     console.log("RESET RATING");
@@ -75,7 +68,7 @@ const GameDetails = () => {
       const response = await axiosPrivate.delete(`/game/${id}`);
       console.log(response);
       if (response.data.succeeded) {
-        console.log(response.data)
+        console.log(response.data);
         toast.success("Game has been deleted");
         navigate("/games", { state: { from: location }, replace: true });
       }
@@ -139,7 +132,10 @@ const GameDetails = () => {
             )}
             <div className="my-3">
               {auth?.id && (
-                <Link className="btn-sm me-2 text-black-50" to={`/gameRounds/${gameId}/${game.name}`}>
+                <Link
+                  className="btn-sm me-2 text-black-50"
+                  to={`/gameRounds/${gameId}/${game.name}`}
+                >
                   <FontAwesomeIcon
                     icon="fa-solid fa-square-poll-vertical"
                     size="2xl"
@@ -153,8 +149,13 @@ const GameDetails = () => {
               {auth?.roles?.includes("admin") && (
                 <>
                   <a className="btn btn-dark btn-sm">Add a Round Result</a>
-                  <a className="btn btn-dark btn-sm ms-2">Edit</a>
-                  <button className="btn btn-dark btn-sm ms-2" onClick={() => handleDelete(gameId)}>Delete</button>
+                  <button className="btn btn-dark btn-sm ms-2" onClick={handleEditShow}>Edit</button>
+                  <button
+                    className="btn btn-dark btn-sm ms-2"
+                    onClick={() => handleDelete(gameId)}
+                  >
+                    Delete
+                  </button>
                 </>
               )}
             </div>
@@ -175,6 +176,20 @@ const GameDetails = () => {
             handleSubmit={handleSubmit}
             availableCollections={availableCollections}
             gameId={gameId}
+          />
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showEdit} onHide={handleEditClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit game</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <UpdateGameForm
+            handleClose={handleEditClose}
+            gameId={gameId}
+            game={game}
+            updateGame={getGame}
           />
         </Modal.Body>
       </Modal>

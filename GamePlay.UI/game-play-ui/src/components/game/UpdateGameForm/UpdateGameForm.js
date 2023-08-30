@@ -1,14 +1,14 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import GameForm from "../GameForm/GameForm";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const CreateGameForm = ({ handleClose, updateData }) => {
+const UpdateGameForm = ({ handleClose, gameId, game, updateGame }) => {
   const axiosPrivate = useAxiosPrivate();
-  
 
-  const handleAdd = async (data) => {
-    const response = await axiosPrivate.post("game", data, {
+  const handleEdit = async (data) => {
+    const response = await axiosPrivate.put(`game/${gameId}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -16,8 +16,8 @@ const CreateGameForm = ({ handleClose, updateData }) => {
     if (response.data.succeeded) {
       console.log(response);
       handleClose();
-      updateData();
-      toast.success("Game has been added");
+      updateGame();
+      toast.success("Game has been edited");
     } else {
       console.log(response);
       response.data.errors.map((e) => {
@@ -26,7 +26,7 @@ const CreateGameForm = ({ handleClose, updateData }) => {
     }
   };
 
-  return <GameForm handleLogic={handleAdd} buttonValue={"Create"}/>;
+  return <GameForm handleLogic={handleEdit} gameData={game} buttonValue={"Update"}/>;
 };
 
-export default CreateGameForm;
+export default UpdateGameForm;

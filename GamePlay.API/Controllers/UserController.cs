@@ -117,13 +117,13 @@ public class UserController : ApiController {
 
     // PUT: Users/Edit
     [HttpPut]
-    public async Task<ActionResult> Edit(UpdateUserViewModel userModel) {
+    public async Task<ActionResult> Edit([FromForm] UpdateUserViewModel userModel) {
         var photoPath = ImageUploadingHelper.GeneratePhotoPath(AvatarDirectoryName, userModel.Avatar, AvatarDefaultPath);
         if (photoPath.Equals(userModel.PreviousPhotoPath)) {
             return Ok(ApiResult<string>.Success(userModel.Id));
         }
 
-        await ImageUploadingHelper.ReuploadAsync(AvatarDirectoryName, AvatarDefaultPath, userModel.Avatar, userModel.PreviousPhotoPath);
+        await ImageUploadingHelper.ReuploadAsync(photoPath, AvatarDefaultPath, userModel.Avatar, userModel.PreviousPhotoPath);
         var user = await _userService.GetFirstAsync(userModel.Id);
         user.PhotoPath = photoPath;
         await _userService.UpdateAsync(userModel.Id, user);

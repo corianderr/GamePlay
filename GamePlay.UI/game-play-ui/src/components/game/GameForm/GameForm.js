@@ -28,8 +28,6 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    console.log(form);
-    console.log(file);
     formData.append("gameModelJson", JSON.stringify(form));
     formData.append("gameImage", file);
     handleLogic(formData);

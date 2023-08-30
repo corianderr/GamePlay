@@ -16,6 +16,8 @@ const UserDetails = () => {
   const [collections, setCollections] = useState([]);
   const [editShow, setEditShow] = useState(false);
   const [addShow, setAddShow] = useState(false);
+  const [editProfileShow, setEditProfileShow] = useState(false);
+  const [file, setFile] = useState(null);
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -51,6 +53,11 @@ const UserDetails = () => {
     }
   };
 
+  const saveFile = (e) => {
+    console.log(e.target?.files[0]);
+    setFile(e.target?.files[0]);
+  };
+
   const updateUser = () => {
     const getUser = async () => {
       const response = await axiosPrivate.get(`/user/getById/${userId}`);
@@ -81,6 +88,14 @@ const UserDetails = () => {
       setForm(result.data.result);
       setEditShow(true);
     }
+  };
+
+  const handleEditProfileClose = async () => {
+    setEditProfileShow(false);
+  };
+
+  const handleEditProfileShow = async (id) => {
+    setEditProfileShow(true);
   };
 
   const handleEditClose = async () => {
@@ -123,6 +138,30 @@ const UserDetails = () => {
     } catch (err) {}
   };
 
+  const handleEditProfile = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id", userId);
+    formData.append("previousPhotoPath", user.photoPath);
+    formData.append("avatar", file);
+    const response = await axiosPrivate.put("user", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (response.data.succeeded) {
+      console.log(response);
+      handleEditProfileClose();
+      updateUser();
+      toast.success("Profile has been edited");
+    } else {
+      console.log(response);
+      response.data.errors.map((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -155,9 +194,9 @@ const UserDetails = () => {
             <h4 className="mb-0">{user.userName}</h4>
             <span className="text-muted d-block mb-2">{user.email}</span>
             {user.id === auth?.id ? (
-              <a className="btn btn-primary btn-sm follow" href="/Users/Edit">
+              <button className="btn btn-primary btn-sm follow" onClick={handleEditProfileShow}>
                 Edit profile
-              </a>
+              </button>
             ) : (
               <RelationButton
                 relation={relation}
@@ -188,16 +227,16 @@ const UserDetails = () => {
 
       {collections.length === 0 ? (
         user.id === auth?.id ? (
-            <h5>
-              I don't have any collections yet :( <br />
-              Add one
-              <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
+          <h5>
+            I don't have any collections yet :( <br />
+            Add one
+            <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon
                 icon="fa-solid fa-square-plus"
                 className="ms-2 opacity-75"
               />
             </span>
-            </h5>
+          </h5>
         ) : (
           <h5>{user.userName} does not have any collections yet :(</h5>
         )
@@ -287,6 +326,28 @@ const UserDetails = () => {
               />
             </Form.Group>
             <Button type="submit">Add</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={editProfileShow} onHide={handleEditProfileClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => handleEditProfile(e)}>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Control type="file" onChange={saveFile} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Username</Form.Label>
+              <Form.Control value={user.userName} disabled />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Email</Form.Label>
+              <Form.Control value={user.email} disabled />
+            </Form.Group>
+            <Button type="submit">Edit</Button>
           </Form>
         </Modal.Body>
       </Modal>

@@ -16,20 +16,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="12.0.1" />
-        <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="6.0.4" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.20" />
+        <PackageReference Include="AutoMapper" Version="12.0.1"/>
+        <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="6.0.4"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.20"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.20" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.20"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj" />
+        <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

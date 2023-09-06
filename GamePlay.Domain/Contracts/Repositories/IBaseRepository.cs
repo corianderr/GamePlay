@@ -2,8 +2,7 @@ using System.Linq.Expressions;
 
 namespace GamePlay.Domain.Contracts.Repositories;
 
-public interface IBaseRepository<TEntity> where TEntity : class
-{
+public interface IBaseRepository<TEntity> where TEntity : class {
     Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate,
         params Expression<Func<TEntity, object>>[] includeProperties);
 

@@ -11,10 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GamePlay.DAL;
 
-public static class DataAccessDependencyInjection
-{
-    public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
-    {
+public static class DataAccessDependencyInjection {
+    public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration) {
         services.AddRepositories();
         services.RegisterAutoMapper();
         services.AddDatabase(configuration);
@@ -22,8 +20,7 @@ public static class DataAccessDependencyInjection
         return services;
     }
 
-    private static void AddRepositories(this IServiceCollection services)
-    {
+    private static void AddRepositories(this IServiceCollection services) {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IGameRepository, GameRepository>();
         services.AddScoped<IGameRatingRepository, GameRatingRepository>();
@@ -33,26 +30,22 @@ public static class DataAccessDependencyInjection
         services.AddScoped<IPlayerRepository, PlayerRepository>();
     }
 
-    private static void RegisterAutoMapper(this IServiceCollection services)
-    {
+    private static void RegisterAutoMapper(this IServiceCollection services) {
         services.AddAutoMapper(cfg => { cfg.AddExpressionMapping(); }, typeof(IMappingProfilesMarker));
     }
-    
-    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
-    {
+
+    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration) {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
     }
 
-    private static void AddIdentity(this IServiceCollection services)
-    {
+    private static void AddIdentity(this IServiceCollection services) {
         services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.Configure<IdentityOptions>(options =>
-        {
+        services.Configure<IdentityOptions>(options => {
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = false;
             options.Password.RequireNonAlphanumeric = false;

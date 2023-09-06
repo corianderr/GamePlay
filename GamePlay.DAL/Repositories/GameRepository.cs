@@ -6,9 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GamePlay.DAL.Repositories;
 
-public class GameRepository : BaseRepository<Game>, IGameRepository
-{
-    public GameRepository(ApplicationDbContext context) : base(context)
-    {
+public class GameRepository : BaseRepository<Game>, IGameRepository {
+    public GameRepository(ApplicationDbContext context) : base(context) {
     }
 }

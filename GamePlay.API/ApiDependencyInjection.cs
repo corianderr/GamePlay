@@ -5,25 +5,20 @@ using Microsoft.OpenApi.Models;
 
 namespace GamePlay.API;
 
-public static class ApiDependencyInjection
-{
-    public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
-    {
+public static class ApiDependencyInjection {
+    public static void AddJwt(this IServiceCollection services, IConfiguration configuration) {
         var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
 
         var key = Encoding.ASCII.GetBytes(secretKey);
 
-        services.AddAuthentication(x =>
-            {
+        services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
-            {
+            .AddJwtBearer(x => {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
+                x.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
@@ -31,13 +26,10 @@ public static class ApiDependencyInjection
                 };
             });
     }
-    
-    public static void AddSwagger(this IServiceCollection services)
-    {
-        services.AddSwaggerGen(s =>
-        {
-            s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
+
+    public static void AddSwagger(this IServiceCollection services) {
+        services.AddSwaggerGen(s => {
+            s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                 Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer YOUR_TOKEN')",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
@@ -45,13 +37,10 @@ public static class ApiDependencyInjection
                 Scheme = "Bearer"
             });
 
-            s.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
+            s.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         }

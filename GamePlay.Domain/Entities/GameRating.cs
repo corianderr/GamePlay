@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Entities;
 
-public class GameRating
-{
+public class GameRating {
     public Guid Id { get; set; }
     public string? UserId { get; set; }
     public ApplicationUser? User { get; set; }

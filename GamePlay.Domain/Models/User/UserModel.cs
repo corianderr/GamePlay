@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Models.User;
 
-public class UserModel
-{
+public class UserModel {
     public string? Id { get; set; }
     public string? UserName { get; set; }
     public string? Email { get; set; }

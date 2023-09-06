@@ -18,8 +18,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace GamePlay.BLL.Services;
 
-public class UserService : IUserService
-{
+public class UserService : IUserService {
     private readonly IMapper _mapper;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -30,8 +29,7 @@ public class UserService : IUserService
     public UserService(IUserRepository userRepository,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IMapper mapper, ICollectionService collectionService, IConfiguration configuration)
-    {
+        IMapper mapper, ICollectionService collectionService, IConfiguration configuration) {
         _userManager = userManager;
         _signInManager = signInManager;
         _userRepository = userRepository;
@@ -40,8 +38,7 @@ public class UserService : IUserService
         _configuration = configuration;
     }
 
-    public async Task<BaseModel> RegisterAsync(CreateUserModel createUserModel)
-    {
+    public async Task<BaseModel> RegisterAsync(CreateUserModel createUserModel) {
         var user = _mapper.Map<ApplicationUser>(createUserModel);
         user.PhotoPath = "/avatars/default-user-avatar.jpg";
 
@@ -58,18 +55,16 @@ public class UserService : IUserService
 
         var userId = (await _userManager.FindByNameAsync(user.UserName)).Id;
         await _collectionService.CreateAsync(new CreateCollectionModel() { Name = "My Collection", UserId = userId, IsDefault = true });
-        
-        return new BaseModel
-        {
+
+        return new BaseModel {
             Id = Guid.Parse(userId)
         };
     }
 
-    public async Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel)
-    {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.EmailOrUsername) 
+    public async Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel) {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginUserModel.EmailOrUsername)
                    ?? await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginUserModel.EmailOrUsername);
-        
+
         if (user == null)
             throw new NotFoundException("Username/email or password is incorrect");
 
@@ -82,9 +77,8 @@ public class UserService : IUserService
         // TODO: Change helper to service
         var token = JwtHelper.GenerateAccessToken(user, _configuration, roles);
         var refreshToken = JwtHelper.GenerateRefreshToken(user.Id, _configuration);
-        
-        return new LoginResponseModel
-        {
+
+        return new LoginResponseModel {
             Username = user.UserName,
             Email = user.Email,
             AccessToken = token,
@@ -94,8 +88,7 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<RefreshResponseModel?> RefreshIsValid(string refreshToken)
-    {
+    public async Task<RefreshResponseModel?> RefreshIsValid(string refreshToken) {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(refreshToken);
         var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
@@ -104,36 +97,30 @@ public class UserService : IUserService
 
         if (!JwtHelper.ValidateRefreshToken(refreshToken, _configuration)) return null;
 
-        var responseModel = new RefreshResponseModel()
-        {
+        var responseModel = new RefreshResponseModel() {
             AccessToken = JwtHelper.GenerateAccessToken(user, _configuration, roles),
             Roles = roles,
             Id = user.Id,
             Username = user.UserName
         };
         return responseModel;
-
     }
-    
-    public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null)
-    {
+
+    public async Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null) {
         var games = await _userRepository.GetAllAsync(_mapper.Map<Expression<Func<ApplicationUser, bool>>?>(predicate));
         return _mapper.Map<IEnumerable<UserModel>>(games);
     }
-    
-    public async Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default)
-    {
+
+    public async Task<UserModel> GetFirstAsync(string userId, CancellationToken cancellationToken = default) {
         var user = await _userRepository.GetFirstAsync(u => u.Id.Equals(userId));
         return _mapper.Map<UserModel>(user);
     }
-    
+
     public async Task<UserModel> UpdateAsync(string id, UserModel updateUserModel,
-        CancellationToken cancellationToken = default)
-    {
+        CancellationToken cancellationToken = default) {
         var game = await _userRepository.GetFirstAsync(e => e.Id == id);
         _mapper.Map(updateUserModel, game);
-        return new UserModel
-        {
+        return new UserModel {
             Id = (await _userRepository.UpdateAsync(game)).Id
         };
     }

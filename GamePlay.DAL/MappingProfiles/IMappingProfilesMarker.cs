@@ -1,5 +1,4 @@
 namespace GamePlay.DAL.MappingProfiles;
 
-public interface IMappingProfilesMarker
-{
+public interface IMappingProfilesMarker {
 }

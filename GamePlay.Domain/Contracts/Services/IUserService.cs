@@ -5,8 +5,7 @@ using GamePlay.Domain.Models.User;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IUserService
-{
+public interface IUserService {
     Task<BaseModel> RegisterAsync(CreateUserModel createUserModel);
     Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel);
     Task<IEnumerable<UserModel>> GetAllAsync(Expression<Func<UserModel, bool>>? predicate = null);

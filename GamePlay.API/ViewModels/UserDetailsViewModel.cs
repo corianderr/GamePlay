@@ -4,8 +4,7 @@ using GamePlay.Domain.Models.User;
 
 namespace GamePlay.API.ViewModels;
 
-public class UserDetailsViewModel
-{
+public class UserDetailsViewModel {
     public UserModel? User { get; set; }
     public RelationOptions RelationOption { get; set; }
     public IEnumerable<CollectionModel> Collections { get; set; }

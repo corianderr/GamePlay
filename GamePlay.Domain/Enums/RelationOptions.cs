@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Enums;
 
-public enum RelationOptions
-{
+public enum RelationOptions {
     DoesNotExist,
     Pending,
     Accept,

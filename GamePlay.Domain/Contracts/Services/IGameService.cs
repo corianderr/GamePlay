@@ -4,8 +4,7 @@ using GamePlay.Domain.Models.Game;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IGameService
-{
+public interface IGameService {
     Task<GameModel>
         GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

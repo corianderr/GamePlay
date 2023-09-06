@@ -9,8 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(config => config.Filters.Add(typeof(ValidateModelAttribute))).AddJsonOptions(options => 
-{ 
+builder.Services.AddControllers(config => config.Filters.Add(typeof(ValidateModelAttribute))).AddJsonOptions(options => {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
@@ -28,8 +27,7 @@ builder.Services.AddJwt(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }

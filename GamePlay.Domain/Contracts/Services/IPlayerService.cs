@@ -4,8 +4,7 @@ using GamePlay.Domain.Models.Player;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IPlayerService
-{
+public interface IPlayerService {
     Task<BaseModel> CreateAsync(CreatePlayerModel createModel,
         CancellationToken cancellationToken = default);
 

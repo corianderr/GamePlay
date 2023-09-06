@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GamePlay.Domain.Entities;
 
-public class Player
-{
+public class Player {
     public Guid Id { get; set; }
     [Column("GameRoundId")]
     public Guid GameRoundId { get; set; }

@@ -5,21 +5,17 @@ using GamePlay.Domain.Entities;
 
 namespace GamePlay.DAL.Repositories;
 
-public class CollectionRepository : BaseRepository<Collection>, ICollectionRepository
-{
-    public CollectionRepository(ApplicationDbContext context) : base(context)
-    {
+public class CollectionRepository : BaseRepository<Collection>, ICollectionRepository {
+    public CollectionRepository(ApplicationDbContext context) : base(context) {
     }
 
-    public async Task AddGameAsync(Game game, Guid collectionId)
-    {
+    public async Task AddGameAsync(Game game, Guid collectionId) {
         var collection = await GetFirstAsync(c => c.Id.Equals(collectionId));
         collection.Games.Add(game);
         await Context.SaveChangesAsync();
     }
 
-    public async Task DeleteGameAsync(Game game, Guid collectionId)
-    {
+    public async Task DeleteGameAsync(Game game, Guid collectionId) {
         var collection = await GetFirstAsync(c => c.Id.Equals(collectionId), c => c.Games);
         collection.Games.Remove(game);
         await Context.SaveChangesAsync();

@@ -4,9 +4,7 @@ using GamePlay.Domain.Entities;
 
 namespace GamePlay.DAL.Repositories;
 
-public class PlayerRepository : BaseRepository<Player>, IPlayerRepository
-{
-    public PlayerRepository(ApplicationDbContext context) : base(context)
-    {
+public class PlayerRepository : BaseRepository<Player>, IPlayerRepository {
+    public PlayerRepository(ApplicationDbContext context) : base(context) {
     }
 }

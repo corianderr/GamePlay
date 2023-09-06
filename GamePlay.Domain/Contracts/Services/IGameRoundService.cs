@@ -5,8 +5,7 @@ using GamePlay.Domain.Models.GameRound;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IGameRoundService
-{
+public interface IGameRoundService {
     Task<BaseModel> AddAsync(CreateGameRoundModel entity);
     Task<IEnumerable<GameRoundModel>> GetAllByGameIdAsync(Guid gameId);
     Task<GameRoundModel> GetByIdAsync(Guid id);

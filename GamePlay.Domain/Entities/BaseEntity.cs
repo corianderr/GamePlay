@@ -1,6 +1,5 @@
 namespace GamePlay.Domain.Entities;
 
-public class BaseEntity
-{
+public class BaseEntity {
     public Guid Id { get; set; }
 }

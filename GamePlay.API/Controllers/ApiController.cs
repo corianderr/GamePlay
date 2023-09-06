@@ -4,6 +4,5 @@ namespace GamePlay.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ApiController : ControllerBase
-{
+public class ApiController : ControllerBase {
 }

@@ -4,8 +4,7 @@ using GamePlay.Domain.CustomAttributes;
 
 namespace GamePlay.Domain.Models.Game;
 
-public class UpdateGameModel
-{
+public class UpdateGameModel {
     [Required(ErrorMessage = "Please enter game name using less than 50 characters.")]
     [StringLength(50)]
     public string? Name { get; set; }

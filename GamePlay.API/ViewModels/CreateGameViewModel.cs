@@ -1,6 +1,6 @@
 using GamePlay.Domain.Models.Game;
 
-namespace GamePlay.API.ViewModels; 
+namespace GamePlay.API.ViewModels;
 
 public class CreateGameViewModel {
     public CreateGameModel? GameModel { get; set; }

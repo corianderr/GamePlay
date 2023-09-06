@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Models.Player;
 
-public class CreatePlayerModel
-{
+public class CreatePlayerModel {
     public Guid? GameRoundId { get; set; }
     public string? Name { get; set; }
     public int Score { get; set; }

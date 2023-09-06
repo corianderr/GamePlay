@@ -8,11 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace GamePlay.DAL.Data;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
-{
+public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
     public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
-        : base(options, operationalStoreOptions)
-    {
+        : base(options, operationalStoreOptions) {
     }
 
     public DbSet<Game>? Games { get; set; }
@@ -22,8 +20,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     public DbSet<GameRound>? GameRounds { get; set; }
     public DbSet<Player>? Players { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         ConfigureEntityId<BaseEntity>(modelBuilder);
         ConfigureEntityId<Collection>(modelBuilder);
@@ -32,14 +29,12 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         ConfigureEntityId<GameRound>(modelBuilder);
         ConfigureEntityId<Player>(modelBuilder);
         ConfigureEntityId<UserRelation>(modelBuilder);
-        
+
         modelBuilder.Seed();
     }
 
-    private static void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : class
-    {
-        modelBuilder.Entity<T>(b =>
-        {
+    private static void ConfigureEntityId<T>(ModelBuilder modelBuilder) where T : class {
+        modelBuilder.Entity<T>(b => {
             b.Property<Guid>("Id")
                 .HasColumnType("uniqueidentifier")
                 .ValueGeneratedOnAdd();
@@ -48,8 +43,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         });
     }
 
-    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
-    {
+    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new()) {
         foreach (var entry in ChangeTracker.Entries<BaseEntity>())
             if (entry.State.Equals(EntityState.Added))
                 entry.Entity.Id = Guid.NewGuid();

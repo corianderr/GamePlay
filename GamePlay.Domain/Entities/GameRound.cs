@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Entities;
 
-public class GameRound
-{
+public class GameRound {
     public Guid Id { get; set; }
     public Guid GameId { get; set; }
     public Game? Game { get; set; }
@@ -9,8 +8,7 @@ public class GameRound
     public string? Place { get; set; }
     public List<Player> Players { get; set; }
 
-    public GameRound()
-    {
+    public GameRound() {
         Players = new List<Player>();
     }
 }

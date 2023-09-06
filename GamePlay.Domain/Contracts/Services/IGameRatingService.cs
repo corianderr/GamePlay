@@ -3,8 +3,7 @@ using GamePlay.Domain.Models.Game;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IGameRatingService
-{
+public interface IGameRatingService {
     Task<BaseModel> AddAsync(CreateGameRatingModel entity);
     Task<GameRatingModel> GetByUserAndGameAsync(string userId, Guid gameId);
     Task<GameRatingModel> GetByIdAsync(Guid id);

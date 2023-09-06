@@ -1,4 +1,4 @@
-namespace GamePlay.API.ViewModels; 
+namespace GamePlay.API.ViewModels;
 
 public class UpdateUserViewModel {
     public string? Id { get; set; }

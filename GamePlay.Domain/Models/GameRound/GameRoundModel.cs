@@ -3,8 +3,7 @@ using GamePlay.Domain.Models.Player;
 
 namespace GamePlay.Domain.Models.GameRound;
 
-public class GameRoundModel
-{
+public class GameRoundModel {
     public Guid Id { get; set; }
     public Guid GameId { get; set; }
     public Entities.Game? Game { get; set; }

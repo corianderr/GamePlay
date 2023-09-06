@@ -4,8 +4,7 @@ using GamePlay.Domain.Models.Player;
 
 namespace GamePlay.Domain.Models.GameRound;
 
-public class CreateGameRoundModel
-{
+public class CreateGameRoundModel {
     [Required]
     public Guid GameId { get; set; }
     public GameModel? Game { get; set; }

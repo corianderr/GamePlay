@@ -1,7 +1,6 @@
 namespace GamePlay.Domain.Entities;
 
-public class Game
-{
+public class Game {
     public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? NameRu { get; set; }
@@ -17,8 +16,7 @@ public class Game
     public double AverageRating { get; set; }
     public List<Collection> Collections { get; set; }
 
-    public Game()
-    {
+    public Game() {
         Collections = new List<Collection>();
     }
 }

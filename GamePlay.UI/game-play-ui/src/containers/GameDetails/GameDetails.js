@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollectionForm";
 import { Button, Modal } from "react-bootstrap";
 import UpdateGameForm from "components/game/UpdateGameForm/UpdateGameForm";
+import AddGameRoundForm from "components/game/AddGameRoundForm/AddGameRoundForm";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -18,12 +19,16 @@ const GameDetails = () => {
   const [availableCollections, setAvailableCollections] = useState([]);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showAddRound, setShowAddRound] = useState(false);
 
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = () => setShowEdit(true);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleAddRoundClose = () => setShowAddRound(false);
+  const handleAddRoundShow = () => setShowAddRound(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -148,7 +153,7 @@ const GameDetails = () => {
             <div>
               {auth?.roles?.includes("admin") && (
                 <>
-                  <a className="btn btn-dark btn-sm">Add a Round Result</a>
+                  <button className="btn btn-dark btn-sm" onClick={handleAddRoundShow}>Add a Round Result</button>
                   <button className="btn btn-dark btn-sm ms-2" onClick={handleEditShow}>Edit</button>
                   <button
                     className="btn btn-dark btn-sm ms-2"
@@ -175,7 +180,7 @@ const GameDetails = () => {
           <AddToCollectionForm
             handleSubmit={handleSubmit}
             availableCollections={availableCollections}
-            gameId={gameId}
+            gameId={gameId} game={game}
           />
         </Modal.Body>
       </Modal>
@@ -191,6 +196,15 @@ const GameDetails = () => {
             game={game}
             updateGame={getGame}
           />
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showAddRound} onHide={handleAddRoundClose} scrollable={true}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add game round result</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddGameRoundForm gameId={gameId} handleClose={handleAddRoundClose}/>
         </Modal.Body>
       </Modal>
     </>

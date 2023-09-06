@@ -1,11 +1,24 @@
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import EditGameRoundForm from "../EditGameRoundForm/EditGameRoundForm";
+import { useState } from "react";
 
 const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const [show, setShow] = useState(false);
+  const [gameRoundId, setGameRoundId] = useState(null);
+
+  const handleClose = () => setShow(false);
+  const handleShow = (id) => {
+    console.log(id);
+    console.log("SHOW");
+    setGameRoundId(id);
+    setShow(true);
+  }
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this round?")) {
@@ -24,7 +37,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
       ) : (
         <>
                     <h2 className="text-center">{header}</h2>
-          <table class="table table-striped">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -36,23 +49,21 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
             </thead>
             <tbody>
               {rounds.map((round, i) => (
-                <tr>
+                <tr key={i}>
                   <th scope="row">{i + 1}</th>
                   <td><Link to={`/roundDetails/${round.id}`}>{round.game.name}</Link></td>
                   <td>{round.date}</td>
                   <td>{round.place}</td>
                   {auth?.roles.includes("admin") && (
                     <td>
-                      <a
-                        asp-controller="GameRounds"
-                        asp-action="Edit"
-                        asp-route-gameRoundId="@Model[i].Id"
-                        class="btn btn-secondary"
+                      <button
+                        className="btn btn-secondary"
+                        onClick={()=> handleShow(round.id)}
                       >
                         Edit
-                      </a>
+                      </button>
                       <button
-                        class="btn btn-secondary ms-2"
+                        className="btn btn-secondary ms-2"
                         onClick={()  => handleDelete(round.id)}
                       >
                         Delete
@@ -65,6 +76,14 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
           </table>
         </>
       )}
+      <Modal show={show} onHide={handleClose} scrollable={true}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit game round result</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditGameRoundForm gameRoundId={gameRoundId} handleClose={handleClose} />
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

@@ -1,3 +1,4 @@
+using System.Reflection;
 using GamePlay.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,25 @@ public static class ModelBuilderExtensions {
         const string adminRoleId = "b6a28f69-2c96-42fa-9261-91d0815a900e";
         const string userRoleId = "064f3a21-31a4-4bee-861e-af3acba38b5b";
 
+        SeedRoles(modelBuilder, adminRoleId, userRoleId);
+        SeedAdmin(modelBuilder, adminId, adminRoleId);
+        SeedGames(modelBuilder);
+    }
+
+    private static void SeedGames(ModelBuilder modelBuilder) {
+        var resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("GamePlay.DAL.Data.JsonDataSeed.games.json");
+        if (resourceStream == null) {
+            return;
+        }
+
+        using var reader = new StreamReader(resourceStream);
+        var games = JsonConvert.DeserializeObject<Game[]>(reader.ReadToEnd());
+        if (games != null) {
+            modelBuilder.Entity<Game>().HasData(games);
+        }
+    }
+
+    private static void SeedRoles(ModelBuilder modelBuilder, string adminRoleId, string userRoleId) {
         modelBuilder.Entity<IdentityRole>().HasData(
             new List<IdentityRole> {
                 new() {
@@ -19,8 +39,9 @@ public static class ModelBuilderExtensions {
                 },
                 new() { Id = userRoleId, Name = "user", NormalizedName = "user", ConcurrencyStamp = "4057cd4c-f12d-42f4-a9bb-da60da1b4b26" }
             });
+    }
 
-        var hasher = new PasswordHasher<ApplicationUser>();
+    private static void SeedAdmin(ModelBuilder modelBuilder, string adminId, string adminRoleId) {
         var user = new ApplicationUser() {
             Id = adminId,
             UserName = "admin",

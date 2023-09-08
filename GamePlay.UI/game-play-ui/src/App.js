@@ -36,6 +36,7 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/gameDetails/:gameId" element={<GameDetails />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>
@@ -44,7 +45,6 @@ function App() {
             <Route path="/followers/:userId" element={<Followers />} />
             <Route path="/friends/:userId" element={<Friends />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
-            <Route path="/gameDetails/:gameId" element={<GameDetails />} />
             <Route path="/roundDetails/:roundId" element={<RoundDetails />} />
             <Route path="/collectionDetails/:collectionId" element={<CollectionDetails />} />
             <Route path="/rounds" element={<Rounds />} />

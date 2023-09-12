@@ -24,18 +24,19 @@ public class GameRoundController : ApiController {
     [HttpGet]
     public async Task<IActionResult> Index(Guid? gameId = null, string? userId = null) {
         IEnumerable<GameRoundModel> rounds;
-        if (userId == null && gameId.Equals(null)) {
-            rounds = await _gameRoundService.GetAllAsync();
+        if (userId != null && !gameId.Equals(null)) {
+            rounds = await _gameRoundService.GetAllAsync(r =>
+                (r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(userId)) && r.GameId.Equals(gameId));
         }
         else if (userId != null) {
             rounds = await _gameRoundService.GetAllAsync(r =>
-                r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(User.Identity.GetUserId()));
+                r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(userId));
         }
         else if (!gameId.Equals(null)) {
             rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
         }
         else {
-            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.UserId.Equals(userId)) && r.GameId.Equals(gameId));
+            rounds = await _gameRoundService.GetAllAsync();
         }
 
         return Ok(ApiResult<IEnumerable<GameRoundModel>>.Success(rounds));

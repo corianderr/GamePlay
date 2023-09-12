@@ -24,14 +24,14 @@ public class GameController : ApiController {
         _collectionService = collectionService;
     }
 
-    // GET: Games
+    // GET: Game
     [HttpGet]
     public async Task<ActionResult> Index() {
         var games = await _gameService.GetAllAsync();
         return Ok(ApiResult<IEnumerable<GameModel>>.Success(games));
     }
 
-    // GET: Games/Details/5
+    // GET: Game/Details/5
     [HttpGet("details/{id:guid}")]
     public async Task<ActionResult> Details(Guid id) {
         var gameDetailsViewModel = new GameDetailsViewModel() {
@@ -48,7 +48,7 @@ public class GameController : ApiController {
         return Ok(ApiResult<GameModel>.Success(game));
     }
 
-    // POST: Games/
+    // POST: Game/
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<ActionResult> Create([FromForm] CreateGameViewModel createModel) {
@@ -78,7 +78,7 @@ public class GameController : ApiController {
         return Ok(ApiResult<CreateGameModel>.Success(createModel.GameModel));
     }
 
-    // PUT: Games/Edit/5
+    // PUT: Game/Edit/5
     [Authorize(Roles = "admin")]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> Edit(Guid id, [FromForm] UpdateGameViewModel updateModel) {
@@ -108,7 +108,7 @@ public class GameController : ApiController {
         return Ok(ApiResult<Guid>.Success(id));
     }
 
-    // POST: Games/Delete/5
+    // POST: Game/Delete/5
     [Authorize(Roles = "admin")]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(Guid id) {
@@ -116,7 +116,7 @@ public class GameController : ApiController {
         return Ok(ApiResult<BaseModel>.Success(new BaseModel() { Id = id }));
     }
 
-    // POST: Games/RateGame
+    // POST: Game/RateGame
     [Authorize]
     [HttpPost("rateGame")]
     public async Task<ActionResult> RateGame(Guid id, int rating) {
@@ -128,7 +128,7 @@ public class GameController : ApiController {
         return Ok(ApiResult<BaseModel>.Success(await _ratingService.AddAsync(gameRating)));
     }
 
-    // POST: Games/DeleteRating/5
+    // POST: Game/DeleteRating/5
     [Authorize]
     [HttpDelete("deleteRating/{id:guid}")]
     public async Task<ActionResult> DeleteRating(Guid id) {

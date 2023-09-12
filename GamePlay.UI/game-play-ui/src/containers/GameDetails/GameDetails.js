@@ -204,7 +204,7 @@ const GameDetails = () => {
           <Modal.Title>Add game round result</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddGameRoundForm gameId={gameId} handleClose={handleAddRoundClose}/>
+          <AddGameRoundForm gameProp={game} handleClose={handleAddRoundClose}/>
         </Modal.Body>
       </Modal>
     </>

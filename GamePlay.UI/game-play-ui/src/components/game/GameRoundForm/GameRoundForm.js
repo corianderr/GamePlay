@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const GameRoundForm = ({ gameId, viewModel, submitResult, buttonName }) => {
+const GameRoundForm = ({ game, viewModel, submitResult, buttonName, games }) => {
   const [players, setPlayers] = useState([]);
   const [form, setForm] = useState({
-    gameId: gameId,
+    gameId: game.id,
     game: null,
     date: "",
     place: "",
@@ -26,7 +26,7 @@ const GameRoundForm = ({ gameId, viewModel, submitResult, buttonName }) => {
     setForm(
       viewModel?.gameRound.id === undefined
         ? {
-            gameId: gameId,
+            gameId: game.id,
             game: null,
             date: "",
             place: "",
@@ -85,6 +85,27 @@ const GameRoundForm = ({ gameId, viewModel, submitResult, buttonName }) => {
       <div className="row">
         <div className="col-md-10 mx-auto">
           <form id="gameForm" onSubmit={(e) => handleSubmitResult(e)}>
+            <select
+              className="form-control"
+              name="gameId"
+              onChange={onChangeForm}
+            >
+              {game !== undefined ? (
+                <option value={game.id} selected disabled={buttonName === "Edit"}>
+                  {game.name}
+                </option>
+              ) : (
+                <option value="" selected>
+                  Select Game
+                </option>
+              )}
+              {buttonName !== "Edit" && games?.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+
             <div className="form-group">
               <label className="control-label" htmlFor="date">
                 Date

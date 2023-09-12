@@ -4,16 +4,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import GameRoundForm from "../GameRoundForm/GameRoundForm";
 
-const AddGameRoundForm = ({ gameId, handleClose }) => {
+const AddGameRoundForm = ({ gameProp, handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [viewModel, setViewModel] = useState();
+  const [games, setGames] = useState();
+  const [game, setGame] = useState(
+    gameProp !== undefined ? gameProp : undefined
+  );
 
   useEffect(() => {
-    getData();
-  }, []);
+    console.log(game);
+    if (game === undefined) {
+      getGames();
+    } else {
+      getData();
+    }
+  }, [game]);
 
   const handleAddRoundResult = async (data) => {
     console.log("DATA");
@@ -31,7 +40,7 @@ const AddGameRoundForm = ({ gameId, handleClose }) => {
 
   const getData = async () => {
     try {
-      const response = await axiosPrivate.get(`/gameRound/create/${gameId}`);
+      const response = await axiosPrivate.get(`/gameRound/create/${game}`);
       setViewModel(response.data.result);
     } catch (err) {
       if (err.name === "CanceledError") {
@@ -42,14 +51,31 @@ const AddGameRoundForm = ({ gameId, handleClose }) => {
     }
   };
 
+  const getGames = async () => {
+    try {
+      const response = await axiosPrivate.get(`/game`);
+      setGames(response.data.result);
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
+      }
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
+
+  const onChangeGame = (e) => {
+    setGame(e.target.value);
+  };
+
   return (
     <>
       <GameRoundForm
-        viewModel={viewModel}
-        gameId={gameId}
-        submitResult={handleAddRoundResult}
-        buttonName={"Create"}
-      />
+            viewModel={viewModel}
+            gameId={game}
+            submitResult={handleAddRoundResult}
+            buttonName={"Create"}
+            game={games}
+          />
     </>
   );
 };

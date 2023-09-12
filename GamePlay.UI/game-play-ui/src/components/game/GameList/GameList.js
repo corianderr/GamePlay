@@ -1,22 +1,7 @@
 import { Link } from "react-router-dom";
 import "./GameList.css";
-import { Modal } from "react-bootstrap";
-import { useState } from "react";
-import CreateGameForm from "../CreateGameForm/CreateGameForm";
-import useAuth from "hooks/useAuth";
 
-const GameList = ({ header, games, updateGames }) => {
-  const [show, setShow] = useState(false);
-  const { auth } = useAuth();
-
-  const handleClose = () => {
-    setShow(false);
-  };
-
-  const handleShow = () => {
-    setShow(true);
-  };
-
+const GameList = ({ header, games }) => {
   return (
     <>
       {games?.length === 0 ? (
@@ -25,13 +10,6 @@ const GameList = ({ header, games, updateGames }) => {
         <>
           <div className="container">
             <h2 className="text-center">{header}</h2>
-            {updateGames !== undefined &&
-              auth?.accessToken !== undefined &&
-              auth?.roles.includes("admin") && (
-                <button className="btn btn-light" onClick={handleShow}>
-                  Create Game
-                </button>
-              )}
             <div className="row mt-3">
               {games.map((game, i) => (
                 <div className="col-md-4 col-sm-6 mb-3" key={i}>
@@ -74,18 +52,6 @@ const GameList = ({ header, games, updateGames }) => {
                 </div>
               ))}
             </div>
-
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Add Game</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <CreateGameForm
-                  handleClose={handleClose}
-                  updateData={updateGames}
-                />
-              </Modal.Body>
-            </Modal>
           </div>
         </>
       )}

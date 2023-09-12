@@ -10,16 +10,17 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
   const location = useLocation();
 
   const [viewModel, setViewModel] = useState();
-  const [games, setGames] = useState();
+  const [games, setGames] = useState([]);
   const [game, setGame] = useState(
     gameProp !== undefined ? gameProp : undefined
   );
 
   useEffect(() => {
-    console.log(game);
-    if (game === undefined) {
+    if ((games.length === 0)) {
       getGames();
-    } else {
+    }
+
+    if (game !== undefined) {
       getData();
     }
   }, [game]);
@@ -40,7 +41,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
 
   const getData = async () => {
     try {
-      const response = await axiosPrivate.get(`/gameRound/create/${game}`);
+      const response = await axiosPrivate.get(`/gameRound/create/${game?.id}`);
       setViewModel(response.data.result);
     } catch (err) {
       if (err.name === "CanceledError") {
@@ -55,6 +56,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
     try {
       const response = await axiosPrivate.get(`/game`);
       setGames(response.data.result);
+      console.log(response.data.result)
     } catch (err) {
       if (err.name === "CanceledError") {
         return;
@@ -63,19 +65,15 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
     }
   };
 
-  const onChangeGame = (e) => {
-    setGame(e.target.value);
-  };
-
   return (
     <>
       <GameRoundForm
-            viewModel={viewModel}
-            gameId={game}
-            submitResult={handleAddRoundResult}
-            buttonName={"Create"}
-            game={games}
-          />
+        viewModel={viewModel}
+        submitResult={handleAddRoundResult}
+        buttonName={"Create"}
+        games={games}
+        setGame={setGame}
+      />
     </>
   );
 };

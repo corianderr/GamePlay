@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { toast } from "react-toastify";
 
-const GameRoundForm = ({ game, viewModel, submitResult, buttonName, games }) => {
+const GameRoundForm = ({
+  setGame,
+  viewModel,
+  submitResult,
+  buttonName,
+  games,
+}) => {
   const [players, setPlayers] = useState([]);
   const [form, setForm] = useState({
-    gameId: game.id,
+    gameId: viewModel?.game?.id,
     game: null,
     date: "",
     place: "",
@@ -18,26 +25,42 @@ const GameRoundForm = ({ game, viewModel, submitResult, buttonName, games }) => 
     isRegistered: false,
     userId: null,
   });
+  const [options, setOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([]);
 
   useEffect(() => {
-    setPlayers(
-      viewModel?.gameRound?.id === undefined ? [] : viewModel?.gameRound.players
-    );
-    setForm(
-      viewModel?.gameRound.id === undefined
-        ? {
-            gameId: game.id,
-            game: null,
-            date: "",
-            place: "",
-          }
-        : viewModel?.gameRound
-    );
+    if (options?.length === 0) {
+      console.log("GAMES IN OPTIONS");
+      console.log(games);
+      games?.map((game) => {
+        options.push({ value: game.id, label: game.name });
+      });
+    }
+  }, [games]);
+
+  useEffect(() => {
+    if (viewModel?.gameRound.id === undefined) {
+      setPlayers([]);
+      setForm({
+        gameId: viewModel?.game?.id,
+        game: null,
+        date: "",
+        place: "",
+      });
+    } else {
+      setPlayers(viewModel?.gameRound.players);
+      setForm(viewModel?.gameRound);
+    }
+    if (viewModel?.gameRound?.game !== undefined) {
+      setSelectedOption({
+        value: viewModel?.gameRound?.game.id,
+        label: viewModel?.gameRound?.game.name,
+      });
+    }
   }, [viewModel]);
 
   const onChangeForm = (e) => {
     const { name, value } = e.target;
-    console.log(value);
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -80,31 +103,25 @@ const GameRoundForm = ({ game, viewModel, submitResult, buttonName, games }) => 
     submitResult(form);
   };
 
+  function handleSelect(data) {
+    setGame((prev) => ({ ...prev, ["id"]: data.value }));
+    setSelectedOption(data);
+  }
+
   return (
     <div className="text-center">
       <div className="row">
         <div className="col-md-10 mx-auto">
           <form id="gameForm" onSubmit={(e) => handleSubmitResult(e)}>
-            <select
-              className="form-control"
-              name="gameId"
-              onChange={onChangeForm}
-            >
-              {game !== undefined ? (
-                <option value={game.id} selected disabled={buttonName === "Edit"}>
-                  {game.name}
-                </option>
-              ) : (
-                <option value="" selected>
-                  Select Game
-                </option>
-              )}
-              {buttonName !== "Edit" && games?.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              options={options}
+              placeholder="Select game"
+              value={selectedOption}
+              onChange={handleSelect}
+              isSearchable={true}
+              isDisabled={buttonName === "Edit"}
+              className="mb-3"
+            />
 
             <div className="form-group">
               <label className="control-label" htmlFor="date">

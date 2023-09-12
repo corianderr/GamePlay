@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using GamePlay.Domain.Models.Game;
 using GamePlay.Domain.Models.Player;
+using GamePlay.Domain.Models.User;
 
 namespace GamePlay.Domain.Models.GameRound;
 
@@ -13,6 +14,7 @@ public class CreateGameRoundModel {
     [Required(ErrorMessage = "Please enter place name using less than 50 characters.")]
     [StringLength(50)]
     public string? Place { get; set; }
-
+    public string? CreatorId { get; set; }
+    public UserModel? Creator { get; set; }
     public List<CreatePlayerModel>? Players { get; set; }
 }

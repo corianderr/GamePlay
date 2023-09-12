@@ -3,6 +3,7 @@ using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Game;
 using GamePlay.Domain.Models.GameRound;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,8 @@ public class GameRoundController : ApiController {
             rounds = await _gameRoundService.GetAllAsync();
         }
         else if (userId != null) {
-            rounds = await _gameRoundService.GetAllAsync(r => r.Players.Any(p => p.UserId.Equals(userId)));
+            rounds = await _gameRoundService.GetAllAsync(r =>
+                r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(User.Identity.GetUserId()));
         }
         else if (!gameId.Equals(null)) {
             rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
@@ -64,6 +66,7 @@ public class GameRoundController : ApiController {
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<ActionResult> Create(CreateGameRoundModel createViewModel) {
+        createViewModel.CreatorId = User.Identity.GetUserId();
         var roundId = (await _gameRoundService.AddAsync(createViewModel)).Id;
         return Ok(ApiResult<BaseModel>.Success(new BaseModel() { Id = roundId }));
     }

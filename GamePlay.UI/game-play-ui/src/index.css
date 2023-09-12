@@ -192,3 +192,7 @@ header a{
     color: "#dde0e3";
     cursor: pointer;
 }
+
+.modal.show .modal-dialog {
+    max-width: 715px;
+}

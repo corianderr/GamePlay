@@ -73,6 +73,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
         buttonName={"Create"}
         games={games}
         setGame={setGame}
+        game={game}
       />
     </>
   );

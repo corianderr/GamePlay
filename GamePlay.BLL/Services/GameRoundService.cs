@@ -11,14 +11,14 @@ namespace GamePlay.BLL.Services;
 
 public class GameRoundService : IGameRoundService {
     private readonly IGameRoundRepository _gameRoundRepository;
-    private readonly IPlayerRepository _playerRepository;
+    private readonly IRoundPlayerRepository _roundPlayerRepository;
     private readonly IMapper _mapper;
 
     public GameRoundService(IGameRoundRepository gameRoundRepository, IMapper mapper,
-        IPlayerRepository playerRepository) {
+        IRoundPlayerRepository roundPlayerRepository) {
         _gameRoundRepository = gameRoundRepository;
         _mapper = mapper;
-        _playerRepository = playerRepository;
+        _roundPlayerRepository = roundPlayerRepository;
     }
 
     public async Task<BaseModel> AddAsync(CreateGameRoundModel entity) {

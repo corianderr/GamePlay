@@ -18,6 +18,6 @@ public static class ApplicationDependencyInjection {
         services.AddScoped<IUserRelationService, UserRelationService>();
         services.AddScoped<ICollectionService, CollectionService>();
         services.AddScoped<IGameRoundService, GameRoundService>();
-        services.AddScoped<IPlayerService, PlayerService>();
+        services.AddScoped<IRoundPlayerService, RoundPlayerService>();
     }
 }

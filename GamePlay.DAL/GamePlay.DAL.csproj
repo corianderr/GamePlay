@@ -30,7 +30,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\GamePlay.Domain\GamePlay.Domain.csproj" />
-        <EmbeddedResource Include="Data\JsonDataSeed\games.json"/>
+        <EmbeddedResource Include="Data\JsonDataSeed\games.json" />
     </ItemGroup>
 
 </Project>

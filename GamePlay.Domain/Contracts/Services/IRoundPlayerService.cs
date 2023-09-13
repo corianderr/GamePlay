@@ -4,11 +4,11 @@ using GamePlay.Domain.Models.Player;
 
 namespace GamePlay.Domain.Contracts.Services;
 
-public interface IPlayerService {
-    Task<BaseModel> CreateAsync(CreatePlayerModel createModel,
+public interface IRoundPlayerService {
+    Task<BaseModel> CreateAsync(CreateRoundPlayerModel createModel,
         CancellationToken cancellationToken = default);
 
     Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<PlayerModel>> GetAllAsync(Expression<Func<PlayerModel, bool>>? predicate = null);
+    Task<IEnumerable<RoundPlayerModel>> GetAllAsync(Expression<Func<RoundPlayerModel, bool>>? predicate = null);
 }

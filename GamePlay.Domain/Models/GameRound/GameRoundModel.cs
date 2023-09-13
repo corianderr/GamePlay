@@ -12,5 +12,5 @@ public class GameRoundModel {
     public string? Place { get; set; }
     public string? CreatorId { get; set; }
     public UserModel? Creator { get; set; }
-    public List<PlayerModel>? Players { get; set; }
+    public List<RoundPlayerModel>? Players { get; set; }
 }

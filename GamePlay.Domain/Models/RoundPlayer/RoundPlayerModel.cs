@@ -1,6 +1,6 @@
 namespace GamePlay.Domain.Models.Player;
 
-public class PlayerModel {
+public class RoundPlayerModel {
     public Guid Id { get; set; }
     public Guid GameRoundId { get; set; }
     public string? Name { get; set; }

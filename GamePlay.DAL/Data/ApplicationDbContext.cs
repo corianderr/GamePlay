@@ -15,7 +15,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
     public DbSet<GameRating>? GameRatings { get; set; }
     public DbSet<Collection>? Collections { get; set; }
     public DbSet<GameRound>? GameRounds { get; set; }
-    public DbSet<Player>? Players { get; set; }
+    public DbSet<RoundPlayer>? Players { get; set; }
 
     public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
         : base(options, operationalStoreOptions) {
@@ -28,7 +28,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
         ConfigureEntityId<Game>(modelBuilder);
         ConfigureEntityId<GameRating>(modelBuilder);
         ConfigureEntityId<GameRound>(modelBuilder);
-        ConfigureEntityId<Player>(modelBuilder);
+        ConfigureEntityId<RoundPlayer>(modelBuilder);
         ConfigureEntityId<UserRelation>(modelBuilder);
 
         modelBuilder.Seed();

@@ -8,9 +8,9 @@ public class GameRound {
     public ApplicationUser? Creator { get; set; }
     public DateTime Date { get; set; }
     public string? Place { get; set; }
-    public List<Player> Players { get; set; }
+    public List<RoundPlayer> Players { get; set; }
 
     public GameRound() {
-        Players = new List<Player>();
+        Players = new List<RoundPlayer>();
     }
 }

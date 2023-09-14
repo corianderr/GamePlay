@@ -1,4 +1,4 @@
-import GameRoundTable from "components/game/GameRoundTable/GameRoundTable";
+import GameRoundTable from "components/gameRound/GameRoundTable/GameRoundTable";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";

@@ -182,7 +182,7 @@ const GameRoundForm = ({
                   {viewModel?.gameRound.game.maxPlayers})
                 </h4>
                 <hr />
-                <div id="newPlayer" className="my-2">
+                <div id="newPlayer" className="my-2 text-start">
                   <input
                     id="player-name"
                     name="name"
@@ -205,6 +205,7 @@ const GameRoundForm = ({
                     value={player.role}
                     onChange={onChangePlayer}
                   />
+                  <label>Enter score</label>
                   <input
                     id="player-score"
                     name="score"

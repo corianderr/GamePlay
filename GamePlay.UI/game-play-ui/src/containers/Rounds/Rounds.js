@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import GameRoundTable from "components/game/GameRoundTable/GameRoundTable";
+import GameRoundTable from "components/gameRound/GameRoundTable/GameRoundTable";
 import { Modal } from "react-bootstrap";
-import AddGameRoundForm from "components/game/AddGameRoundForm/AddGameRoundForm";
+import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
 
 const Rounds = () => {
   const [rounds, setRounds] = useState([]);

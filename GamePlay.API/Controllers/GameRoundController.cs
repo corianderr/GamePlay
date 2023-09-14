@@ -11,10 +11,12 @@ namespace GamePlay.API.Controllers;
 
 public class GameRoundController : ApiController {
     private readonly IGameRoundService _gameRoundService;
+    private readonly IPlayerService _playerService;
     private readonly IGameService _gameService;
     private readonly IUserService _userService;
 
-    public GameRoundController(IGameRoundService gameRoundService, IGameService gameService, IUserService userService) {
+    public GameRoundController(IGameRoundService gameRoundService, IGameService gameService, IUserService userService, IPlayerService playerService) {
+        _playerService = playerService;
         _gameRoundService = gameRoundService;
         _gameService = gameService;
         _userService = userService;
@@ -56,8 +58,7 @@ public class GameRoundController : ApiController {
     public async Task<ActionResult> Create(Guid gameId) {
         var createViewModel = new CreateGameRoundViewModel() {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
-            // TODO: get players
-            // PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            PreviousOpponents = await _playerService.GetAllAsync(),
             GameRound = new CreateGameRoundModel { GameId = gameId, Game = await _gameService.GetByIdAsync(gameId) },
             Users = await _userService.GetAllAsync()
         };
@@ -79,8 +80,7 @@ public class GameRoundController : ApiController {
     public async Task<ActionResult> Edit(Guid gameRoundId) {
         var updateViewModel = new UpdateGameRoundViewModel() {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
-            // TODO: get players
-            // PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            PreviousOpponents = await _playerService.GetAllAsync(),
             GameRound = await _gameRoundService.GetByIdAsync(gameRoundId),
             Users = await _userService.GetAllAsync()
         };

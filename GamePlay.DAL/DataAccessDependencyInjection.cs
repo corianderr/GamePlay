@@ -28,6 +28,7 @@ public static class DataAccessDependencyInjection {
         services.AddScoped<ICollectionRepository, CollectionRepository>();
         services.AddScoped<IGameRoundRepository, GameRoundRepository>();
         services.AddScoped<IRoundPlayerRepository, RoundPlayerRepository>();
+        services.AddScoped<IPlayerRepository, PlayerRepository>();
     }
 
     private static void RegisterAutoMapper(this IServiceCollection services) {

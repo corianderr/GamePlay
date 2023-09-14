@@ -870,19 +870,38 @@ namespace GamePlay.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GameRoundId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("GameRoundId");
-
                     b.Property<bool>("IsRegistered")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWinner")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.RoundPlayer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GameRoundId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("GameRoundId");
+
+                    b.Property<bool>("IsWinner")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -890,16 +909,13 @@ namespace GamePlay.DAL.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GameRoundId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PlayerId");
 
-                    b.ToTable("Players");
+                    b.ToTable("RoundPlayers");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.UserRelation", b =>
@@ -1148,19 +1164,30 @@ namespace GamePlay.DAL.Migrations
 
             modelBuilder.Entity("GamePlay.Domain.Entities.Player", b =>
                 {
+                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GamePlay.Domain.Entities.RoundPlayer", b =>
+                {
                     b.HasOne("GamePlay.Domain.Entities.GameRound", "GameRound")
                         .WithMany("Players")
                         .HasForeignKey("GameRoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GamePlay.Domain.Entities.ApplicationUser", "User")
+                    b.HasOne("GamePlay.Domain.Entities.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("GameRound");
 
-                    b.Navigation("User");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("GamePlay.Domain.Entities.UserRelation", b =>

@@ -8,11 +8,9 @@ public class RoundPlayer {
     public Guid GameRoundId { get; set; }
     [Column("GameRound")]
     public GameRound? GameRound { get; set; }
-    public string Name { get; set; }
     public int Score { get; set; }
     public bool IsWinner { get; set; }
     public string? Role { get; set; }
-    public bool IsRegistered { get; set; }
-    public string? UserId { get; set; }
-    public ApplicationUser? User { get; set; }
+    public Guid PlayerId { get; set; }
+    public Player? Player { get; set; }
 }

@@ -16,5 +16,5 @@ public interface IGameRoundService {
 
     Task<IEnumerable<GameRoundModel>> GetAllAsync(Expression<Func<GameRoundModel, bool>>? predicate = null);
     Task<IEnumerable<string?>> GetDistinctPlacesAsync();
-    Task<IEnumerable<string>> GetDistinctPlayersAsync();
+    // Task<IEnumerable<string>> GetDistinctPlayersAsync();
 }

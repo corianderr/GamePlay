@@ -26,11 +26,11 @@ public class GameRoundController : ApiController {
         IEnumerable<GameRoundModel> rounds;
         if (userId != null && !gameId.Equals(null)) {
             rounds = await _gameRoundService.GetAllAsync(r =>
-                (r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(userId)) && r.GameId.Equals(gameId));
+                (r.Players.Any(p => p.Player.UserId.Equals(userId)) || r.CreatorId.Equals(userId)) && r.GameId.Equals(gameId));
         }
         else if (userId != null) {
             rounds = await _gameRoundService.GetAllAsync(r =>
-                r.Players.Any(p => p.UserId.Equals(userId)) || r.CreatorId.Equals(userId));
+                r.Players.Any(p => p.Player.UserId.Equals(userId)) || r.CreatorId.Equals(userId));
         }
         else if (!gameId.Equals(null)) {
             rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
@@ -56,7 +56,8 @@ public class GameRoundController : ApiController {
     public async Task<ActionResult> Create(Guid gameId) {
         var createViewModel = new CreateGameRoundViewModel() {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
-            PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            // TODO: get players
+            // PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
             GameRound = new CreateGameRoundModel { GameId = gameId, Game = await _gameService.GetByIdAsync(gameId) },
             Users = await _userService.GetAllAsync()
         };
@@ -78,7 +79,8 @@ public class GameRoundController : ApiController {
     public async Task<ActionResult> Edit(Guid gameRoundId) {
         var updateViewModel = new UpdateGameRoundViewModel() {
             PreviousPlaces = await _gameRoundService.GetDistinctPlacesAsync(),
-            PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
+            // TODO: get players
+            // PreviousOpponents = await _gameRoundService.GetDistinctPlayersAsync(),
             GameRound = await _gameRoundService.GetByIdAsync(gameRoundId),
             Users = await _userService.GetAllAsync()
         };

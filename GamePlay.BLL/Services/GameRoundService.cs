@@ -44,9 +44,10 @@ public class GameRoundService : IGameRoundService {
         return await _gameRoundRepository.GetDistinctPlacesAsync();
     }
 
-    public async Task<IEnumerable<string>> GetDistinctPlayersAsync() {
-        return await _gameRoundRepository.GetDistinctPlayersAsync();
-    }
+    // TODO: Return all players
+    // public async Task<IEnumerable<string>> GetDistinctPlayersAsync() {
+    //     return await _gameRoundRepository.GetDistinctPlayersAsync();
+    // }
 
     public async Task<GameRoundModel> GetByIdAsync(Guid id) {
         var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id), r => r.Players, r => r.Game);

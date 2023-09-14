@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollectionForm";
 import { Button, Modal } from "react-bootstrap";
 import UpdateGameForm from "components/game/UpdateGameForm/UpdateGameForm";
-import AddGameRoundForm from "components/game/AddGameRoundForm/AddGameRoundForm";
+import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
 
 const GameDetails = () => {
   const { auth } = useAuth();

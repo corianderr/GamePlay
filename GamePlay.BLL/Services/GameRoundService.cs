@@ -11,14 +11,11 @@ namespace GamePlay.BLL.Services;
 
 public class GameRoundService : IGameRoundService {
     private readonly IGameRoundRepository _gameRoundRepository;
-    private readonly IRoundPlayerRepository _roundPlayerRepository;
     private readonly IMapper _mapper;
 
-    public GameRoundService(IGameRoundRepository gameRoundRepository, IMapper mapper,
-        IRoundPlayerRepository roundPlayerRepository) {
+    public GameRoundService(IGameRoundRepository gameRoundRepository, IMapper mapper) {
         _gameRoundRepository = gameRoundRepository;
         _mapper = mapper;
-        _roundPlayerRepository = roundPlayerRepository;
     }
 
     public async Task<BaseModel> AddAsync(CreateGameRoundModel entity) {
@@ -50,7 +47,7 @@ public class GameRoundService : IGameRoundService {
     // }
 
     public async Task<GameRoundModel> GetByIdAsync(Guid id) {
-        var round = await _gameRoundRepository.GetFirstAsync(r => r.Id.Equals(id), r => r.Players, r => r.Game);
+        var round = await _gameRoundRepository.GetRoundWithAllHierarchy(r => r.Id.Equals(id));
         return _mapper.Map<GameRoundModel>(round);
     }
 

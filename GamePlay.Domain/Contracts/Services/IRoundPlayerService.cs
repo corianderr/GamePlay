@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using GamePlay.Domain.Models;
-using GamePlay.Domain.Models.Player;
+using GamePlay.Domain.Models.RoundPlayer;
 
 namespace GamePlay.Domain.Contracts.Services;
 

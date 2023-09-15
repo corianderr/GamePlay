@@ -39,8 +39,14 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>>? predicate = null,
         params Expression<Func<TEntity, object>>[] includeProperties) {
         IQueryable<TEntity> query = DbSet;
-        foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
-        if (predicate != null) return (await query.FirstOrDefaultAsync(predicate))!;
+        foreach (var includeProperty in includeProperties) {
+            query = query.Include(includeProperty);
+        }
+
+        if (predicate != null) {
+            return (await query.FirstOrDefaultAsync(predicate))!;
+        }
+
         return (await query.FirstOrDefaultAsync())!;
     }
 

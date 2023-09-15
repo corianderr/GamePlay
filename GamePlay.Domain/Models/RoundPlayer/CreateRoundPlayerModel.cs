@@ -1,4 +1,4 @@
-namespace GamePlay.Domain.Models.Player;
+namespace GamePlay.Domain.Models.RoundPlayer;
 
 public class CreateRoundPlayerModel {
     public Guid? GameRoundId { get; set; }

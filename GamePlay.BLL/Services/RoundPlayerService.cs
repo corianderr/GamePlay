@@ -4,7 +4,7 @@ using GamePlay.Domain.Contracts.Repositories;
 using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models;
-using GamePlay.Domain.Models.Player;
+using GamePlay.Domain.Models.RoundPlayer;
 
 namespace GamePlay.BLL.Services;
 

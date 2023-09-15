@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using GamePlay.Domain.Models.Game;
-using GamePlay.Domain.Models.Player;
+using GamePlay.Domain.Models.RoundPlayer;
 using GamePlay.Domain.Models.User;
 
 namespace GamePlay.Domain.Models.GameRound;

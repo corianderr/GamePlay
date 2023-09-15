@@ -1,5 +1,6 @@
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models.Player;
+using GamePlay.Domain.Models.RoundPlayer;
 using GamePlay.Domain.Models.User;
 
 namespace GamePlay.Domain.Models.GameRound;

@@ -13,7 +13,11 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const [show, setShow] = useState(false);
   const [gameRoundId, setGameRoundId] = useState(null);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    resetRounds();
+  }
+
   const handleShow = (id) => {
     console.log(id);
     console.log("SHOW");

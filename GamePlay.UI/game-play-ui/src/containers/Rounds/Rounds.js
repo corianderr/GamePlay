@@ -16,7 +16,11 @@ const Rounds = () => {
   const location = useLocation();
   const [showAddRound, setShowAddRound] = useState(false);
 
-  const handleAddRoundClose = () => setShowAddRound(false);
+  const handleAddRoundClose = () => {
+    setShowAddRound(false);
+    getRounds();
+  }
+
   const handleAddRoundShow = () => setShowAddRound(true);
 
   useEffect(() => {

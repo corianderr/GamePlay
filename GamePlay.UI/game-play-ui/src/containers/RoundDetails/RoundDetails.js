@@ -76,8 +76,8 @@ const RoundDetails = () => {
             <tbody>
               {round.players.map((player, i) => (
                 <tr key={i}>
-                  <td>{player.name}</td>
-                  <td>{player.role}</td>
+                  <td>{player.player.name}</td>
+                  <td>{player.role === "" ? "–" : ""}</td>
                   <td>{player.score}</td>
                   <td>
                     {player.isWinner ? <span>YES</span> : <span>NO</span>}

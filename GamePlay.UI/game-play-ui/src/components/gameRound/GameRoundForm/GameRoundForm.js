@@ -115,6 +115,7 @@ const GameRoundForm = ({
         .map((player) => player.value)
         .map((p) => ({
           ...p,
+          playerId: p.id,
           score: 0,
           role: "",
           isWinner: false,

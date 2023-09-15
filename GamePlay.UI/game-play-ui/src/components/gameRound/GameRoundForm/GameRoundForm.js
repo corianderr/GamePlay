@@ -1,7 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
-import { toast } from "react-toastify";
 import AddPlayerForm from "../AddPlayerForm/AddPlayerForm";
 import { Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -100,6 +99,7 @@ const GameRoundForm = ({
   const handleSubmitResult = (e) => {
     e.preventDefault();
     form.players = players;
+    form.game = viewModel?.gameRound.game;
     submitResult(form);
   };
 
@@ -124,9 +124,30 @@ const GameRoundForm = ({
     console.log(players);
   };
 
+  const updatePlayers = (name, value, index) => {
+    setPlayers((prevPlayers) => {
+      const updatedPlayers = [...prevPlayers];
+      updatedPlayers[index] = {
+        ...updatedPlayers[index],
+        [name]: value,
+      };
+      return updatedPlayers;
+    });
+  };
+
+  const handlePlayerInputChange = (e, index) => {
+    const { name, value } = e.target;
+    updatePlayers(name, value, index);
+  };
+
+  const handlePlayerCheckboxChange = (e, index) => {
+    const { name, checked } = e.target;
+    updatePlayers(name, checked, index);
+  };
+
   return (
     <>
-    {show && <div className="shaded-modal"></div>}
+      {show && <div className="shaded-modal"></div>}
       <div className="text-center">
         <div className="row">
           <div className="col-md-10 mx-auto">
@@ -204,8 +225,11 @@ const GameRoundForm = ({
                       className="flex-grow-1"
                       isMulti
                     />
-                    <span onClick={handleShow} style={{ cursor: "pointer" }}
-                    className="my-auto">
+                    <span
+                      onClick={handleShow}
+                      style={{ cursor: "pointer" }}
+                      className="my-auto"
+                    >
                       <FontAwesomeIcon
                         icon="fa-solid fa-square-plus"
                         size="2xl"
@@ -232,14 +256,30 @@ const GameRoundForm = ({
                       {players.map((item, i) => (
                         <tr key={i}>
                           <td>{item.name}</td>
-                          <td>{item.role}</td>
-                          <td>{item.score}</td>
+                          <td>
+                            <input
+                              className="form-control"
+                              name="role"
+                              value={item.role}
+                              onChange={(e) => handlePlayerInputChange(e, i)}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              className="form-control"
+                              type="number"
+                              name="score"
+                              value={item.score}
+                              onChange={(e) => handlePlayerInputChange(e, i)}
+                            />
+                          </td>
                           <td>
                             <input
                               className="form-check-input"
                               type="checkbox"
+                              name="isWinner"
                               checked={item.isWinner}
-                              disabled
+                              onChange={(e) => handlePlayerCheckboxChange(e, i)}
                             />
                           </td>
                           <td>
@@ -250,7 +290,7 @@ const GameRoundForm = ({
                               disabled
                             />
                           </td>
-                          <td>{item.isRegistered ? item.name : ""}</td>
+                          <td>{item.isRegistered ? item.name : "–"}</td>
                         </tr>
                       ))}
                     </tbody>

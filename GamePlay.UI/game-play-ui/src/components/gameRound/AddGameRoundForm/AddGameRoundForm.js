@@ -16,7 +16,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
   );
 
   useEffect(() => {
-    if ((games.length === 0)) {
+    if (games.length === 0) {
       getGames();
     }
 
@@ -26,17 +26,18 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
   }, [game]);
 
   const handleAddRoundResult = async (data) => {
-    console.log("DATA");
     console.log(data);
-    const response = await axiosPrivate.post(`gameRound`, data);
-    if (response.data.succeeded) {
-      handleClose();
-      toast.success("Round result has been added");
-    } else {
-      response.data.errors.map((e) => {
-        toast.error(e);
-      });
-    }
+    try {
+      const response = await axiosPrivate.post(`gameRound`, data);
+      if (response.data.succeeded) {
+        handleClose();
+        toast.success("Round result has been added");
+      } else {
+        response.data.errors.map((e) => {
+          toast.error(e);
+        });
+      }
+    } catch (ex) {}
   };
 
   const getData = async () => {
@@ -56,7 +57,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
     try {
       const response = await axiosPrivate.get(`/game`);
       setGames(response.data.result);
-      console.log(response.data.result)
+      console.log(response.data.result);
     } catch (err) {
       if (err.name === "CanceledError") {
         return;

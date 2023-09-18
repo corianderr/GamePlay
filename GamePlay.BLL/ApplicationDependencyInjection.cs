@@ -20,5 +20,6 @@ public static class ApplicationDependencyInjection {
         services.AddScoped<IGameRoundService, GameRoundService>();
         services.AddScoped<IRoundPlayerService, RoundPlayerService>();
         services.AddScoped<IPlayerService, PlayerService>();
+        services.AddScoped<IRecalculationService, RecalculationService>();
     }
 }

@@ -49,7 +49,7 @@ public class GameController : ApiController {
     }
 
     // POST: Game/
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]                          
     [HttpPost]
     public async Task<ActionResult> Create([FromForm] CreateGameViewModel createModel) {
         try {

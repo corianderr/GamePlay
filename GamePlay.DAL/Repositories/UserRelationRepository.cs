@@ -18,4 +18,10 @@ public class UserRelationRepository : BaseRepository<UserRelation>, IUserRelatio
         await Context.SaveChangesAsync();
         return relation;
     }
+
+    public async Task<int> GetAllCountAsync(Expression<Func<UserRelation, bool>>? predicate = null) {
+        IQueryable<UserRelation> query = DbSet;
+        if (predicate != null) return await query.Where(predicate).CountAsync();
+        return await query.CountAsync();
+    }
 }

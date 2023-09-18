@@ -13,11 +13,23 @@ public class SettingsController : ApiController {
         _recalculationService = recalculationService;
     }
 
-    // GET: Game/Details/5
+    // GET: settings/userRelations/5
     [HttpPut("userRelations")]
     public async Task<ActionResult> RecalculateUserRelations() {
         try {
-            await _recalculationService.RecalculateUserRelations();
+            await _recalculationService.RecalculateUserRelationsAsync();
+            return Ok(ApiResult<string>.Success("Success"));
+        }
+        catch (Exception e) {
+            return Ok(ApiResult<IEnumerable<string>>.Failure(new[] { e.Message }));
+        }
+    }
+    
+    // GET: settings/averageRating/5
+    [HttpPut("averageRating")]
+    public async Task<ActionResult> RecalculateAverageRating() {
+        try {
+            await _recalculationService.RecalculateAverageRatingAsync();
             return Ok(ApiResult<string>.Success("Success"));
         }
         catch (Exception e) {

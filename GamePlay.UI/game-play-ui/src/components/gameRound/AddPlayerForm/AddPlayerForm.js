@@ -1,8 +1,10 @@
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 import React, { useState } from "react";
 import Select from "react-select";
 import { toast } from "react-toastify";
 
 const AddPlayerForm = ({ users, handleClose }) => {
+  const axiosPrivate = useAxiosPrivate();
   const [player, setPlayer] = useState({
     name: "",
     isRegistered: false,
@@ -28,13 +30,24 @@ const AddPlayerForm = ({ users, handleClose }) => {
     setPlayer((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handlePlayerAdd = (e) => {
+  const handlePlayerAdd = async (e) => {
     if (player.name === "") {
       toast.error("Enter player's name first!");
       return;
     }
     e.preventDefault();
-    handleClose(player);
+
+    const response = await axiosPrivate.post(`player/create`, player);
+    if (response.data.succeeded) {
+      player.id = response.data.result.id;
+      handleClose(player);
+      toast.success("Player has been added");
+    } else {
+      console.log(response);
+      response.data.errors.map((e) => {
+        toast.error(e);
+      });
+    }
   };
 
   return (

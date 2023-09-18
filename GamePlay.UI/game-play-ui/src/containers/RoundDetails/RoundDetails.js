@@ -83,8 +83,8 @@ const RoundDetails = () => {
                     {player.isWinner ? <span>YES</span> : <span>NO</span>}
                   </td>
                   <td>
-                    {player.isRegistered ? (
-                      <Link to={`/userDetails/${player.userId}`}>
+                    {player.player.isRegistered ? (
+                      <Link to={`/userDetails/${player.player.userId}`}>
                         Profile
                       </Link>
                     ) : (

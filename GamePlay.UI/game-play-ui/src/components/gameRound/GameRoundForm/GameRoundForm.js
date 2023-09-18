@@ -12,6 +12,7 @@ const GameRoundForm = ({
   submitResult,
   buttonName,
   games,
+  getData
 }) => {
   const inputRef = useRef(null);
   const [players, setPlayers] = useState([]);
@@ -76,16 +77,6 @@ const GameRoundForm = ({
   const onChangeForm = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onChangePlayer = (e, id) => {
-    const { name, value } = e.target;
-    //setPlayer((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onChangePlayerCheckbox = (e, id) => {
-    const { name, checked } = e.target;
-    //setPlayer((prev) => ({ ...prev, [name]: checked }));
   };
 
   const refreshPlayers = (player) => {
@@ -249,7 +240,7 @@ const GameRoundForm = ({
                         <th scope="col">Score</th>
                         <th scope="col">Is Winner?</th>
                         <th scope="col">Is Registered?</th>
-                        <th scope="col">Username</th>
+                        <th scope="col">User Id (Shortened)</th>
                       </tr>
                     </thead>
                     <tbody style={{ fontWeight: "normal" }}>
@@ -290,7 +281,7 @@ const GameRoundForm = ({
                               disabled
                             />
                           </td>
-                          <td>{item.isRegistered ? item.name : "–"}</td>
+                          <td>{item.isRegistered ? item.id.substring(0, 8) : "–"}</td>
                         </tr>
                       ))}
                     </tbody>

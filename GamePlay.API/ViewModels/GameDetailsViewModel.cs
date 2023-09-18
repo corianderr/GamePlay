@@ -1,5 +1,6 @@
 using GamePlay.Domain.Models.Collection;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Domain.Models.GameRating;
 
 namespace GamePlay.API.ViewModels;
 

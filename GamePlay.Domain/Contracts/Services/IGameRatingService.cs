@@ -1,5 +1,6 @@
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Domain.Models.GameRating;
 
 namespace GamePlay.Domain.Contracts.Services;
 

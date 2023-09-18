@@ -1,6 +1,7 @@
 using AutoMapper;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Domain.Models.GameRating;
 
 namespace GamePlay.DAL.MappingProfiles;
 

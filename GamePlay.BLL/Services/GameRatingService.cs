@@ -4,6 +4,7 @@ using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Entities;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Domain.Models.GameRating;
 
 namespace GamePlay.BLL.Services;
 

@@ -4,6 +4,7 @@ using GamePlay.BLL.Helpers;
 using GamePlay.Domain.Contracts.Services;
 using GamePlay.Domain.Models;
 using GamePlay.Domain.Models.Game;
+using GamePlay.Domain.Models.GameRating;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

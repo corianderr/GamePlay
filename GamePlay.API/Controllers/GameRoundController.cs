@@ -6,6 +6,7 @@ using GamePlay.Domain.Models.GameRound;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GamePlay.API.Controllers;
 
@@ -15,7 +16,8 @@ public class GameRoundController : ApiController {
     private readonly IGameService _gameService;
     private readonly IUserService _userService;
 
-    public GameRoundController(IGameRoundService gameRoundService, IGameService gameService, IUserService userService, IPlayerService playerService) {
+    public GameRoundController(IGameRoundService gameRoundService, IGameService gameService, IUserService userService,
+        IPlayerService playerService) {
         _playerService = playerService;
         _gameRoundService = gameRoundService;
         _gameService = gameService;
@@ -69,7 +71,16 @@ public class GameRoundController : ApiController {
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<ActionResult> Create(CreateGameRoundModel createViewModel) {
+        if (createViewModel.Players?.Count < createViewModel.Game?.MinPlayers ||
+            createViewModel.Players?.Count > createViewModel.Game?.MaxPlayers) {
+            ModelState.AddModelError("Players",
+                $"The number of players should be between {createViewModel.Game?.MinPlayers} and {createViewModel.Game?.MaxPlayers}");
+            return Ok(ApiResult<CreateGameModel>.Failure(ModelState.Values
+                .Where(v => v.ValidationState.Equals(ModelValidationState.Invalid)).SelectMany(v => v.Errors).Select(v => v.ErrorMessage)));
+        }
+
         createViewModel.CreatorId = User.Identity.GetUserId();
+        createViewModel.Game = null;
         var roundId = (await _gameRoundService.AddAsync(createViewModel)).Id;
         return Ok(ApiResult<BaseModel>.Success(new BaseModel() { Id = roundId }));
     }

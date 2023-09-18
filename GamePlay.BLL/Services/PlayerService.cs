@@ -18,6 +18,9 @@ public class PlayerService : IPlayerService {
     }
 
     public async Task<BaseModel> CreateAsync(CreatePlayerModel createModel, CancellationToken cancellationToken = default) {
+        if ((await _playerRepository.GetAllAsync()).Any(p => p.Name.Equals(createModel.Name))) {
+            throw new ArgumentException("The player with that name already exists, but you can create another one :)");
+        }
         var player = _mapper.Map<Player>(createModel);
         return new BaseModel() {
             Id = (await _playerRepository.AddAsync(player)).Id

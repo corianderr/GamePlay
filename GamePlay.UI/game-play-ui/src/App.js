@@ -1,6 +1,5 @@
 import Register from "./components/auth/Register/Register";
 import Login from "./components/auth/Login/Login";
-import Home from "./components/Home";
 import Users from "./containers/Users/Users";
 import Unauthorized from "./components/auth/Unauthorized/Unauthorized";
 import RequireAuth from "./components/auth/RequireAuth/RequireAuth";
@@ -34,8 +33,8 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/" element={<Games />} />
         <Route path="/gameDetails/:gameId" element={<GameDetails />} />
 
         <Route element={<PersistLogin />}>

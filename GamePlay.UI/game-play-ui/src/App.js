@@ -9,7 +9,7 @@ import Layout from "./components/Layout";
 import PersistLogin from "./components/auth/PersistLogin/PersistLogin";
 import UserDetails from "./containers/UserDetails/UserDetails";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 import Notifications from "containers/Notifications/Notifications";
 import Friends from "containers/Friends/Friends";
 import Followers from "containers/Followers/Followers";
@@ -26,7 +26,7 @@ const ROLES = {
 };
 
 function App() {
-  library.add(faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare);
+  library.add(faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare, faArrowsRotate);
 
   return (
     <Routes>

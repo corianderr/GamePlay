@@ -34,7 +34,11 @@ const UserDetails = () => {
     if (relation === -1) {
       getUser();
     }
-  }, [userId, collections]);
+  }, [collections]);
+
+  useEffect(() => {
+    getUser();
+  }, [userId]);
 
   const getUser = async () => {
     try {
@@ -48,13 +52,11 @@ const UserDetails = () => {
         return;
       }
 
-      console.error(err);
       navigate("/login", { state: { from: location }, replace: true });
     }
   };
 
   const saveFile = (e) => {
-    console.log(e.target?.files[0]);
     setFile(e.target?.files[0]);
   };
 
@@ -84,7 +86,6 @@ const UserDetails = () => {
   const handleEditShow = async (id) => {
     const result = await axiosPrivate.get(`collection/getById/${id}`);
     if (result.data.succeeded) {
-      console.log(result.data.result);
       setForm(result.data.result);
       setEditShow(true);
     }
@@ -107,7 +108,6 @@ const UserDetails = () => {
     try {
       const result = await axiosPrivate.post(`collection/create`, form);
       if (result.data.succeeded) {
-        console.log(result.data.result);
         toast.success("Collection was added successfully!");
         setAddShow(false);
         getUser();
@@ -126,7 +126,6 @@ const UserDetails = () => {
 
   const handleEdit = async (e, id) => {
     e.preventDefault();
-    console.log(form);
     try {
       const response = await axiosPrivate.put(`collection/${id}`, form);
       if (response.data.succeeded) {
@@ -150,12 +149,10 @@ const UserDetails = () => {
       },
     });
     if (response.data.succeeded) {
-      console.log(response);
       handleEditProfileClose();
       updateUser();
       toast.success("Profile has been edited");
     } else {
-      console.log(response);
       response.data.errors.map((e) => {
         toast.error(e);
       });
@@ -176,6 +173,29 @@ const UserDetails = () => {
     });
   };
 
+  const refreshUserRelationsCount = async () => {
+    const response = await axiosPrivate.put(`settings/userRelations`);
+    if (response.data.succeeded) {
+      updateUser();
+      toast.success("The number of followers and friends has been updated");
+    } else {
+      response.data.errors.map((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
+  const refreshAverageRating = async () => {
+    const response = await axiosPrivate.put(`settings/averageRating`);
+    if (response.data.succeeded) {
+      toast.success("Average ratings have been updated");
+    } else {
+      response.data.errors.map((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
   return (
     <>
       <div className="d-flex justify-content-center align-items-center mb-3">
@@ -194,7 +214,10 @@ const UserDetails = () => {
             <h4 className="mb-0">{user.userName}</h4>
             <span className="text-muted d-block mb-2">{user.email}</span>
             {user.id === auth?.id ? (
-              <button className="btn btn-primary btn-sm follow" onClick={handleEditProfileShow}>
+              <button
+                className="btn btn-primary btn-sm follow"
+                onClick={handleEditProfileShow}
+              >
                 Edit profile
               </button>
             ) : (
@@ -223,6 +246,31 @@ const UserDetails = () => {
             </div>
           </div>
         </div>
+        {user.id === auth?.id && auth?.roles?.includes("admin") && (
+          <div className="p-lg-4 py-4" style={{ width: "300px" }}>
+            <h4>Admin Panel</h4>
+            <div>
+              <button
+                className="btn btn-dark btn-sm opacity-75 my-1 me-1"
+                onClick={refreshUserRelationsCount}
+              >
+                Followers / Friends{" "}
+                <FontAwesomeIcon
+                  icon="fa-solid fa-arrows-rotate"
+                  className="ms-1"
+                />
+              </button>
+              <button className="btn btn-dark btn-sm opacity-75 my-1"
+              onClick={refreshAverageRating}>
+                Average Ratings{" "}
+                <FontAwesomeIcon
+                  icon="fa-solid fa-arrows-rotate"
+                  className="ms-1"
+                />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {collections.length === 0 ? (

@@ -1,0 +1,9 @@
+{
+    "navMenu": {
+        "games": "Games",
+        "users": "Users",
+        "myRounds": "My Rounds",
+        "hello": "Hello",
+        "logout": "Logout"
+    }
+}

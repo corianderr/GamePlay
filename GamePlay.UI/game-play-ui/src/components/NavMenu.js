@@ -3,8 +3,10 @@ import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 export default function NavMenu() {
+  const { t, i18n } = useTranslation();
   const { auth, setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
 
@@ -18,6 +20,10 @@ export default function NavMenu() {
       setAuth({});
     };
     clearCookies();
+  };
+
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language);
   };
 
   return (
@@ -41,7 +47,7 @@ export default function NavMenu() {
           <ul className="navbar-nav w-100">
             <li>
               <Link to="/games" className="nav-link active">
-                Games
+              {t("navMenu.games")}
               </Link>
             </li>
             <li className="nav-item">
@@ -53,6 +59,22 @@ export default function NavMenu() {
               <Link className="nav-link" to="/rounds">
                 My Rounds
               </Link>
+            </li>
+            <li className="nav-item align-self-center">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button
+                  className="btn btn-dark btn-sm pe-1"
+                  onClick={() => changeLanguage("en")}
+                >
+                  <img width={15} height={15} src="flags\united-states.png"></img>
+                </button>
+                <button
+                  className="btn btn-dark btn-sm ps-1"
+                  onClick={() => changeLanguage("ru")}
+                >
+                  <img width={15} height={15} src="flags\russia.png"></img>
+                </button>
+              </div>
             </li>
             {auth?.accessToken ? (
               <>

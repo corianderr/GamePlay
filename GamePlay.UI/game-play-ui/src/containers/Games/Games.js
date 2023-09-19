@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import GameList from "../../components/game/GameList/GameList";
 import useAuth from "hooks/useAuth";
 import { Modal } from "react-bootstrap";
-import CreateGameForm from "components/game/CreateGameForm/CreateGameForm";
+import AddGameForm from "components/game/AddGameForm/AddGameForm";
 
 const Games = () => {
   const [games, setGames] = useState([]);
@@ -54,7 +54,7 @@ const Games = () => {
           <Modal.Title>Add Game</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CreateGameForm handleClose={handleClose} updateData={getGames} />
+          <AddGameForm handleClose={handleClose} updateData={getGames} />
         </Modal.Body>
       </Modal>
     </>

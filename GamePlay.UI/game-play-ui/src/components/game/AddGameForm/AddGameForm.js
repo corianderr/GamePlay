@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import GameForm from "../GameForm/GameForm";
 
-const CreateGameForm = ({ handleClose, updateData }) => {
+const AddGameForm = ({ handleClose, updateData }) => {
   const axiosPrivate = useAxiosPrivate();
   
 
@@ -26,7 +26,7 @@ const CreateGameForm = ({ handleClose, updateData }) => {
     }
   };
 
-  return <GameForm handleLogic={handleAdd} buttonValue={"Create"}/>;
+  return <GameForm handleLogic={handleAdd} buttonValue={"Add"}/>;
 };
 
-export default CreateGameForm;
+export default AddGameForm;

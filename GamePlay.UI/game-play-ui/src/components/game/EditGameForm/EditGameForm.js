@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import GameForm from "../GameForm/GameForm";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const UpdateGameForm = ({ handleClose, gameId, game, updateGame }) => {
+const EditGameForm = ({ handleClose, gameId, game, updateGame }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const handleEdit = async (data) => {
@@ -26,7 +26,7 @@ const UpdateGameForm = ({ handleClose, gameId, game, updateGame }) => {
     }
   };
 
-  return <GameForm handleLogic={handleEdit} gameData={game} buttonValue={"Update"}/>;
+  return <GameForm handleLogic={handleEdit} gameData={game} buttonValue={"Edit"}/>;
 };
 
-export default UpdateGameForm;
+export default EditGameForm;

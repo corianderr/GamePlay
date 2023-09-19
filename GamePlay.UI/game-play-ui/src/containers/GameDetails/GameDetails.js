@@ -7,8 +7,8 @@ import StarRating from "../../components/game/StarRating/StarRating";
 import { toast } from "react-toastify";
 import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollectionForm";
 import { Button, Modal } from "react-bootstrap";
-import UpdateGameForm from "components/game/UpdateGameForm/UpdateGameForm";
 import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
+import EditGameForm from "components/game/EditGameForm/EditGameForm";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -190,7 +190,7 @@ const GameDetails = () => {
           <Modal.Title>Edit game</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UpdateGameForm
+          <EditGameForm
             handleClose={handleEditClose}
             gameId={gameId}
             game={game}

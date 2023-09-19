@@ -19,8 +19,6 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   }
 
   const handleShow = (id) => {
-    console.log(id);
-    console.log("SHOW");
     setGameRoundId(id);
     setShow(true);
   };

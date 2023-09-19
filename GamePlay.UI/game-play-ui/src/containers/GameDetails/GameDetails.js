@@ -59,7 +59,6 @@ const GameDetails = () => {
   };
 
   const resetRating = () => {
-    console.log("RESET RATING");
     setRating(-1);
   };
 

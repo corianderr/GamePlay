@@ -5,5 +5,124 @@
         "myRounds": "My Rounds",
         "hello": "Hello",
         "logout": "Logout"
+    },
+    "user": {
+        "relationButton": {
+            "follow": "Follow",
+            "isPending": "Is Pending",
+            "accept": "Accept",
+            "friends": "Friends"
+        },
+        "noElements1": "There are no",
+        "noElements2": "yet",
+        "friends": "Friends",
+        "followers": "Followers",
+        "users": "Users",
+        "notifications": "Notifications"
+    },
+    "userDetails": {
+        "addedCollectionMes": "Collection was added successfully!",
+        "updatedCollectionMes": "Collection has been updated!",
+        "editedProfileMes": "Profile has been edited",
+        "adminPanel": {
+            "name": "Admin Panel",
+            "followersUpdateMes": "The number of followers and friends has been updated",
+            "averageRatingMes": "Average ratings have been updated"
+        },
+        "editProfile": "Edit Profile",
+        "currentUser": {
+            "noCollections": "I don't have any collections yet :(",
+            "collections": "My Collections",
+            "profile": "My Profile"
+        },
+        "differentUser": {
+            "noCollections": "does not have any collections yet :(",
+            "collections": "'s Collections",
+            "profile": "Profile"
+        }
+    },
+    "collection": "Collection",
+    "forms": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "add": "Add",
+        "enter": "Enter",
+        "choose": "Choose",
+        "save": "Save",
+        "name": "Name",
+        "details": "Details"
+    },
+    "game": {
+        "addToCollection": "Add to collection",
+        "nameRus": "Name in Russian",
+        "nameEn": "Name in English",
+        "minPlayers": "Minimum number of players",
+        "maxPlayers": "Maximum number of players",
+        "minAge": "Minimum age",
+        "minPlayTime": "Minimum play time",
+        "maxPlayTime": "Maximum play time",
+        "yearOfRelease": "Year of release",
+        "description": "Description",
+        "noGames": "There are no games yet..",
+        "from": "From",
+        "to": "to",
+        "participants": "participants",
+        "time": "Time",
+        "minutes": "minutes",
+        "releasedIn": "Released in",
+        "view": "View",
+        "averageRating": "Average Rating",
+        "deleteConfirm": "Are you sure you want to delete this game?",
+        "deletedMes": "Game has been deleted",
+        "gameInCollection": "The game is already in all your collections.",
+        "results": "Results",
+        "addRoundResult": "Add a Round Result",
+        "game": "Game"
+    },
+    "roundResult": {
+        "addedMes": "Round result has been added",
+        "editedMes": "Round result has been edited",
+        "chooseGame": "Choose the game to start",
+        "date": "Date",
+        "place": "Place",
+        "players": "Players",
+        "roundResult": "Round Result",
+        "confirmDeleteMes": "Are you sure you want to delete this round?",
+        "deleteMes": "Round has been deleted",
+        "actions": "Actions",
+        "rounds": "Rounds",
+        "roundId": "Round Id"
+    },
+    "player": {
+        "player": "Player",
+        "addedMes": "Player has been added",
+        "isRegistered": "Is Registered",
+        "role": "Role",
+        "score": "Score",
+        "isWinner": "Is Winner",
+        "userId": "User Id (Shortened)",
+        "userLink": "User Profile Link",
+        "yes": "YES",
+        "no": "NO",
+        "notRegistered": "User is not registered."
+    },
+    "auth": {
+        "usernameOrEmail": "Username Or Email:",
+        "password": "Password",
+        "signIn": "Sign In",
+        "trustDevice": "Trust This Device",
+        "needAccount": "Need an Account?",
+        "signUp": "Sign Up",
+        "loading": "Loading...",
+        "success": "Success!",
+        "register": "Register",
+        "username": "Username",
+        "usernameValidationMes": "4 to 24 characters.<br />Must begin with a letter.<br /> Letters, numbers, underscores, hyphens allowed.",
+        "email": "Email",
+        "emailValidationMes": "Invalid email address!",
+        "passwordValidationMes": "8 to 24 characters.<br /> Must include uppercase and lowercase letters, a number and a special character.<br /> Allowed special characters: <span aria-label=\"exclamation mark\">!</span> <span aria-label=\"at symbol\">@</span> <span aria-label=\"hashtag\">#</span> <span aria-label=\"dollar sign\">$</span> <span aria-label=\"percent\">%</span>",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordValidationMes": "Must match the first password input field.",
+        "alreadyRegistered": "Already Registered?"
     }
 }

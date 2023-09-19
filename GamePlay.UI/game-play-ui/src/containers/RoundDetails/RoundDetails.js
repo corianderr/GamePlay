@@ -61,7 +61,7 @@ const RoundDetails = () => {
           </Link>
           <br />
           Date: {Moment(round.date).format("dd MMM yyyy")} <br />
-          <h4>Participants: </h4>
+          <h4>Players: </h4>
           <br />
           <table class="table table-striped">
             <thead>

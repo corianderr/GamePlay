@@ -1,5 +1,128 @@
 {
     "navMenu": {
-        "games": "Игры"
+        "games": "Игры",
+        "users": "Пользователи",
+        "myRounds": "Мои Раунды",
+        "hello": "Привет",
+        "logout": "Выход"
+    },
+    "user": {
+        "relationButton": {
+            "follow": "Подписаться",
+            "isPending": "В ожидании",
+            "accept": "Принять",
+            "friends": "Друзья"
+        },
+        "noElements1": "Пока",
+        "noElements2": "нет",
+        "friends": "Друзья",
+        "followers": "Подписчики",
+        "users": "Пользователи",
+        "notifications": "Уведомления"
+    },
+    "userDetails": {
+        "addedCollectionMes": "Коллекция успешно добавлена!",
+        "updatedCollectionMes": "Коллекция обновлена!",
+        "editedProfileMes": "Профиль обновлен",
+        "adminPanel": {
+            "name": "Панель администратора",
+            "followersUpdateMes": "Количество подписчиков и друзей обновлено",
+            "averageRatingMes": "Средние оценки обновлены"
+        },
+        "editProfile": "Редактировать профиль",
+        "currentUser": {
+            "noCollections": "У меня пока нет коллекций :(",
+            "collections": "Мои коллекции",
+            "profile": "Мой профиль"
+        },
+        "differentUser": {
+            "noCollections": "пока не добавил коллекции :(",
+            "collections": " Коллекции",
+            "profile": "Профиль"
+        }
+    },
+    "collection": "Коллекция",
+    "forms": {
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "add": "Добавить",
+        "enter": "Введите",
+        "choose": "Выберите",
+        "save": "Сохранить",
+        "name": "Имя",
+        "details": "Детали"
+    },
+    "game": {
+        "addToCollection": "Добавить в коллекцию",
+        "nameRus": "Название на русском",
+        "nameEn": "Название на английском",
+        "minPlayers": "Минимальное количество игроков",
+        "maxPlayers": "Максимальное количество игроков",
+        "minAge": "Минимальный возраст",
+        "minPlayTime": "Минимальное время игры",
+        "maxPlayTime": "Максимальное время игры",
+        "yearOfRelease": "Год выпуска",
+        "description": "Описание",
+        "noGames": "Пока нет игр..",
+        "from": "От",
+        "to": "до",
+        "participants": "участников",
+        "time": "Время",
+        "minutes": "минут",
+        "releasedIn": "Выпущена в",
+        "view": "Просмотр",
+        "averageRating": "Средний рейтинг",
+        "deleteConfirm": "Вы уверены, что хотите удалить эту игру?",
+        "deletedMes": "Игра удалена",
+        "gameInCollection": "Эта игра уже есть во всех ваших коллекциях.",
+        "results": "Результаты",
+        "addRoundResult": "Добавить результат партии",
+        "game": "Игра"
+    },
+    "roundResult": {
+        "addedMes": "Результат партии добавлен",
+        "editedMes": "Результат партии изменен",
+        "chooseGame": "Выберите игру для начала",
+        "date": "Дата",
+        "place": "Место",
+        "players": "Игроки",
+        "roundResult": "Результат партии",
+        "confirmDeleteMes": "Вы уверены, что хотите удалить эту партию?",
+        "deleteMes": "Партия удалена",
+        "actions": "Действия",
+        "rounds": "Партии",
+        "roundId": "ID партии"
+    },
+    "player": {
+        "player": "Игрок",
+        "addedMes": "Игрок добавлен",
+        "isRegistered": "Зарегистрирован",
+        "role": "Роль",
+        "score": "Очки",
+        "isWinner": "Победитель",
+        "userId": "ID пользователя (сокращенный)",
+        "userLink": "Ссылка на профиль пользователя",
+        "yes": "ДА",
+        "no": "НЕТ",
+        "notRegistered": "Пользователь не зарегистрирован."
+    },
+    "auth": {
+        "usernameOrEmail": "Имя пользователя или электронная почта:",
+        "password": "Пароль",
+        "signIn": "Войти",
+        "trustDevice": "Доверять этому устройству",
+        "needAccount": "Нужен аккаунт?",
+        "signUp": "Зарегистрироваться",
+        "loading": "Загрузка...",
+        "success": "Успех!",
+        "register": "Регистрация",
+        "username": "Имя пользователя",
+        "usernameValidationMes": "От 4 до 24 символов.<br />Должно начинаться с буквы.<br />Допустимы буквы, цифры, подчеркивания и тире.",
+        "email": "Электронная почта",
+        "emailValidationMes": "Некорректный адрес электронной почты!",
+        "passwordValidationMes": "От 8 до 24 символов.<br />Должен включать заглавные и строчные буквы, цифру и специальный символ.<br />Допустимы специальные символы: <span aria-label=\"восклицательный знак\">!</span> <span aria-label=\"собачка\">@</span> <span aria-label=\"решетка\">#</span> <span aria-label=\"знак доллара\">$</span> <span aria-label=\"процент\">%</span>",
+        "confirmPassword": "Подтвердите пароль",
+        "confirmPasswordValidationMes": "Должен совпадать с первым полем ввода пароля.",
+        "alreadyRegistered": "Уже зарегистрированы?"
     }
 }

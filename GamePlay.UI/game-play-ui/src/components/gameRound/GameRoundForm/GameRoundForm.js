@@ -154,7 +154,7 @@ const GameRoundForm = ({
                 value={selectedOption}
                 onChange={handleSelect}
                 isSearchable={true}
-                isDisabled={buttonName === "Edit"}
+                isDisabled={viewModel?.gameRound?.game !== undefined}
                 className="mb-5"
                 ref={inputRef}
               />

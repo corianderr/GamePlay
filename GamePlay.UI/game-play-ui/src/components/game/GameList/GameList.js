@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import "./GameList.css";
+import { useTranslation } from "react-i18next";
 
 const GameList = ({ header, games }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       {games?.length === 0 ? (
-        <h5 className="mt-3">There are no games yet..</h5>
+        <h5 className="mt-3">{t("game.noGames")}</h5>
       ) : (
         <>
           <div className="container">
@@ -35,17 +38,17 @@ const GameList = ({ header, games }) => {
                       </div>
                     </div>
                     <h6 className="mb-3">
-                      From {game.minPlayers} to {game.maxPlayers} participants{" "}
+                    {t("game.from")} {game.minPlayers} {t("game.to")} {game.maxPlayers} {t("game.participants")}{" "}
                       <br />
-                      Time: {game.minPlayTime} - {game.maxPlayTime} minutes
+                      {t("game.time")}: {game.minPlayTime} - {game.maxPlayTime} {t("game.minutes")}
                     </h6>
                     <div className="d-flex justify-content-between install mt-auto">
-                      <span>Released in {game.yearOfRelease}</span>
+                      <span>{t("game.releasedIn")} {game.yearOfRelease}</span>
                       <Link
                         className="text-primary"
                         to={`/gameDetails/${game.id}`}
                       >
-                        View&nbsp;<i className="fa fa-angle-right"></i>
+                        {t("game.view")}&nbsp;<i className="fa fa-angle-right"></i>
                       </Link>
                     </div>
                   </div>

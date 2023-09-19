@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const GameForm = ({ handleLogic, gameData, buttonValue }) => {
   const [form, setForm] = useState(gameData === undefined ? {
@@ -14,6 +15,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
     description: "",
   } : gameData);
   const [file, setFile] = useState(null);
+  const { t } = useTranslation();
 
   const saveFile = (e) => {
     console.log(e.target?.files[0]);
@@ -40,7 +42,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="name" className="control-label">
-          Name
+        {t("forms.name")}
         </label>
         <input
           name="name"
@@ -53,7 +55,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="nameRu" className="control-label">
-          Name in Russian
+        {t("game.nameRu")}
         </label>
         <input
           name="nameRu"
@@ -66,7 +68,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="nameEn" className="control-label">
-          Name in English
+        {t("game.nameEn")}
         </label>
         <input
           name="nameEn"
@@ -79,7 +81,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="minPlayers" className="control-label">
-          Minimum number of players
+        {t("game.minPlayers")}
         </label>
         <input
           name="minPlayers"
@@ -93,7 +95,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="maxPlayers" className="control-label">
-          Maximum number of players
+        {t("game.maxPlayers")}
         </label>
         <input
           name="maxPlayers"
@@ -107,7 +109,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="minAge" className="control-label">
-          Minimum age
+        {t("game.minAge")}
         </label>
         <input
           name="minAge"
@@ -121,7 +123,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="minPlayTime" className="control-label">
-          Minimum play time
+        {t("game.minPlayTime")}
         </label>
         <input
           name="minPlayTime"
@@ -135,7 +137,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="maxPlayTime" className="control-label">
-          Maximum play time
+        {t("game.maxPlayTime")}
         </label>
         <input
           name="maxPlayTime"
@@ -149,7 +151,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="yearOfRelease" className="control-label">
-          Year of release
+        {t("game.yearOfRelease")}
         </label>
         <input
           id="yearOfRelease"
@@ -163,7 +165,7 @@ const GameForm = ({ handleLogic, gameData, buttonValue }) => {
       </div>
       <div className="form-group">
         <label htmlFor="description" className="control-label">
-          Description
+        {t("game.description")}
         </label>
         <input
           name="description"

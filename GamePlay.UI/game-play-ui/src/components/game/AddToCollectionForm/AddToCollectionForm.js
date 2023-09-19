@@ -1,5 +1,6 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const AddToCollectionForm = ({
   handleSubmit,
@@ -9,6 +10,7 @@ const AddToCollectionForm = ({
   const axiosPrivate = useAxiosPrivate();
   const [errMsg, setErrMsg] = useState("");
   const [collectionId, setCollectionId] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setErrMsg("");
@@ -17,7 +19,7 @@ const AddToCollectionForm = ({
   const chooseCollection = async (e) => {
     e.preventDefault();
     if (collectionId === null) {
-      setErrMsg("You should choose at least one collection.");
+      setErrMsg(t("collection.chooseAtLeastOneMes"));
       return;
     }
 
@@ -49,7 +51,7 @@ const AddToCollectionForm = ({
             required
           >
             <option selected="true" disabled="disabled">
-              Choose Collection
+            {t("forms.choose")} {t("collection.collection")}
             </option>
             {availableCollections.map((collection, i) => (
               <option value={collection.id} key={i}>
@@ -58,7 +60,7 @@ const AddToCollectionForm = ({
             ))}
           </select>
         </div>
-        <button className="btn btn-warning">Add to collection</button>
+        <button className="btn btn-warning">{t("game.addToCollection")}</button>
       </form>
     </>
   );

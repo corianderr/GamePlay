@@ -9,6 +9,7 @@ import AddToCollectionForm from "components/game/AddToCollectionForm/AddToCollec
 import { Button, Modal } from "react-bootstrap";
 import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
 import EditGameForm from "components/game/EditGameForm/EditGameForm";
+import { useTranslation } from "react-i18next";
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -32,6 +33,7 @@ const GameDetails = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const { gameId } = useParams();
 
@@ -68,12 +70,12 @@ const GameDetails = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this game?")) {
+    if (window.confirm(t("game.deleteConfirm"))) {
       const response = await axiosPrivate.delete(`/game/${id}`);
       console.log(response);
       if (response.data.succeeded) {
         console.log(response.data);
-        toast.success("Game has been deleted");
+        toast.success(t("game.deletedMes"));
         navigate("/games", { state: { from: location }, replace: true });
       }
     }
@@ -84,7 +86,7 @@ const GameDetails = () => {
       <div>
         <h2 className="text-center">{game.name}</h2>
         <div className="card h-100 w-75 mx-auto">
-          <img className="card-img-top" src={game.photoPath} alt="Game image" />
+          <img className="card-img-top" src={game.photoPath} alt={t("game.game")} />
           <div className="card-body my-auto">
             <div className="d-flex">
               <div>
@@ -93,9 +95,9 @@ const GameDetails = () => {
                   <span className="text-black-50">({game.minAge}+)</span>
                 </h4>
                 <p className="card-text">
-                  From {game.minPlayers} to {game.maxPlayers} participants
+                {t("game.from")} {game.minPlayers} {t("game.to")} {game.maxPlayers} {t("game.participants")}
                   <br />
-                  Time: {game.minPlayTime} - {game.maxPlayTime} minutes
+                  {t("game.time")}: {game.minPlayTime} - {game.maxPlayTime} {t("game.minutes")}
                   <br />
                 </p>
               </div>
@@ -122,14 +124,14 @@ const GameDetails = () => {
             {auth?.id && (
               <div className="my-3">
                 {availableCollections.length === 0 ? (
-                  <p>The game is already in all your collections.</p>
+                  <p>{t("game.gameInCollection")}</p>
                 ) : (
                   <button
                     type="button"
                     className="btn btn-warning"
                     onClick={handleShow}
                   >
-                    Add to collection
+                    {t("game.addToCollection")}
                   </button>
                 )}
               </div>
@@ -145,27 +147,27 @@ const GameDetails = () => {
                     size="2xl"
                     style={{ color: "#fdce3f" }}
                   />{" "}
-                  Results
+                  {t("game.results")}
                 </Link>
               )}
             </div>
             <div>
               {auth?.roles?.includes("admin") && (
                 <>
-                  <button className="btn btn-dark btn-sm" onClick={handleAddRoundShow}>Add a Round Result</button>
-                  <button className="btn btn-dark btn-sm ms-2" onClick={handleEditShow}>Edit</button>
+                  <button className="btn btn-dark btn-sm" onClick={handleAddRoundShow}>{t("game.addRoundResult")}</button>
+                  <button className="btn btn-dark btn-sm ms-2" onClick={handleEditShow}>{t("forms.edit")}</button>
                   <button
                     className="btn btn-dark btn-sm ms-2"
                     onClick={() => handleDelete(gameId)}
                   >
-                    Delete
+                    {t("forms.delete")}
                   </button>
                 </>
               )}
             </div>
           </div>
           <div className="card-footer text-body-secondary">
-            Released in {game.yearOfRelease}
+          {t("game.releasedIn")} {game.yearOfRelease}
             <br />
           </div>
         </div>
@@ -173,7 +175,7 @@ const GameDetails = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add game to collection</Modal.Title>
+          <Modal.Title>{t("game.addToCollection")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddToCollectionForm
@@ -186,7 +188,7 @@ const GameDetails = () => {
 
       <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit game</Modal.Title>
+          <Modal.Title>{t("forms.edit")} {t("game.game")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditGameForm
@@ -200,7 +202,7 @@ const GameDetails = () => {
 
       <Modal show={showAddRound} onHide={handleAddRoundClose} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>Add game round result</Modal.Title>
+          <Modal.Title>{t("game.addRoundResult")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddGameRoundForm gameProp={game} handleClose={handleAddRoundClose}/>

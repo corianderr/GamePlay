@@ -5,6 +5,7 @@ import GameList from "../../components/game/GameList/GameList";
 import useAuth from "hooks/useAuth";
 import { Modal } from "react-bootstrap";
 import AddGameForm from "components/game/AddGameForm/AddGameForm";
+import { useTranslation } from "react-i18next";
 
 const Games = () => {
   const [games, setGames] = useState([]);
@@ -13,6 +14,7 @@ const Games = () => {
   const location = useLocation();
   const [show, setShow] = useState(false);
   const { auth } = useAuth();
+  const { t } = useTranslation();
 
   const handleClose = () => {
     setShow(false);
@@ -45,13 +47,13 @@ const Games = () => {
     <>
       {auth?.accessToken !== undefined && auth?.roles.includes("admin") && (
         <button className="btn btn-primary btn-sm opacity-75 w-25" onClick={handleShow}>
-          Create Game
+          {t("forms.add")} {t("game.game")}
         </button>
       )}
-      <GameList games={games} header={"Games"} />
+      <GameList games={games} header={t("navMenu.games")} />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Game</Modal.Title>
+          <Modal.Title>{t("forms.add")} {t("game.game")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddGameForm handleClose={handleClose} updateData={getGames} />

@@ -41,7 +41,10 @@
             "profile": "Profile"
         }
     },
-    "collection": "Collection",
+    "collection": {
+        "collection": "Collection",
+        "chooseAtLeastOneMes": "You should choose at least one collection."
+    },
     "forms": {
         "edit": "Edit",
         "delete": "Delete",
@@ -54,13 +57,13 @@
     },
     "game": {
         "addToCollection": "Add to collection",
-        "nameRus": "Name in Russian",
+        "nameRu": "Name in Russian",
         "nameEn": "Name in English",
         "minPlayers": "Minimum number of players",
         "maxPlayers": "Maximum number of players",
         "minAge": "Minimum age",
-        "minPlayTime": "Minimum play time",
-        "maxPlayTime": "Maximum play time",
+        "minPlayTime": "Minimum play time (minutes)",
+        "maxPlayTime": "Maximum play time (minutes)",
         "yearOfRelease": "Year of release",
         "description": "Description",
         "noGames": "There are no games yet..",
@@ -74,10 +77,13 @@
         "averageRating": "Average Rating",
         "deleteConfirm": "Are you sure you want to delete this game?",
         "deletedMes": "Game has been deleted",
+        "addedMes": "Game has been added",
+        "editedMes": "Game has been edited",
         "gameInCollection": "The game is already in all your collections.",
         "results": "Results",
         "addRoundResult": "Add a Round Result",
-        "game": "Game"
+        "game": "Game",
+        "rateValidationMes": "Rate before saving!"
     },
     "roundResult": {
         "addedMes": "Round result has been added",

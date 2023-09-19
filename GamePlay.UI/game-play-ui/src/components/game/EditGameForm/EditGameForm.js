@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import GameForm from "../GameForm/GameForm";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const EditGameForm = ({ handleClose, gameId, game, updateGame }) => {
   const axiosPrivate = useAxiosPrivate();
+  const { t } = useTranslation();
 
   const handleEdit = async (data) => {
     const response = await axiosPrivate.put(`game/${gameId}`, data, {
@@ -17,7 +19,7 @@ const EditGameForm = ({ handleClose, gameId, game, updateGame }) => {
       console.log(response);
       handleClose();
       updateGame();
-      toast.success("Game has been edited");
+      toast.success(t("game.editedMes"));
     } else {
       console.log(response);
       response.data.errors.map((e) => {
@@ -26,7 +28,7 @@ const EditGameForm = ({ handleClose, gameId, game, updateGame }) => {
     }
   };
 
-  return <GameForm handleLogic={handleEdit} gameData={game} buttonValue={"Edit"}/>;
+  return <GameForm handleLogic={handleEdit} gameData={game} buttonValue={t("forms.edit")}/>;
 };
 
 export default EditGameForm;

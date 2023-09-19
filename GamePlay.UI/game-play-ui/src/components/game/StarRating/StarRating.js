@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import React, { useEffect, useReducer, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 const StarRating = ({ isEditable, value, game, resetRating }) => {
@@ -11,6 +12,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
   const [step, setStep] = useState(1);
   const [isChangeable, setIsChangeable] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (value !== undefined) {
@@ -28,7 +30,6 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
   const deleteRating = (id) => {
     const deleteAsync = async () => {
       const response = await axiosPrivate.delete(`/game/deleteRating/${id}`);
-      console.log(response);
       if (response.data.succeeded) {
         setIsChangeable(true);
         setStep(1);
@@ -40,7 +41,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
 
   const addRating = (gameId, rating) => {
     if (rating === undefined) {
-      toast.error("Rate before saving!");
+      toast.error(t("game.rateValidationMes"));
       return;
     }
 
@@ -48,7 +49,6 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
       const response = await axiosPrivate.post(
         `/Game/rateGame?id=${gameId}&rating=${rating}`
       );
-      console.log(response);
       if (response.data.succeeded) {
         setIsChangeable(false);
         setStep(0.1);
@@ -94,7 +94,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
                 onClick={() => addRating(game.id, rating)}
                 className="my-auto btn btn-secondary btn-sm save-button"
               >
-                Save
+                {t("forms.save")}
               </button>
             </>
           ) : (
@@ -125,7 +125,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
       )}
       {game.averageRating !== undefined && (
         <span className="my-auto">
-          Average Rating: {game.averageRating.toFixed(2)}
+          {t("game.averageRating")}: {game.averageRating.toFixed(2)}
         </span>
       )}
     </>

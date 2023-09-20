@@ -86,7 +86,11 @@ const GameDetails = () => {
       <div>
         <h2 className="text-center">{game.name}</h2>
         <div className="card h-100 w-75 mx-auto">
-          <img className="card-img-top" src={game.photoPath} alt={t("game.game")} />
+          <img
+            className="card-img-top"
+            src={game.photoPath}
+            alt={t("game.game")}
+          />
           <div className="card-body my-auto">
             <div className="d-flex">
               <div>
@@ -95,9 +99,11 @@ const GameDetails = () => {
                   <span className="text-black-50">({game.minAge}+)</span>
                 </h4>
                 <p className="card-text">
-                {t("game.from")} {game.minPlayers} {t("game.to")} {game.maxPlayers} {t("game.participants")}
+                  {t("game.from")} {game.minPlayers} {t("game.to")}{" "}
+                  {game.maxPlayers} {t("game.participants")}
                   <br />
-                  {t("game.time")}: {game.minPlayTime} - {game.maxPlayTime} {t("game.minutes")}
+                  {t("game.time")}: {game.minPlayTime} - {game.maxPlayTime}{" "}
+                  {t("game.minutes")}
                   <br />
                 </p>
               </div>
@@ -122,40 +128,50 @@ const GameDetails = () => {
             </div>
 
             {auth?.id && (
-              <div className="my-3">
-                {availableCollections.length === 0 ? (
-                  <p>{t("game.gameInCollection")}</p>
-                ) : (
+              <>
+                <div className="my-3">
+                  {availableCollections.length === 0 ? (
+                    <p>{t("game.gameInCollection")}</p>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm me-2"
+                      onClick={handleShow}
+                    >
+                      {t("game.addToCollection")}
+                    </button>
+                  )}
                   <button
-                    type="button"
-                    className="btn btn-warning"
-                    onClick={handleShow}
+                    className="btn btn-warning btn-sm"
+                    onClick={handleAddRoundShow}
                   >
-                    {t("game.addToCollection")}
+                    {t("game.addRoundResult")}
                   </button>
-                )}
-              </div>
+                </div>
+                <div className="my-3">
+                  <Link
+                    className="btn-sm me-2 text-black-50"
+                    to={`/gameRounds/${gameId}/${game.name}`}
+                  >
+                    <FontAwesomeIcon
+                      icon="fa-solid fa-square-poll-vertical"
+                      size="2xl"
+                      style={{ color: "#fdce3f" }}
+                    />{" "}
+                    {t("game.results")}
+                  </Link>
+                </div>
+              </>
             )}
-            <div className="my-3">
-              {auth?.id && (
-                <Link
-                  className="btn-sm me-2 text-black-50"
-                  to={`/gameRounds/${gameId}/${game.name}`}
-                >
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-square-poll-vertical"
-                    size="2xl"
-                    style={{ color: "#fdce3f" }}
-                  />{" "}
-                  {t("game.results")}
-                </Link>
-              )}
-            </div>
             <div>
               {auth?.roles?.includes("admin") && (
                 <>
-                  <button className="btn btn-dark btn-sm" onClick={handleAddRoundShow}>{t("game.addRoundResult")}</button>
-                  <button className="btn btn-dark btn-sm ms-2" onClick={handleEditShow}>{t("forms.edit")}</button>
+                  <button
+                    className="btn btn-dark btn-sm ms-2"
+                    onClick={handleEditShow}
+                  >
+                    {t("forms.edit")}
+                  </button>
                   <button
                     className="btn btn-dark btn-sm ms-2"
                     onClick={() => handleDelete(gameId)}
@@ -167,7 +183,7 @@ const GameDetails = () => {
             </div>
           </div>
           <div className="card-footer text-body-secondary">
-          {t("game.releasedIn")} {game.yearOfRelease}
+            {t("game.releasedIn")} {game.yearOfRelease}
             <br />
           </div>
         </div>
@@ -181,14 +197,17 @@ const GameDetails = () => {
           <AddToCollectionForm
             handleSubmit={handleSubmit}
             availableCollections={availableCollections}
-            gameId={gameId} game={game}
+            gameId={gameId}
+            game={game}
           />
         </Modal.Body>
       </Modal>
 
       <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("forms.edit")} {t("game.game")}</Modal.Title>
+          <Modal.Title>
+            {t("forms.edit")} {t("game.game")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditGameForm
@@ -205,7 +224,7 @@ const GameDetails = () => {
           <Modal.Title>{t("game.addRoundResult")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddGameRoundForm gameProp={game} handleClose={handleAddRoundClose}/>
+          <AddGameRoundForm gameProp={game} handleClose={handleAddRoundClose} />
         </Modal.Body>
       </Modal>
     </>

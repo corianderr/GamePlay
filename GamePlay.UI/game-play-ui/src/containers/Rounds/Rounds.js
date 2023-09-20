@@ -45,7 +45,7 @@ const Rounds = () => {
 
   return (
     <>
-      {auth?.accessToken !== undefined && auth?.roles.includes("admin") && (
+      {auth?.accessToken !== undefined && (
         <button
           className="btn btn-primary btn-sm opacity-75 w-25"
           onClick={handleAddRoundShow}

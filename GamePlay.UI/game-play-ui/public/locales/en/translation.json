@@ -4,6 +4,7 @@
         "users": "Users",
         "myRounds": "My Rounds",
         "hello": "Hello",
+        "login": "Login",
         "logout": "Logout"
     },
     "user": {
@@ -89,6 +90,7 @@
         "addedMes": "Round result has been added",
         "editedMes": "Round result has been edited",
         "chooseGame": "Choose the game to start",
+        "noRounds": "There are no round results yet..",
         "date": "Date",
         "place": "Place",
         "players": "Players",

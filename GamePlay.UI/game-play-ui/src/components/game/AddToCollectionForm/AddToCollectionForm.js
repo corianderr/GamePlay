@@ -16,6 +16,12 @@ const AddToCollectionForm = ({
     setErrMsg("");
   }, [collectionId]);
 
+  useEffect(() => {
+    if (availableCollections.length > 0) {
+      setCollectionId(availableCollections[0].id);
+    }
+  }, [availableCollections]);
+
   const chooseCollection = async (e) => {
     e.preventDefault();
     if (collectionId === null) {
@@ -50,11 +56,8 @@ const AddToCollectionForm = ({
             }}
             required
           >
-            <option selected="true" disabled="disabled">
-            {t("forms.choose")} {t("collection.collection")}
-            </option>
             {availableCollections.map((collection, i) => (
-              <option value={collection.id} key={i}>
+              <option value={collection.id} key={i} selected={i == 0}>
                 {collection.name}
               </option>
             ))}

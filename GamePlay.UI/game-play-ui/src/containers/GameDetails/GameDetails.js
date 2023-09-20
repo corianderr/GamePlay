@@ -95,7 +95,7 @@ const GameDetails = () => {
             <div className="d-flex">
               <div>
                 <h4 className="card-title">
-                  {game.nameRu} / {game.nameEn}{" "}
+                  {game.nameRu}{" "}
                   <span className="text-black-50">({game.minAge}+)</span>
                 </h4>
                 <p className="card-text">

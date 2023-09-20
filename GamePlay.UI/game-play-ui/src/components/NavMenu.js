@@ -60,25 +60,9 @@ export default function NavMenu() {
                 {t("navMenu.myRounds")}
               </Link>
             </li>
-            <li className="nav-item align-self-center">
-              <div className="btn-group" role="group" aria-label="Basic example">
-                <button
-                  className="btn btn-dark btn-sm pe-1"
-                  onClick={() => changeLanguage("en")}
-                >
-                  <img width={15} height={15} src="flags\united-states.png" alt="English"></img>
-                </button>
-                <button
-                  className="btn btn-dark btn-sm ps-1"
-                  onClick={() => changeLanguage("ru")}
-                >
-                  <img width={15} height={15} src="flags\russia.png" alt="Русский"></img>
-                </button>
-              </div>
-            </li>
             {auth?.accessToken ? (
               <>
-                <li className="ms-auto nav-item">
+                <li className="ms-lg-auto nav-item">
                   <Link to={`/notifications`}>
                     <FontAwesomeIcon
                       icon="fa-solid fa-bell"
@@ -104,10 +88,26 @@ export default function NavMenu() {
             ) : (
               <li className="ms-auto nav-item">
                 <Link to="/login" className="nav-link">
-                  {t("navMenu.logout")}
+                  {t("navMenu.login")}
                 </Link>
               </li>
             )}
+            <li className="nav-item align-self-lg-center">
+              <div className="btn-group" role="group" aria-label="Basic example">
+                <button
+                  className="btn btn-dark btn-sm pe-1"
+                  onClick={() => changeLanguage("en")}
+                >
+                  <img width={15} height={15} src="flags\united-states.png" alt="English"></img>
+                </button>
+                <button
+                  className="btn btn-dark btn-sm ps-1"
+                  onClick={() => changeLanguage("ru")}
+                >
+                  <img width={15} height={15} src="flags\russia.png" alt="Русский"></img>
+                </button>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

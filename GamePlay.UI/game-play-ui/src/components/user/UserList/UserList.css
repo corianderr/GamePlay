@@ -43,7 +43,7 @@
 }
 
 .table.manage-candidates-top {
-    min-width: 650px;
+    max-width: 600px;
 }
 
 .user-dashboard-info-box .candidate-list-details ul {

@@ -16,7 +16,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const handleClose = () => {
     setShow(false);
     resetRounds();
-  }
+  };
 
   const handleShow = (id) => {
     setGameRoundId(id);
@@ -29,6 +29,8 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
       if (response.data.succeeded) {
         toast.success("Round has been deleted");
         resetRounds();
+      } else {
+        toast.error("Error...");
       }
     }
   };

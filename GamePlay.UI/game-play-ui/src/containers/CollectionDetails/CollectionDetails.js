@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import GameList from "../../components/game/GameList/GameList";
 
 const CollectionDetails = () => {
-  const [collection, setCollection] = useState({games: [], name: ""});
+  const [collection, setCollection] = useState({ games: [], name: "" });
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -12,37 +12,32 @@ const CollectionDetails = () => {
   const { collectionId } = useParams();
 
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getGames = async () => {
-      try {
-        const response = await axiosPrivate.get(
-          `/collection/getById/${collectionId}`,
-          {
-            signal: controller.signal,
-          }
-        );
-        console.log(response.data);
-        isMounted && setCollection(response.data.result);
-      } catch (err) {
-        if (err.name === "CanceledError") {
-          return;
-        }
-
-        console.error(err);
-        navigate("/login", { state: { from: location }, replace: true });
-      }
-    };
     getGames();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
   }, []);
 
-  return <GameList games={collection.games} header={collection.name}/>;
+  const getGames = async () => {
+    try {
+      const response = await axiosPrivate.get(
+        `/collection/getById/${collectionId}`
+      );
+      setCollection(response.data.result);
+    } catch (err) {
+      if (err.name === "CanceledError") {
+        return;
+      }
+      console.error(err);
+      navigate("/login", { state: { from: location }, replace: true });
+    }
+  };
+
+  return (
+    <GameList
+      games={collection.games}
+      header={collection.name}
+      collectionId={collectionId}
+      refreshGames={getGames}
+    />
+  );
 };
 
 export default CollectionDetails;

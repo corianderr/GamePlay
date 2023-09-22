@@ -2,12 +2,14 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserList from "../../components/user/UserList/UserList";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
   const [subscribers, setSubscribers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -39,7 +41,7 @@ const Notifications = () => {
 
   return (
     <>
-      <UserList header={"Notifications"} users={subscribers} relations={Array(subscribers.length).fill(2)}/>
+      <UserList header={t("user.notifications")} users={subscribers} relations={Array(subscribers.length).fill(2)}/>
     </>
   );
 }

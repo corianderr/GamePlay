@@ -4,6 +4,7 @@ import Select from "react-select";
 import AddPlayerForm from "../AddPlayerForm/AddPlayerForm";
 import { Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 const GameRoundForm = ({
   game,
@@ -14,7 +15,9 @@ const GameRoundForm = ({
   games,
   getData
 }) => {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
+
   const [players, setPlayers] = useState([]);
   const [form, setForm] = useState({
     gameId: game?.id,
@@ -145,12 +148,12 @@ const GameRoundForm = ({
             <form id="gameForm" onSubmit={(e) => handleSubmitResult(e)}>
               {viewModel?.gameRound?.game === undefined && (
                 <h4 className="control-label text-primary mb-3" htmlFor="date">
-                  Choose the game to start ↓
+                  {t("roundResult.chooseGame")} ↓
                 </h4>
               )}
               <Select
                 options={options}
-                placeholder="Select game"
+                placeholder={t("forms.select") + t("game.what")}
                 value={selectedOption}
                 onChange={handleSelect}
                 isSearchable={true}
@@ -169,7 +172,7 @@ const GameRoundForm = ({
               >
                 <div className="form-group">
                   <label className="control-label" htmlFor="date">
-                    Date
+                  {t("roundResult.date")}
                   </label>
                   <input
                     className="form-control"
@@ -183,7 +186,7 @@ const GameRoundForm = ({
                 </div>
                 <div className="form-group">
                   <label className="control-label" htmlFor="place">
-                    Place
+                  {t("roundResult.place")}
                   </label>
                   <input
                     className="form-control"
@@ -202,14 +205,14 @@ const GameRoundForm = ({
                 </div>
                 <div>
                   <h4 className="d-inline-block mr-3">
-                    Players ({viewModel?.gameRound.game.minPlayers} -{" "}
+                  {t("roundResult.players")} ({viewModel?.gameRound.game.minPlayers} -{" "}
                     {viewModel?.gameRound.game.maxPlayers})
                   </h4>
                   <hr />
                   <div className="d-flex mb-5">
                     <Select
                       options={playerOptions}
-                      placeholder="Select players"
+                      placeholder={t("roundResult.selectPlayers")}
                       value={selectedPlayers}
                       onChange={handleSelectPlayers}
                       isSearchable={true}
@@ -235,12 +238,12 @@ const GameRoundForm = ({
                   >
                     <thead>
                       <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Score</th>
-                        <th scope="col">Is Winner?</th>
-                        <th scope="col">Is Registered?</th>
-                        <th scope="col">User Id (Shortened)</th>
+                        <th scope="col">{t("player.name")}</th>
+                        <th scope="col">{t("player.role")}</th>
+                        <th scope="col">{t("player.score")}</th>
+                        <th scope="col">{t("player.isWinner")}?</th>
+                        <th scope="col">{t("player.isRegistered")}?</th>
+                        <th scope="col">{t("player.userId")}</th>
                       </tr>
                     </thead>
                     <tbody style={{ fontWeight: "normal" }}>
@@ -290,7 +293,7 @@ const GameRoundForm = ({
                 <div className="form-group">
                   <input
                     type="submit"
-                    value={`${buttonName} Round Result`}
+                    value={`${buttonName}`}
                     className="btn btn-primary"
                   />
                 </div>
@@ -301,7 +304,7 @@ const GameRoundForm = ({
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Player</Modal.Title>
+          <Modal.Title>{t("forms.add")} {t("player.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddPlayerForm

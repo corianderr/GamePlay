@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import GameRoundForm from "../GameRoundForm/GameRoundForm";
+import { useTranslation } from "react-i18next";
 
 const AddGameRoundForm = ({ gameProp, handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [viewModel, setViewModel] = useState();
   const [games, setGames] = useState([]);
@@ -31,7 +33,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
       const response = await axiosPrivate.post(`gameRound`, data);
       if (response.data.succeeded) {
         handleClose();
-        toast.success("Round result has been added");
+        toast.success(t("roundResult.addedMes"));
       } else {
         response.data.errors.map((e) => {
           toast.error(e);
@@ -71,7 +73,7 @@ const AddGameRoundForm = ({ gameProp, handleClose }) => {
       <GameRoundForm
         viewModel={viewModel}
         submitResult={handleAddRoundResult}
-        buttonName={"Create"}
+        buttonName={t("forms.add")}
         games={games}
         setGame={setGame}
         game={game}

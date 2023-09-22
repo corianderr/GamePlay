@@ -2,14 +2,14 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import UserList from "../../components/user/UserList/UserList";
-import useAuth from "hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 const Followers = () => {
     const [subscribers, setSubscribers] = useState([]);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
-    const { auth } = useAuth();
+    const { t } = useTranslation();
 
     const { userId } = useParams();
   
@@ -43,7 +43,7 @@ const Followers = () => {
   
     return (
       <>
-        <UserList header={"Followers"} users={subscribers} />
+        <UserList header={t("user.followers")} users={subscribers} />
       </>
     );
 }

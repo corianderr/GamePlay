@@ -86,7 +86,7 @@ export default function NavMenu() {
                 </li>
               </>
             ) : (
-              <li className="ms-auto nav-item">
+              <li className="ms-lg-auto nav-item">
                 <Link to="/login" className="nav-link">
                   {t("navMenu.login")}
                 </Link>

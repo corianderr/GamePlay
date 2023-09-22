@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserList from "../../components/user/UserList/UserList";
+import { useTranslation } from "react-i18next";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
@@ -39,7 +41,7 @@ const Users = () => {
 
   return (
     <>
-      <UserList header={"Users"} users={users} />
+      <UserList header={t("user.users")} users={users} />
     </>
   );
 };

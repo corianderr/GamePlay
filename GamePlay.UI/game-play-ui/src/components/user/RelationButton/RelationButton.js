@@ -1,18 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { axiosPrivate } from "../../../api/axios";
 import { Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const RelationButton = ({ userId, relation, userUpdate }) => {
-  const [button, setButton] = useState(null);
+  const [buttonRelation, setButtonRelation] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    setButton(chooseButton(relation));
+    setButtonRelation(relation);
   }, [relation, userId]);
 
   const follow = async () => {
     const response = await axiosPrivate.post(`user/follow?id=${userId}`);
     if (response.data.succeeded) {
-      setButton(chooseButton(1));
+      setButtonRelation(1);
       if (userUpdate !== undefined) {
         userUpdate();
       }
@@ -22,7 +24,7 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
   const accept = async () => {
     const response = await axiosPrivate.post(`user/becomeFriends?id=${userId}`);
     if (response.data.succeeded) {
-      setButton(chooseButton(3));
+      setButtonRelation(3);
       if (userUpdate !== undefined) {
         userUpdate();
       }
@@ -39,13 +41,13 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
             variant="contained"
             size="small"
           >
-            Follow
+            {t("relationButton.follow")}
           </Button>
         );
       case 1:
         return (
           <Button disabled size="small">
-            Is Pending...
+            {t("relationButton.isPending")}
           </Button>
         );
       case 2:
@@ -56,13 +58,13 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
             variant="contained"
             size="small"
           >
-            Accept
+            {t("relationButton.accept")}
           </Button>
         );
       case 3:
         return (
           <Button disabled size="small">
-            Friends
+            {t("relationButton.friends")}
           </Button>
         );
       default:
@@ -70,7 +72,44 @@ const RelationButton = ({ userId, relation, userUpdate }) => {
     }
   };
 
-  return <>{relation !== -1 ? button : ""}</>;
+  return (
+    <>
+      {
+        {
+          0: (
+            <Button
+              onClick={() => follow()}
+              color="primary"
+              variant="contained"
+              size="small"
+            >
+              {t("relationButton.follow")}
+            </Button>
+          ),
+          1: (
+            <Button disabled size="small">
+              {t("relationButton.isPending")}
+            </Button>
+          ),
+          2: (
+            <Button
+              onClick={() => accept()}
+              color="primary"
+              variant="contained"
+              size="small"
+            >
+              {t("relationButton.accept")}
+            </Button>
+          ),
+          3: (
+            <Button disabled size="small">
+              {t("relationButton.friends")}
+            </Button>
+          ),
+        }[buttonRelation]
+      }
+    </>
+  );
 };
 
 export default RelationButton;

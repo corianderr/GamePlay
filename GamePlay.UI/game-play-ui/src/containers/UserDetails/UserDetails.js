@@ -6,10 +6,12 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import { Button, Form, Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const UserDetails = () => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { t } = useTranslation();
 
   const [user, setUser] = useState({});
   const [relation, setRelation] = useState(-1);
@@ -108,7 +110,7 @@ const UserDetails = () => {
     try {
       const result = await axiosPrivate.post(`collection/create`, form);
       if (result.data.succeeded) {
-        toast.success("Collection was added successfully!");
+        toast.success(t("collection.addedMes"));
         setAddShow(false);
         getUser();
       }
@@ -131,7 +133,7 @@ const UserDetails = () => {
       if (response.data.succeeded) {
         getUser();
         setEditShow(false);
-        toast.success("Collection has been updated");
+        toast.success(t("collection.updatedMes"));
         cleanForm();
       }
     } catch (err) {}
@@ -151,7 +153,7 @@ const UserDetails = () => {
     if (response.data.succeeded) {
       handleEditProfileClose();
       updateUser();
-      toast.success("Profile has been edited");
+      toast.success(t("userDetails.editedProfileMes"));
     } else {
       response.data.errors.map((e) => {
         toast.error(e);
@@ -177,7 +179,7 @@ const UserDetails = () => {
     const response = await axiosPrivate.put(`settings/userRelations`);
     if (response.data.succeeded) {
       updateUser();
-      toast.success("The number of followers and friends has been updated");
+      toast.success(t("adminPanel.followersUpdateMes"));
     } else {
       response.data.errors.map((e) => {
         toast.error(e);
@@ -188,7 +190,7 @@ const UserDetails = () => {
   const refreshAverageRating = async () => {
     const response = await axiosPrivate.put(`settings/averageRating`);
     if (response.data.succeeded) {
-      toast.success("Average ratings have been updated");
+      toast.success(t("adminPanel.averageRatingMes"));
     } else {
       response.data.errors.map((e) => {
         toast.error(e);
@@ -198,7 +200,7 @@ const UserDetails = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center mb-3">
+      <div className="d-flex justify-content-center align-items-center mb-3 flex-wrap">
         <div className="profile-card">
           <div className="d-flex text-center">
             <div className="mx-auto profile">
@@ -218,7 +220,7 @@ const UserDetails = () => {
                 className="btn btn-primary btn-sm follow"
                 onClick={handleEditProfileShow}
               >
-                Edit profile
+                {t("userDetails.editProfile")}
               </button>
             ) : (
               <RelationButton
@@ -230,7 +232,7 @@ const UserDetails = () => {
 
             <div className="d-flex justify-content-between align-items-center mt-4 px-4">
               <div className="stats">
-                <h6 className="mb-0">Followers</h6>
+                <h6 className="mb-0">{t("user.followers")}</h6>
                 <span>
                   <Link to={`/followers/${user.id}`}>
                     {user.followersCount}
@@ -238,7 +240,7 @@ const UserDetails = () => {
                 </span>
               </div>
               <div className="stats">
-                <h6 className="mb-0">Friends</h6>
+                <h6 className="mb-0">{t("user.friends")}</h6>
                 <span>
                   <Link to={`/friends/${user.id}`}>{user.friendsCount}</Link>
                 </span>
@@ -248,13 +250,13 @@ const UserDetails = () => {
         </div>
         {user.id === auth?.id && auth?.roles?.includes("admin") && (
           <div className="p-lg-4 py-4" style={{ width: "300px" }}>
-            <h4>Admin Panel</h4>
+            <h4>{t("adminPanel.name")}</h4>
             <div>
               <button
                 className="btn btn-dark btn-sm opacity-75 my-1 me-1"
                 onClick={refreshUserRelationsCount}
               >
-                Followers / Friends{" "}
+                {t("user.followers")} / {t("user.friends")}{" "}
                 <FontAwesomeIcon
                   icon="fa-solid fa-arrows-rotate"
                   className="ms-1"
@@ -262,7 +264,7 @@ const UserDetails = () => {
               </button>
               <button className="btn btn-dark btn-sm opacity-75 my-1"
               onClick={refreshAverageRating}>
-                Average Ratings{" "}
+                {t("adminPanel.averageRatings")}{" "}
                 <FontAwesomeIcon
                   icon="fa-solid fa-arrows-rotate"
                   className="ms-1"
@@ -276,8 +278,8 @@ const UserDetails = () => {
       {collections.length === 0 ? (
         user.id === auth?.id ? (
           <h5>
-            I don't have any collections yet :( <br />
-            Add one
+            {t("userDetails.currentUser.noCollections")} <br />
+            {t("forms.add")}
             <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon
                 icon="fa-solid fa-square-plus"
@@ -286,12 +288,12 @@ const UserDetails = () => {
             </span>
           </h5>
         ) : (
-          <h5>{user.userName} does not have any collections yet :(</h5>
+          <h5>{user.userName} {t("userDetails.differentUser.noCollections")}</h5>
         )
       ) : user.id === auth?.id ? (
         <div className="d-flex">
           <h3>
-            My Collections{" "}
+          {t("userDetails.currentUser.collections")}{" "}
             <span onClick={handleAddShow} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon
                 icon="fa-solid fa-square-plus"
@@ -301,11 +303,11 @@ const UserDetails = () => {
           </h3>
         </div>
       ) : (
-        <h3>{user.userName}'s Collections</h3>
+        <h3>{user.userName}{t("userDetails.differentUser.collections")}</h3>
       )}
       <div className="row">
         {collections.map((item) => (
-          <div className="col-sm-4 mb-3" key={item.id}>
+          <div className="col-md-4 col-sm-6 mb-3" key={item.id}>
             <div className="card h-100 text-center">
               <div className="card-body my-auto color">
                 <h5 className="card-title">
@@ -322,13 +324,13 @@ const UserDetails = () => {
                       className="btn btn-light"
                       onClick={() => handleEditShow(item.id)}
                     >
-                      Edit
+                      {t("forms.edit")}
                     </Link>
                     <button
                       className="btn btn-light "
                       onClick={() => handleDelete(item.id)}
                     >
-                      Delete
+                      {t("forms.delete")}
                     </button>
                   </div>
                 )}
@@ -340,47 +342,47 @@ const UserDetails = () => {
 
       <Modal show={editShow} onHide={handleEditClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit collection</Modal.Title>
+          <Modal.Title>{t("forms.edit")} {t("collection.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => handleEdit(e, form.id)}>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Collection Name</Form.Label>
+              <Form.Label>{t("collection.name")} </Form.Label>
               <Form.Control
-                placeholder="Enter name"
+                placeholder={t("forms.enter") + t("forms.name")}
                 name="name"
                 value={form.name}
                 onChange={onChange}
               />
             </Form.Group>
-            <Button type="submit">Edit</Button>
+            <Button type="submit">{t("forms.edit")}</Button>
           </Form>
         </Modal.Body>
       </Modal>
 
       <Modal show={addShow} onHide={handleAddClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add collection</Modal.Title>
+          <Modal.Title>{t("forms.add")} {t("collection.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => handleAdd(e, form.id)}>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Collection Name</Form.Label>
+              <Form.Label>{t("collection.name")}</Form.Label>
               <Form.Control
-                placeholder="Enter name"
+                placeholder={t("forms.enter") + t("forms.name")}
                 name="name"
                 value={form.name}
                 onChange={onChange}
               />
             </Form.Group>
-            <Button type="submit">Add</Button>
+            <Button type="submit">{t("forms.add")}</Button>
           </Form>
         </Modal.Body>
       </Modal>
 
       <Modal show={editProfileShow} onHide={handleEditProfileClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit profile</Modal.Title>
+          <Modal.Title>{t("userDetails.editProfile")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => handleEditProfile(e)}>
@@ -388,14 +390,14 @@ const UserDetails = () => {
               <Form.Control type="file" onChange={saveFile} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>{t("auth.username")}</Form.Label>
               <Form.Control value={user.userName} disabled />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Email</Form.Label>
+              <Form.Label>{t("auth.email")}</Form.Label>
               <Form.Control value={user.email} disabled />
             </Form.Group>
-            <Button type="submit">Edit</Button>
+            <Button type="submit">{t("form.edit")}</Button>
           </Form>
         </Modal.Body>
       </Modal>

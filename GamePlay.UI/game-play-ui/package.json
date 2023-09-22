@@ -12,6 +12,7 @@
     "@mui/material": "^5.14.3",
     "@tanstack/react-table": "^8.9.8",
     "axios": "^1.4.0",
+    "html-react-parser": "^4.2.2",
     "i18next": "^23.5.1",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.2",

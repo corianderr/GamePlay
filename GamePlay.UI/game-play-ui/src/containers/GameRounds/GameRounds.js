@@ -2,6 +2,7 @@ import GameRoundTable from "components/gameRound/GameRoundTable/GameRoundTable";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const GameRounds = () => {
@@ -12,6 +13,7 @@ const GameRounds = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getRounds();
@@ -37,7 +39,7 @@ const GameRounds = () => {
 
   return (
     <GameRoundTable
-      header={`${gameName} Rounds`}
+      header={`${gameName} ${t("roundResult.rounds")}`}
       rounds={rounds}
       resetRounds={getRounds}
     />

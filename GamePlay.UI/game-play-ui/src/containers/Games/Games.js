@@ -47,13 +47,13 @@ const Games = () => {
     <>
       {auth?.accessToken !== undefined && auth?.roles.includes("admin") && (
         <button className="btn btn-primary btn-sm opacity-75 w-25" onClick={handleShow}>
-          {t("forms.add")} {t("game.game")}
+          {t("forms.add")} {t("game.what")}
         </button>
       )}
       <GameList games={games} header={t("navMenu.games")} />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("forms.add")} {t("game.game")}</Modal.Title>
+          <Modal.Title>{t("forms.add")} {t("game.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddGameForm handleClose={handleClose} updateData={getGames} />

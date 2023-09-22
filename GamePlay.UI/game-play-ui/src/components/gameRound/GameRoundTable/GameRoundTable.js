@@ -6,12 +6,14 @@ import { toast } from "react-toastify";
 import EditGameRoundForm from "../EditGameRoundForm/EditGameRoundForm";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const [show, setShow] = useState(false);
   const [gameRoundId, setGameRoundId] = useState(null);
+  const { t } = useTranslation();
 
   const handleClose = () => {
     setShow(false);
@@ -24,10 +26,10 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this round?")) {
+    if (window.confirm(t("roundResult.confirmDeleteMes"))) {
       const response = await axiosPrivate.delete(`gameRound/${id}`);
       if (response.data.succeeded) {
-        toast.success("Round has been deleted");
+        toast.success(t("roundResult.deleteMes"));
         resetRounds();
       } else {
         toast.error("Error...");
@@ -38,7 +40,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   return (
     <>
       {rounds?.length === 0 ? (
-        <h5 className="mt-3">There are no results yet..</h5>
+        <h5 className="mt-3">{t("roundResult.noRounds")}</h5>
       ) : (
         <>
           <h2 className="text-center">{header}</h2>
@@ -46,10 +48,10 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Game</th>
-                <th scope="col">Date</th>
-                <th scope="col">Place</th>
-                {auth?.roles.includes("admin") && <th scope="col">Actions</th>}
+                <th scope="col">{t("game.game")}</th>
+                <th scope="col">{t("roundResult.date")}</th>
+                <th scope="col">{t("roundResult.place")}</th>
+                {auth?.roles.includes("admin") && <th scope="col">{t("roundResult.actions")}</th>}
               </tr>
             </thead>
             <tbody>
@@ -87,7 +89,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
       )}
       <Modal show={show} onHide={handleClose} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit game round result</Modal.Title>
+          <Modal.Title>{t("forms.edit")} {t("roundResult.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditGameRoundForm

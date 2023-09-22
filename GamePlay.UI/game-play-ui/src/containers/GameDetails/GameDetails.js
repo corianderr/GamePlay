@@ -10,6 +10,7 @@ import { Button, Modal } from "react-bootstrap";
 import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
 import EditGameForm from "components/game/EditGameForm/EditGameForm";
 import { useTranslation } from "react-i18next";
+import parse from 'html-react-parser';
 
 const GameDetails = () => {
   const { auth } = useAuth();
@@ -126,10 +127,11 @@ const GameDetails = () => {
                 )}
               </div>
             </div>
+            <div className="pt-3 pb-1">{game?.description && parse(`${game?.description}`)}</div>
 
             {auth?.id && (
               <>
-                <div className="my-3">
+                <div className="my-2">
                   {availableCollections.length === 0 ? (
                     <p>{t("game.gameInCollection")}</p>
                   ) : (
@@ -163,17 +165,18 @@ const GameDetails = () => {
                 </div>
               </>
             )}
+
             <div>
               {auth?.roles?.includes("admin") && (
                 <>
                   <button
-                    className="btn btn-dark btn-sm ms-2"
+                    className="btn btn-dark btn-sm me-2"
                     onClick={handleEditShow}
                   >
                     {t("forms.edit")}
                   </button>
                   <button
-                    className="btn btn-dark btn-sm ms-2"
+                    className="btn btn-dark btn-sm"
                     onClick={() => handleDelete(gameId)}
                   >
                     {t("forms.delete")}
@@ -206,7 +209,7 @@ const GameDetails = () => {
       <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {t("forms.edit")} {t("game.game")}
+            {t("forms.edit")} {t("game.what")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

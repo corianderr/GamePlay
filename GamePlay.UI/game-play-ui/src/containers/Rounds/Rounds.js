@@ -5,12 +5,14 @@ import useAuth from "hooks/useAuth";
 import GameRoundTable from "components/gameRound/GameRoundTable/GameRoundTable";
 import { Modal } from "react-bootstrap";
 import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
+import { useTranslation } from "react-i18next";
 
 const Rounds = () => {
   const [rounds, setRounds] = useState([]);
 
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,17 +52,17 @@ const Rounds = () => {
           className="btn btn-primary btn-sm opacity-75 w-25"
           onClick={handleAddRoundShow}
         >
-          Add
+          {t("forms.add")}
         </button>
       )}
       <GameRoundTable
-        header={"My Rounds"}
+        header={t("roundResult.myRounds")}
         rounds={rounds}
         resetRounds={getRounds}
       />
       <Modal show={showAddRound} onHide={handleAddRoundClose} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>Add game round result</Modal.Title>
+          <Modal.Title>{t("forms.add")} {t("roundResult.what")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddGameRoundForm handleClose={handleAddRoundClose} />

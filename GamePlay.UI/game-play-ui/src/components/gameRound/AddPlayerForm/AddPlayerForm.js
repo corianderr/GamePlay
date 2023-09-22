@@ -1,10 +1,13 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { toast } from "react-toastify";
 
 const AddPlayerForm = ({ users, handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
+  const { t } = useTranslation();
+
   const [player, setPlayer] = useState({
     name: "",
     isRegistered: false,
@@ -32,7 +35,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
 
   const handlePlayerAdd = async (e) => {
     if (player.name === "") {
-      toast.error("Enter player's name first!");
+      toast.error(t("player.nameValidation"));
       return;
     }
     e.preventDefault();
@@ -41,7 +44,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
     if (response.data.succeeded) {
       player.id = response.data.result.id;
       handleClose(player);
-      toast.success("Player has been added");
+      toast.success(t("player.addedMes"));
     } else {
       console.log(response);
       response.data.errors.map((e) => {
@@ -57,7 +60,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
           id="player-name"
           name="name"
           className="form-control mb-2"
-          placeholder="Enter name"
+          placeholder={t("forms.enter") + " " + t("player.name")}
           list="players"
           value={player.name}
           onChange={onChangeForm}
@@ -72,7 +75,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
             onChange={onChangeCheckbox}
           />
           <label className="form-check-label" htmlFor="player-is-registered">
-            Is Registered?
+            {t("player.isRegistered")}
           </label>
         </div>
         {player.isRegistered && (
@@ -85,7 +88,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
           >
             <Select
               options={options}
-              placeholder="Select user"
+              placeholder={t("forms.choose") + " " + t("user.what")}
               value={selectedOption}
               onChange={onSelect}
               isSearchable={true}
@@ -95,7 +98,7 @@ const AddPlayerForm = ({ users, handleClose }) => {
         )}
         <input
           type="button"
-          value="Add Player"
+          value={t("forms.add")}
           className="btn btn-light d-block w-100 my-2"
           id="add-player-button"
           onClick={handlePlayerAdd}

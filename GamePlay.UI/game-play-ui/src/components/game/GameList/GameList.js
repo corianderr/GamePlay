@@ -40,14 +40,14 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
             <h2 className="text-center">{header}</h2>
             <div className="row mt-3">
               {games.map((game, i) => (
-                <div className="col-md-4 col-sm-6 mb-3" key={i}>
+                <div className="col-lg-4 col-sm-6 mb-3" key={i}>
                   <div className="card h-100">
                     <div
-                      className="p-3"
+                      className="p-3 d-flex flex-column h-100"
                       onClick={() => redirectToGameDetails(game.id)}
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="d-flex flex-row mb-3">
+                      <div className="d-flex flex-row flex-wrap mb-3">
                         <img
                           src={game.photoPath}
                           width="70"

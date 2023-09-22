@@ -1,9 +1,11 @@
+import { useTranslation } from "react-i18next";
 import useAuth from "../../../hooks/useAuth";
 import RelationButton from "../RelationButton/RelationButton";
 import { Link } from "react-router-dom";
 
 const UserRow = ({ user, relation }) => {
   const { auth } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <tr className="candidates-list">
@@ -15,7 +17,7 @@ const UserRow = ({ user, relation }) => {
             <div className="candidate-list-info">
                 <div className="candidate-list-title">
                 <h5 className="mb-0">
-                    {user.id === auth?.id && <span>My Profile: </span>}
+                    {user.id === auth?.id && <span>{t("userDetails.currentUser.profile")} </span>}
                     <Link to={`/userDetails/${user.id}`}>{user.userName}</Link>
                 </h5>
                 </div>

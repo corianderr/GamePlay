@@ -3,6 +3,8 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../../api/axios";
 import { Link } from "react-router-dom";
+import parse from 'html-react-parser';
+import { useTranslation } from "react-i18next";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -12,6 +14,7 @@ const REGISTER_URL = 'User/register';
 const Register = () => {
     const userRef = useRef();
     const errRef = useRef();
+    const { t } = useTranslation();
 
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
@@ -59,7 +62,7 @@ const Register = () => {
         const v2 = PWD_REGEX.test(pwd);
         const v3 = EMAIL_REGEX.test(email);
         if (!v1 || !v2 || !v3) {
-            setErrMsg("Invalid Entry");
+            setErrMsg(t("auth.invalidEntry"));
             return;
         }
         try {
@@ -76,11 +79,11 @@ const Register = () => {
             setMatchPwd('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                setErrMsg(t("auth.noServerResponse"));
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                setErrMsg(t("auth.usernametaken"));
             } else {
-                setErrMsg('Registration Failed')
+                setErrMsg(t("auth.registrationfailed"))
             }
             errRef.current.focus();
         }
@@ -90,18 +93,18 @@ const Register = () => {
         <>
             {success ? (
                 <section className='mx-auto'>
-                    <h1>Success!</h1>
+                    <h1>{t("auth.success")}</h1>
                     <p>
-                        <Link to="/login">Sign In</Link>
+                        <Link to="/login">{t("auth.signIn")}</Link>
                     </p>
                 </section>
             ) : (
                 <section className='mx-auto'>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Register</h1>
+                    <h1>{t("auth.register")}</h1>
                     <form onSubmit={handleSubmit} className='auth-form'>
                         <label htmlFor="username">
-                            Username:
+                        {t("auth.username")}:
                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
                         </label>
@@ -120,13 +123,11 @@ const Register = () => {
                         />
                         <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            4 to 24 characters.<br />
-                            Must begin with a letter.<br />
-                            Letters, numbers, underscores, hyphens allowed.
+                            {parse(`${t("auth.usernameValidationMes")}`)}
                         </p>
 
                         <label htmlFor="email">
-                            Email:
+                        {t("auth.email")}:
                             <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
                         </label>
@@ -144,12 +145,12 @@ const Register = () => {
                         />
                         <p id="uidnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            Invalid email address!
+                            {t("auth.emailValidationMes")}
                         </p>
 
 
                         <label htmlFor="password">
-                            Password:
+                        {t("auth.password")}:
                             <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
                         </label>
@@ -166,14 +167,12 @@ const Register = () => {
                         />
                         <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            8 to 24 characters.<br />
-                            Must include uppercase and lowercase letters, a number and a special character.<br />
-                            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                            {parse(`${t("auth.passwordValidationMes")}`)}
                         </p>
 
 
                         <label htmlFor="confirm_pwd">
-                            Confirm Password:
+                        {t("auth.confirmPassword")}:
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
                         </label>
@@ -190,15 +189,15 @@ const Register = () => {
                         />
                         <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            Must match the first password input field.
+                            {t("auth.confirmPasswordValidationMes")}
                         </p>
 
-                        <button disabled={!validName || !validPwd || !validMatch || !validEmail ? true : false}>Sign Up</button>
+                        <button disabled={!validName || !validPwd || !validMatch || !validEmail ? true : false}>{t("auth.signUp")}</button>
                     </form>
                     <p>
-                        Already registered?<br />
+                    {t("auth.alreadyRegistered")}<br />
                         <span className="line">
-                            <Link to="/login">Sign In</Link>
+                            <Link to="/login">{t("auth.signIn")}</Link>
                         </span>
                     </p>
                 </section>

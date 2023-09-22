@@ -7,29 +7,31 @@
         "login": "Войти",
         "logout": "Выход"
     },
+    "relationButton": {
+        "follow": "Подписаться",
+        "isPending": "В ожидании...",
+        "accept": "Принять",
+        "friends": "Друзья"
+    },
     "user": {
-        "relationButton": {
-            "follow": "Подписаться",
-            "isPending": "В ожидании",
-            "accept": "Принять",
-            "friends": "Друзья"
-        },
         "noElements1": "Пока",
         "noElements2": "нет",
         "friends": "Друзья",
         "followers": "Подписчики",
         "users": "Пользователи",
+        "what": "пользователя",
         "notifications": "Уведомления"
+    },
+    "adminPanel": {
+        "name": "Панель администратора",
+        "averageRatings": "Средние оценки",
+        "followersUpdateMes": "Количество подписчиков и друзей обновлено",
+        "averageRatingMes": "Средние оценки обновлены"
     },
     "userDetails": {
         "addedCollectionMes": "Коллекция успешно добавлена!",
         "updatedCollectionMes": "Коллекция обновлена!",
         "editedProfileMes": "Профиль обновлен",
-        "adminPanel": {
-            "name": "Панель администратора",
-            "followersUpdateMes": "Количество подписчиков и друзей обновлено",
-            "averageRatingMes": "Средние оценки обновлены"
-        },
         "editProfile": "Редактировать профиль",
         "currentUser": {
             "noCollections": "У меня пока нет коллекций :(",
@@ -44,6 +46,10 @@
     },
     "collection": {
         "collection": "Коллекция",
+        "what": "Коллекцию",
+        "name": "Название Коллекции",
+        "addedMes": "Коллекция была добавлена!",
+        "updatedMes": "Коллекция была обновлена!",
         "chooseAtLeastOneMes": "Нужно выбрать хотя бы одну коллекцию."
     },
     "forms": {
@@ -53,7 +59,7 @@
         "enter": "Введите",
         "choose": "Выберите",
         "save": "Сохранить",
-        "name": "Имя",
+        "name": "Название",
         "details": "Детали"
     },
     "game": {
@@ -84,6 +90,7 @@
         "results": "Результаты",
         "addRoundResult": "Добавить результат партии",
         "rateValidationMes": "Оцените перед тем как сохранять!",
+        "what": "Игру",
         "game": "Игра"
     },
     "roundResult": {
@@ -94,24 +101,31 @@
         "date": "Дата",
         "place": "Место",
         "players": "Игроки",
+        "myRounds": "Мои Партии",
         "roundResult": "Результат партии",
+        "what": "Партию",
         "confirmDeleteMes": "Вы уверены, что хотите удалить эту партию?",
         "deleteMes": "Партия удалена",
         "actions": "Действия",
+        "details": "Детали Партии",
         "rounds": "Партии",
+        "selectPlayers": "Выберите игроков",
         "roundId": "ID партии"
     },
     "player": {
         "player": "Игрок",
+        "what": "Игрока",
         "addedMes": "Игрок добавлен",
         "isRegistered": "Зарегистрирован",
         "role": "Роль",
+        "name": "Имя",
         "score": "Очки",
         "isWinner": "Победитель",
         "userId": "ID пользователя (сокращенный)",
         "userLink": "Ссылка на профиль пользователя",
         "yes": "ДА",
         "no": "НЕТ",
+        "nameValidation": "Введите имя игрока!",
         "notRegistered": "Пользователь не зарегистрирован."
     },
     "auth": {
@@ -131,6 +145,13 @@
         "passwordValidationMes": "От 8 до 24 символов.<br />Должен включать заглавные и строчные буквы, цифру и специальный символ.<br />Допустимы специальные символы: <span aria-label=\"восклицательный знак\">!</span> <span aria-label=\"собачка\">@</span> <span aria-label=\"решетка\">#</span> <span aria-label=\"знак доллара\">$</span> <span aria-label=\"процент\">%</span>",
         "confirmPassword": "Подтвердите пароль",
         "confirmPasswordValidationMes": "Должен совпадать с первым полем ввода пароля.",
-        "alreadyRegistered": "Уже зарегистрированы?"
+        "alreadyRegistered": "Уже зарегистрированы?",
+        "invalidEntry": "Неверный ввод",
+        "noServerResponse": "Нет ответа от сервера",
+        "usernameTaken": "Имя пользователя занято",
+        "registrationFailed": "Регистрация не прошла",
+        "unauthorized": "Не авторизован",
+        "noAccess": "У вас нет доступа к данной странице.",
+        "goBack": "Вернуться"
     }
 }

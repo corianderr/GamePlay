@@ -7,6 +7,8 @@ import EditGameRoundForm from "../EditGameRoundForm/EditGameRoundForm";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { TablePagination } from "@mui/material";
 
 const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const { auth } = useAuth();
@@ -14,6 +16,33 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
   const [show, setShow] = useState(false);
   const [gameRoundId, setGameRoundId] = useState(null);
   const { t } = useTranslation();
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [subset, setSubset] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  useEffect(() => {
+    updateSubset();
+  }, [rounds]);
+
+  useEffect(() => {
+    updateSubset();
+  }, [currentPage]);
+
+  const updateSubset = () => {
+    const startIndex = currentPage * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    setSubset(rounds.slice(startIndex, endIndex));
+  };
 
   const handleClose = () => {
     setShow(false);
@@ -51,11 +80,13 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
                 <th scope="col">{t("game.game")}</th>
                 <th scope="col">{t("roundResult.date")}</th>
                 <th scope="col">{t("roundResult.place")}</th>
-                {auth?.roles.includes("admin") && <th scope="col">{t("roundResult.actions")}</th>}
+                {auth?.roles.includes("admin") && (
+                  <th scope="col">{t("roundResult.actions")}</th>
+                )}
               </tr>
             </thead>
             <tbody>
-              {rounds.map((round, i) => (
+              {subset.map((round, i) => (
                 <tr key={i}>
                   <th scope="row">{i + 1}</th>
                   <td>
@@ -87,9 +118,21 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
           </table>
         </>
       )}
+      {rounds.length !== 0 && (
+        <TablePagination
+          component="div"
+          count={rounds.length}
+          page={currentPage}
+          onPageChange={handlePageChange}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
       <Modal show={show} onHide={handleClose} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("forms.edit")} {t("roundResult.what")}</Modal.Title>
+          <Modal.Title>
+            {t("forms.edit")} {t("roundResult.what")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditGameRoundForm

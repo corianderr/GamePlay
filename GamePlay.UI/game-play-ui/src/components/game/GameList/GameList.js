@@ -4,11 +4,38 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { Pagination } from "@mui/material";
 
 const GameList = ({ header, games, collectionId, refreshGames }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [subset, setSubset] = useState([]);
+  const itemsPerPage = 6;
+  
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(games.length / itemsPerPage));
+    updateSubset();
+  }, [games]);
+
+  useEffect(() => {
+      updateSubset();
+  }, [currentPage]);
+
+
+  const updateSubset = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setSubset(games.slice(startIndex, endIndex));
+  }
 
   const redirectToGameDetails = (gameId) => {
     navigate(`/gameDetails/${gameId}`);
@@ -32,14 +59,14 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
 
   return (
     <>
-      {games?.length === 0 ? (
+      {subset?.length === 0 ? (
         <h5 className="mt-3">{t("game.noGames")}</h5>
       ) : (
         <>
           <div className="container">
             <h2 className="text-center">{header}</h2>
             <div className="row mt-3">
-              {games.map((game, i) => (
+              {subset.map((game, i) => (
                 <div className="col-lg-4 col-sm-6 mb-3" key={i}>
                   <div className="card h-100">
                     <div
@@ -96,8 +123,8 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
           </div>
         </>
       )}
+      {games.length !== 0 && (<Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />)}
     </>
   );
 };
-
 export default GameList;

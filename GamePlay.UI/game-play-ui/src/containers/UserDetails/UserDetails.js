@@ -397,7 +397,7 @@ const UserDetails = () => {
               <Form.Label>{t("auth.email")}</Form.Label>
               <Form.Control value={user.email} disabled />
             </Form.Group>
-            <Button type="submit">{t("form.edit")}</Button>
+            <Button type="submit">{t("forms.edit")}</Button>
           </Form>
         </Modal.Body>
       </Modal>

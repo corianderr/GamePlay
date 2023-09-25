@@ -47,7 +47,7 @@ const Games = () => {
     <>
       {auth?.accessToken !== undefined && auth?.roles.includes("admin") && (
         <button className="btn btn-primary btn-sm opacity-75 w-25" onClick={handleShow}>
-          {t("forms.add")} {t("game.what")}
+          {t("forms.add")}
         </button>
       )}
       <GameList games={games} header={t("navMenu.games")} />

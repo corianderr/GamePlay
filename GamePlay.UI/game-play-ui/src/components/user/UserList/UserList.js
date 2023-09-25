@@ -1,9 +1,36 @@
 import { useTranslation } from "react-i18next";
 import UserRow from "../UserRow/UserRow";
 import "./UserList.css";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Pagination } from "@mui/material";
 
 const UserList = ({ header, users, relations }) => {
   const { t } = useTranslation();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [subset, setSubset] = useState([]);
+  const itemsPerPage = 10;
+  
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(users.length / itemsPerPage));
+    updateSubset();
+  }, [users]);
+
+  useEffect(() => {
+      updateSubset();
+  }, [currentPage]);
+
+  const updateSubset = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setSubset(users.slice(startIndex, endIndex));
+  }
 
   return (
     <>
@@ -20,14 +47,14 @@ const UserList = ({ header, users, relations }) => {
                     <table className="table manage-candidates-top mb-0">
                       <tbody>
                         {relations !== undefined
-                          ? users.map((user, i) => (
+                          ? subset.map((user, i) => (
                               <UserRow
                                 user={user}
                                 key={i}
                                 relation={relations[i]}
                               />
                             ))
-                          : users.map((user, i) => (
+                          : subset.map((user, i) => (
                               <UserRow user={user} key={i} />
                             ))}
                       </tbody>
@@ -39,6 +66,7 @@ const UserList = ({ header, users, relations }) => {
           </div>
         </>
       )}
+      {totalPages > 1 && (<Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />)}
     </>
   );
 };

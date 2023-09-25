@@ -123,7 +123,7 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
           </div>
         </>
       )}
-      {games.length !== 0 && (<Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />)}
+      {totalPages > 1 && (<Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />)}
     </>
   );
 };

@@ -57,11 +57,18 @@ export default function NavMenu() {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/rounds">
-              {auth?.roles?.includes("admin") ? t("roundResult.rounds") : (
-                t("navMenu.myRounds"))
-              }
+                {auth?.roles?.includes("admin")
+                  ? t("roundResult.rounds")
+                  : t("navMenu.myRounds")}
               </Link>
             </li>
+            {auth?.roles?.includes("admin") && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/players">
+                  {t("navMenu.players")}
+                </Link>
+              </li>
+            )}
             {auth?.accessToken ? (
               <>
                 <li className="ms-lg-auto nav-item">
@@ -95,18 +102,32 @@ export default function NavMenu() {
               </li>
             )}
             <li className="nav-item align-self-lg-center">
-              <div className="btn-group" role="group" aria-label="Basic example">
+              <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
+              >
                 <button
                   className="btn btn-dark btn-sm pe-1"
                   onClick={() => changeLanguage("en")}
                 >
-                  <img width={15} height={15} src="flags\united-states.png" alt="English"></img>
+                  <img
+                    width={15}
+                    height={15}
+                    src="flags\united-states.png"
+                    alt="English"
+                  ></img>
                 </button>
                 <button
                   className="btn btn-dark btn-sm ps-1"
                   onClick={() => changeLanguage("ru")}
                 >
-                  <img width={15} height={15} src="flags\russia.png" alt="Русский"></img>
+                  <img
+                    width={15}
+                    height={15}
+                    src="flags\russia.png"
+                    alt="Русский"
+                  ></img>
                 </button>
               </div>
             </li>

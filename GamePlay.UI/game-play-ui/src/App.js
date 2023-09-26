@@ -7,8 +7,15 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import PersistLogin from "./components/auth/PersistLogin/PersistLogin";
 import UserDetails from "./containers/UserDetails/UserDetails";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBell,
+  faSquarePlus,
+  faTrash,
+  faSquarePollVertical,
+  faPenToSquare,
+  faArrowsRotate,
+} from "@fortawesome/free-solid-svg-icons";
 import Notifications from "containers/Notifications/Notifications";
 import Friends from "containers/Friends/Friends";
 import Followers from "containers/Followers/Followers";
@@ -18,6 +25,7 @@ import Games from "containers/Games/Games";
 import Rounds from "containers/Rounds/Rounds";
 import GameRounds from "containers/GameRounds/GameRounds";
 import RoundDetails from "containers/RoundDetails/RoundDetails";
+import Players from "containers/Players/Players";
 
 const ROLES = {
   User: "user",
@@ -25,7 +33,14 @@ const ROLES = {
 };
 
 function App() {
-  library.add(faBell, faSquarePlus, faTrash, faSquarePollVertical, faPenToSquare, faArrowsRotate);
+  library.add(
+    faBell,
+    faSquarePlus,
+    faTrash,
+    faSquarePollVertical,
+    faPenToSquare,
+    faArrowsRotate
+  );
 
   return (
     <Routes>
@@ -38,16 +53,29 @@ function App() {
         <Route path="/gameDetails/:gameId" element={<GameDetails />} />
 
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]}/>}>
+          <Route
+            element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}
+          >
             <Route path="/users" element={<Users />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/followers/:userId" element={<Followers />} />
             <Route path="/friends/:userId" element={<Friends />} />
             <Route path="/userDetails/:userId" element={<UserDetails />} />
             <Route path="/roundDetails/:roundId" element={<RoundDetails />} />
-            <Route path="/collectionDetails/:collectionId" element={<CollectionDetails />} />
+            <Route
+              path="/collectionDetails/:collectionId"
+              element={<CollectionDetails />}
+            />
             <Route path="/rounds" element={<Rounds />} />
-            <Route path="/gameRounds/:gameId/:gameName" element={<GameRounds />} />
+            <Route
+              path="/gameRounds/:gameId/:gameName"
+              element={<GameRounds />}
+            />
+          </Route>
+          <Route
+            element={<RequireAuth allowedRoles={[ROLES.Admin]} />}
+          >
+            <Route path="/players" element={<Players />} />
           </Route>
         </Route>
       </Route>

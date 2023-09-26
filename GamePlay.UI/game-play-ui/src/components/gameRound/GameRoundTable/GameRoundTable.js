@@ -111,6 +111,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
                       </button>
                       <button
                         className="btn"
+                        onClick={() => handleDelete(round.id)}
                       >
                         <FontAwesomeIcon icon="fa-solid fa-trash" />
                       </button>

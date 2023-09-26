@@ -3,6 +3,7 @@
         "games": "Games",
         "users": "Users",
         "myRounds": "My Rounds",
+        "players": "Players",
         "hello": "Hello",
         "login": "Login",
         "logout": "Logout"
@@ -117,6 +118,7 @@
         "player": "Player",
         "what": "Player",
         "addedMes": "Player has been added",
+        "noPlayers": "There are no players yet..",
         "isRegistered": "Is Registered",
         "role": "Role",
         "name": "Name",
@@ -127,7 +129,9 @@
         "yes": "YES",
         "no": "NO",
         "nameValidation": "Enter player's name!",
-        "notRegistered": "User is not registered."
+        "notRegistered": "User is not registered.",
+        "confirmDeleteMes": "Are you sure you want to delete this player?",
+        "deleteMes": "Player has been deleted"
     },
     "auth": {
         "usernameOrEmail": "Username Or Email:",

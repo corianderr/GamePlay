@@ -1,5 +1,5 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { toast } from "react-toastify";
@@ -13,10 +13,28 @@ const AddPlayerForm = ({ users, handleClose }) => {
     isRegistered: false,
     userId: null,
   });
+
   const [options, setOptions] = useState(
-    users.map((user) => ({ value: user, label: user.userName }))
+    users?.map((user) => ({ value: user, label: user.userName }))
   );
+
   const [selectedOption, setSelectedOption] = useState();
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getUsers = async () => {
+    if (users === undefined) {
+      const response = await axiosPrivate.get(`/user`);
+      if (response.data.succeeded) {
+        const result = response.data.result;
+        setOptions(
+          result.map((user) => ({ value: user, label: user.userName }))
+        );
+      }
+    }
+  };
 
   const onSelect = (selectedOption) => {
     setPlayer((prev) => ({ ...prev, ["userId"]: selectedOption.value.id }));

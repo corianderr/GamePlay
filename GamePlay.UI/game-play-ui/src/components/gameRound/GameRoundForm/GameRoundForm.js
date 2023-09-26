@@ -68,6 +68,9 @@ const GameRoundForm = ({
     } else {
       setPlayers(viewModel?.gameRound.players);
       setForm(viewModel?.gameRound);
+      setSelectedPlayers(viewModel?.gameRound?.players.map((p) => {
+        return {label: p.player.name, value: p.player.id};
+      }));
     }
     if (viewModel?.gameRound?.game !== undefined) {
       setSelectedOption({
@@ -108,14 +111,14 @@ const GameRoundForm = ({
       selectedOption
         .map((player) => player.value)
         .map((p) => ({
-          ...p,
+          player: p,
           playerId: p.id,
           score: 0,
           role: "",
           isWinner: false,
         }))
     );
-    console.log(players);
+    console.log(selectedPlayers);
   };
 
   const updatePlayers = (name, value, index) => {
@@ -249,7 +252,7 @@ const GameRoundForm = ({
                     <tbody style={{ fontWeight: "normal" }}>
                       {players.map((item, i) => (
                         <tr key={i}>
-                          <td>{item.name}</td>
+                          <td>{item.player.name}</td>
                           <td>
                             <input
                               className="form-control"
@@ -280,11 +283,11 @@ const GameRoundForm = ({
                             <input
                               className="form-check-input"
                               type="checkbox"
-                              checked={item.isRegistered}
+                              checked={item.player.isRegistered}
                               disabled
                             />
                           </td>
-                          <td>{item.isRegistered ? item.id.substring(0, 8) : "–"}</td>
+                          <td>{item.player.isRegistered ? item.player.id.substring(0, 8) : "–"}</td>
                         </tr>
                       ))}
                     </tbody>

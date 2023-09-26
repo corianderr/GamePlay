@@ -34,6 +34,7 @@ const EditGameRoundForm = ({ gameRoundId, handleClose }) => {
     try {
       const response = await axiosPrivate.get(`/gameRound/edit/${gameRoundId}`);
       setViewModel(response.data.result);
+      console.log(response.data.result)
     } catch (err) {
       if (err.name === "CanceledError") {
         return;

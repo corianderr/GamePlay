@@ -57,7 +57,9 @@ export default function NavMenu() {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/rounds">
-                {t("navMenu.myRounds")}
+              {auth?.roles?.includes("admin") ? t("roundResult.rounds") : (
+                t("navMenu.myRounds"))
+              }
               </Link>
             </li>
             {auth?.accessToken ? (

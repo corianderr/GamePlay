@@ -108,6 +108,7 @@
         "deleteMes": "Round has been deleted",
         "actions": "Actions",
         "rounds": "Rounds",
+        "creator": "Creator",
         "details": "Round Details",
         "selectPlayers": "Select Players",
         "roundId": "Round Id"

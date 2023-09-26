@@ -21,9 +21,16 @@ const GameRounds = () => {
 
   const getRounds = async () => {
     try {
-      const response = await axiosPrivate.get(
-        `/gameRound?userId=${auth?.id}&gameId=${gameId}`
-      );
+      let response;
+      if (auth?.roles?.includes("admin")){
+        response = await axiosPrivate.get(
+          `/gameRound?gameId=${gameId}`
+        );
+      }else {
+        response = await axiosPrivate.get(
+          `/gameRound?userId=${auth?.id}&gameId=${gameId}`
+        );
+      }
       if (response.data.succeeded) {
         setRounds(response.data.result);
       }

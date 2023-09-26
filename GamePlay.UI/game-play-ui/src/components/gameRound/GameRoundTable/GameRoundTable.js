@@ -3,6 +3,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Moment from "moment";
 import EditGameRoundForm from "../EditGameRoundForm/EditGameRoundForm";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -80,6 +81,7 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
                 <th scope="col">{t("game.game")}</th>
                 <th scope="col">{t("roundResult.date")}</th>
                 <th scope="col">{t("roundResult.place")}</th>
+                <th scope="col">{t("roundResult.creator")}</th>
                 {auth?.roles.includes("admin") && (
                   <th scope="col">{t("roundResult.actions")}</th>
                 )}
@@ -94,8 +96,11 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
                       {round.game.name}
                     </Link>
                   </td>
-                  <td>{round.date}</td>
+                  <td>{Moment(round.date).format("DD MMM yyyy")}</td>
                   <td>{round.place}</td>
+                  <td><Link to={`/userDetails/${round.creatorId}`}>
+                        {round.creator.userName}
+                      </Link></td>
                   {auth?.roles.includes("admin") && (
                     <td>
                       <button
@@ -106,7 +111,6 @@ const GameRoundTable = ({ header, rounds, resetRounds }) => {
                       </button>
                       <button
                         className="btn"
-                        onClick={() => handleDelete(round.id)}
                       >
                         <FontAwesomeIcon icon="fa-solid fa-trash" />
                       </button>

@@ -63,7 +63,13 @@ const RoundDetails = () => {
           {t("game.game")}:{" "}
           <Link to={`/gameDetails/${round.game.id}`}>{round.game.name}</Link>
           <br />
-          {t("roundResult.date")}: {Moment(round.date).format("dd MMM yyyy")} <br />
+          {t("roundResult.date")}: {Moment(round.date).format("DD MMM yyyy")}{" "}
+          <br />
+          {t("roundResult.creator")}:{" "}
+          <Link to={`/userDetails/${round.creatorId}`}>
+            {round.creator?.userName}
+          </Link>{" "}
+          <br />
           <h4>{t("roundResult.players")}: </h4>
           <br />
           <table class="table table-striped">
@@ -83,7 +89,11 @@ const RoundDetails = () => {
                   <td>{player.role === "" ? "–" : player.role}</td>
                   <td>{player.score}</td>
                   <td>
-                    {player.isWinner ? <span>{t("player.yes")}</span> : <span>{t("player.no")}</span>}
+                    {player.isWinner ? (
+                      <span>{t("player.yes")}</span>
+                    ) : (
+                      <span>{t("player.no")}</span>
+                    )}
                   </td>
                   <td>
                     {player.player.isRegistered ? (

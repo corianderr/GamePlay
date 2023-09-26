@@ -153,11 +153,11 @@ const GameRoundForm = ({
               )}
               <Select
                 options={options}
-                placeholder={t("forms.select") + t("game.what")}
+                placeholder={t("forms.choose") + t("game.what")}
                 value={selectedOption}
                 onChange={handleSelect}
                 isSearchable={true}
-                isDisabled={viewModel?.gameRound?.game !== undefined}
+                isDisabled={viewModel?.gameRound.id !== undefined}
                 className="mb-5"
                 ref={inputRef}
               />

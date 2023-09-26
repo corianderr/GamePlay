@@ -206,3 +206,7 @@ header a{
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
   }
+
+.MuiToolbar-root p {
+    margin-bottom: 0;
+}

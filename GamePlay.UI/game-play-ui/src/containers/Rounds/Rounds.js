@@ -31,7 +31,12 @@ const Rounds = () => {
 
   const getRounds = async () => {
     try {
-      const response = await axiosPrivate.get(`/gameRound?userId=${auth?.id}`);
+      let response;
+      if (auth?.roles?.includes("admin")){
+        response = await axiosPrivate.get(`/gameRound`);
+      }else {
+        response = await axiosPrivate.get(`/gameRound?userId=${auth?.id}`);
+      }
       if (response.data.succeeded) {
         setRounds(response.data.result);
       }

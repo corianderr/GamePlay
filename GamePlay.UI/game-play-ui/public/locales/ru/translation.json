@@ -108,6 +108,7 @@
         "deleteMes": "Партия удалена",
         "actions": "Действия",
         "details": "Детали Партии",
+        "creator": "Создатель",
         "rounds": "Партии",
         "selectPlayers": "Выберите игроков",
         "roundId": "ID партии"

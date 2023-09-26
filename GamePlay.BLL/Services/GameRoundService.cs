@@ -25,15 +25,10 @@ public class GameRoundService : IGameRoundService {
             Id = gameRoundId
         };
     }
-
-    public async Task<IEnumerable<GameRoundModel>> GetAllByGameIdAsync(Guid gameId) {
-        var rounds = await _gameRoundRepository.GetAllAsync(r => r.GameId.Equals(gameId), r => r.Game);
-        return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
-    }
-
+    
     public async Task<IEnumerable<GameRoundModel>> GetAllAsync(Expression<Func<GameRoundModel, bool>>? predicate = null) {
         var rounds = await _gameRoundRepository.GetAllAsync(_mapper.Map<Expression<Func<GameRound, bool>>?>(predicate),
-            r => r.Game);
+            r => r.Game, r => r.Creator);
         return _mapper.Map<IEnumerable<GameRoundModel>>(rounds);
     }
 

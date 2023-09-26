@@ -38,7 +38,7 @@ public class GameRoundController : ApiController {
                 r.Players.Any(p => p.Player.UserId.Equals(userId)) || r.CreatorId.Equals(userId));
         }
         else if (!gameId.Equals(null)) {
-            rounds = await _gameRoundService.GetAllByGameIdAsync((Guid)gameId);
+            rounds = await _gameRoundService.GetAllAsync(r => r.GameId.Equals((Guid)gameId));
         }
         else {
             rounds = await _gameRoundService.GetAllAsync();

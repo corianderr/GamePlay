@@ -16,7 +16,9 @@ public class GameRoundRepository : BaseRepository<GameRound>, IGameRoundReposito
 
     public async Task<GameRound> GetRoundWithAllHierarchy(Expression<Func<GameRound, bool>>? predicate = null) {
         IQueryable<GameRound> query = DbSet;
-        query = query.Include(r => r.Game).Include(r => r.Players).ThenInclude(p => p.Player);
+        query = query.Include(r => r.Game)
+            .Include(r => r.Creator)
+            .Include(r => r.Players).ThenInclude(p => p.Player);
 
         if (predicate != null) {
             return (await query.FirstOrDefaultAsync(predicate))!;

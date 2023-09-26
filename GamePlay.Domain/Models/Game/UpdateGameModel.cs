@@ -55,7 +55,7 @@ public class UpdateGameModel {
 
     [YearRange(1800,
         ErrorMessage =
-            "You definitely messed something up. Games in such a distant past have not yet been released. Enter a year between 1800 and the current year.")]
+            "You definitely messed something up. Games in such a distant future or past have not yet been released. Enter a year between 1800 and the current year.")]
     [Required(ErrorMessage = "Please enter year of release.")]
     [DisplayName("Year of Release")]
     public int YearOfRelease { get; set; }

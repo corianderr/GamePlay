@@ -7,7 +7,6 @@ namespace GamePlay.Domain.Contracts.Services;
 
 public interface IGameRoundService {
     Task<BaseModel> AddAsync(CreateGameRoundModel entity);
-    Task<IEnumerable<GameRoundModel>> GetAllByGameIdAsync(Guid gameId);
     Task<GameRoundModel> GetByIdAsync(Guid id);
     Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 

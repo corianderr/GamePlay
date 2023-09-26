@@ -50,7 +50,8 @@ const Games = () => {
           {t("forms.add")}
         </button>
       )}
-      <GameList games={games} header={t("navMenu.games")} />
+
+      <GameList games={games} header={t("navMenu.games")} refreshGames={getGames}/>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("forms.add")} {t("game.what")}</Modal.Title>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./GameList.css";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,17 +6,34 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { Pagination } from "@mui/material";
+import useAuth from "hooks/useAuth";
+import { Modal } from "react-bootstrap";
+import EditGameForm from "../EditGameForm/EditGameForm";
 
 const GameList = ({ header, games, collectionId, refreshGames }) => {
   const { t } = useTranslation();
+  const { auth } = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
 
+  const [showEdit, setShowEdit] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [subset, setSubset] = useState([]);
-  const itemsPerPage = 6;
-  
+
+  const [editGame, setEditGame] = useState([]);
+
+  const itemsPerPage = 9;
+
+  const handleEditClose = () => setShowEdit(false);
+  const handleEditShow = (e, game) => {
+    e.stopPropagation();
+    setShowEdit(true);
+    setEditGame(game);
+  };
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
@@ -27,22 +44,25 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
   }, [games]);
 
   useEffect(() => {
-      updateSubset();
+    updateSubset();
   }, [currentPage]);
-
 
   const updateSubset = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setSubset(games.slice(startIndex, endIndex));
-  }
+  };
 
   const redirectToGameDetails = (gameId) => {
     navigate(`/gameDetails/${gameId}`);
   };
 
   const deleteFromCollectoin = async (gameId) => {
-    if (!window.confirm(`Are you sure you want to remove this game from ${header} collection?`)){
+    if (
+      !window.confirm(
+        `Are you sure you want to remove this game from ${header} collection?`
+      )
+    ) {
       return;
     }
 
@@ -54,6 +74,20 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
       refreshGames();
     } else {
       toast.error("Error...");
+    }
+  };
+
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    if (window.confirm(t("game.deleteConfirm"))) {
+      const response = await axiosPrivate.delete(`/game/${id}`);
+      console.log(response);
+      if (response.data.succeeded) {
+        console.log(response.data);
+        refreshGames();
+        toast.success(t("game.deletedMes"));
+        navigate("/games", { state: { from: location }, replace: true });
+      }
     }
   };
 
@@ -100,19 +134,45 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
                         {t("game.time")}: {game.minPlayTime} -{" "}
                         {game.maxPlayTime} {t("game.minutes")}
                       </p>
-                      <div className="d-flex justify-content-end install mt-auto">
+                      <div className="d-flex justify-content-end install mt-auto align-items-center">
                         <span>
                           {t("game.releasedIn")} {game.yearOfRelease}
                         </span>
+                        <div>
+                          {auth?.roles?.includes("admin") && (
+                            <>
+                              <button
+                                className="ms-2 btn btn-sm"
+                                onClick={(event) => handleEditShow(event, game)}
+                              >
+                                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                              </button>
+                              <button
+                                className="btn btn-sm"
+                                onClick={(event) =>
+                                  handleDelete(event, game.id)
+                                }
+                              >
+                                <FontAwesomeIcon icon="fa-solid fa-trash" />
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                     {collectionId !== undefined && (
-                      <div className="bg-danger text-center" style={{borderRadius: "0 0 5px 5px"}}>
+                      <div
+                        className="bg-danger text-center"
+                        style={{ borderRadius: "0 0 5px 5px" }}
+                      >
                         <button
                           className="btn"
                           onClick={() => deleteFromCollectoin(game.id)}
                         >
-                          <FontAwesomeIcon className="text-light" icon="fa-solid fa-trash" />
+                          <FontAwesomeIcon
+                            className="text-light"
+                            icon="fa-solid fa-trash"
+                          />
                         </button>
                       </div>
                     )}
@@ -123,7 +183,28 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
           </div>
         </>
       )}
-      {totalPages > 1 && (<Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />)}
+      {totalPages > 1 && (
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      )}
+      <Modal show={showEdit} onHide={handleEditClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {t("forms.edit")} {t("game.what")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditGameForm
+            handleClose={handleEditClose}
+            gameId={editGame.id}
+            game={editGame}
+            updateGame={refreshGames}
+          />
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

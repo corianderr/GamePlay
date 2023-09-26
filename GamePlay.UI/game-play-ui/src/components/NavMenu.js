@@ -45,8 +45,8 @@ export default function NavMenu() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav w-100">
-            <li>
-              <Link to="/games" className="nav-link active">
+            <li className="nav-item">
+              <Link to="/games" className="nav-link">
                 {t("navMenu.games")}
               </Link>
             </li>

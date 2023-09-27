@@ -39,7 +39,7 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
   };
 
   useEffect(() => {
-    setTotalPages(Math.ceil(games.length / itemsPerPage));
+    setTotalPages(Math.ceil(games?.length / itemsPerPage));
     updateSubset();
   }, [games]);
 
@@ -50,7 +50,7 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
   const updateSubset = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    setSubset(games.slice(startIndex, endIndex));
+    setSubset(games?.slice(startIndex, endIndex));
   };
 
   const redirectToGameDetails = (gameId) => {
@@ -93,11 +93,11 @@ const GameList = ({ header, games, collectionId, refreshGames }) => {
 
   return (
     <>
-      {subset?.length === 0 ? (
+      {games?.length === 0 ? (
         <h5 className="mt-3">{t("game.noGames")}</h5>
       ) : (
         <>
-          <div className="container">
+          <div className="container mt-3">
             <h2 className="text-center">{header}</h2>
             <div className="row mt-3">
               {subset.map((game, i) => (

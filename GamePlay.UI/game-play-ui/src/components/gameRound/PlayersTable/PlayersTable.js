@@ -77,7 +77,6 @@ const PlayersTable = ({ players, resetPlayers }) => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{t("player.name")}</th>
-                <th scope="col">{t("player.isRegistered")}?</th>
                 <th scope="col">{t("player.userLink")}</th>
                 <th scope="col">{t("roundResult.actions")}</th>
               </tr>
@@ -87,13 +86,6 @@ const PlayersTable = ({ players, resetPlayers }) => {
                 <tr key={i}>
                   <td>{i + 1}</td>
                   <td>{player.name}</td>
-                  <td>
-                    {player.isRegistered ? (
-                      <span>{t("player.yes")}</span>
-                    ) : (
-                      <span>{t("player.no")}</span>
-                    )}
-                  </td>
                   <td>
                     {player.isRegistered ? (
                       <Link to={`/userDetails/${player.userId}`}>

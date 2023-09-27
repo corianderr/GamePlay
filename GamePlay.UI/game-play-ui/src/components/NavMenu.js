@@ -17,7 +17,7 @@ export default function NavMenu() {
   const logout = () => {
     const clearCookies = async () => {
       const response = await axiosPrivate.post("/user/logout");
-      setAuth({});
+      setAuth({});  
     };
     clearCookies();
   };

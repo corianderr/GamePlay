@@ -23,7 +23,7 @@ const Players = () => {
   const handleClose = () => {
     setShow(false);
     getPlayers();
-  }
+  };
 
   const handleShow = () => setShow(true);
 
@@ -49,26 +49,25 @@ const Players = () => {
 
   return (
     <>
-      {auth?.accessToken !== undefined && (
-        <button
-          className="btn btn-primary btn-sm opacity-75 w-25"
-          onClick={handleShow}
-        >
-          {t("forms.add")}
-        </button>
-      )}
-      <PlayersTable
-        players={players}
-        resetPlayers={getPlayers}
-      />
+      <div className="mx-auto">
+        {auth?.accessToken !== undefined && (
+          <button
+            className="btn btn-primary btn-sm opacity-75 w-25"
+            onClick={handleShow}
+          >
+            {t("forms.add")}
+          </button>
+        )}
+        <PlayersTable players={players} resetPlayers={getPlayers} />
+      </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("forms.add")} {t("player.what")}</Modal.Title>
+          <Modal.Title>
+            {t("forms.add")} {t("player.what")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddPlayerForm
-            handleClose={handleClose}
-          />
+          <AddPlayerForm handleClose={handleClose} />
         </Modal.Body>
       </Modal>
     </>

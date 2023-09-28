@@ -52,10 +52,10 @@ section a{
     padding-bottom: 1rem;
 }
 
-input[type="text"],
-input[type="password"],
-button,
-textarea {
+.auth-form input[type="text"],
+.auth-form input[type="password"],
+.auth-form button,
+.auth-form textarea {
   font-family: 'Nunito', sans-serif;
   font-size: 22px;
   padding: 0.25rem;

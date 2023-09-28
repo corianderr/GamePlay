@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import GameRoundTable from "components/gameRound/GameRoundTable/GameRoundTable";
 import { Modal } from "react-bootstrap";
-import AddGameRoundForm from "components/gameRound/AddGameRoundForm/AddGameRoundForm";
 import { useTranslation } from "react-i18next";
-import PlayersTable from "components/gameRound/PlayersTable/PlayersTable";
 import AddPlayerForm from "components/gameRound/AddPlayerForm/AddPlayerForm";
+import PlayersTable from "components/gameRound/PlayersTable/PlayersTable";
 
 const Players = () => {
   const [players, setPlayers] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -49,7 +49,7 @@ const Players = () => {
 
   return (
     <>
-      <div className="mx-auto">
+      <div className="mx-auto w-75">
         {auth?.accessToken !== undefined && (
           <button
             className="btn btn-primary btn-sm opacity-75 w-25"

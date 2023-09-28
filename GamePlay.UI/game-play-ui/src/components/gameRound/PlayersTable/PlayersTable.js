@@ -66,53 +66,55 @@ const PlayersTable = ({ players, resetPlayers }) => {
   };
 
   return (
-    <>
+    <d>
       {players?.length === 0 ? (
         <h5 className="mt-3">{t("player.noPlayers")}</h5>
       ) : (
         <>
           <h2 className="text-center mb-3">Players</h2>
-          <table class="table table-striped bg-light">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{t("player.name")}</th>
-                <th scope="col">{t("player.userLink")}</th>
-                <th scope="col">{t("roundResult.actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {subset.map((player, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>{player.name}</td>
-                  <td>
-                    {player.isRegistered ? (
-                      <Link to={`/userDetails/${player.userId}`}>
-                        {t("userDetails.differentUser.profile")}
-                      </Link>
-                    ) : (
-                      <span>{t("player.notRegistered")}</span>
-                    )}
-                  </td>
-                  <td>
-                    {/* <button
+          <div className="table-responsive">
+            <table class="table table-striped bg-light">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{t("player.name")}</th>
+                  <th scope="col">{t("player.userLink")}</th>
+                  <th scope="col">{t("roundResult.actions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subset.map((player, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{player.name}</td>
+                    <td>
+                      {player.isRegistered ? (
+                        <Link to={`/userDetails/${player.userId}`}>
+                          {t("userDetails.differentUser.profile")}
+                        </Link>
+                      ) : (
+                        <span>{t("player.notRegistered")}</span>
+                      )}
+                    </td>
+                    <td>
+                      {/* <button
                         className="btn"
                         onClick={() => handleShow(round.id)}
                       >
                         <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
                       </button> */}
-                    <button
-                      className="btn"
-                      onClick={() => handleDelete(player.id)}
-                    >
-                      <FontAwesomeIcon icon="fa-solid fa-trash" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <button
+                        className="btn"
+                        onClick={() => handleDelete(player.id)}
+                      >
+                        <FontAwesomeIcon icon="fa-solid fa-trash" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
       {players.length !== 0 && (
@@ -125,7 +127,7 @@ const PlayersTable = ({ players, resetPlayers }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       )}
-    </>
+    </d>
   );
 };
 

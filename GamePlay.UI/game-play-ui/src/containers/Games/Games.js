@@ -167,6 +167,7 @@ const Games = () => {
         <Col md={3}>
           <FormGroup>
             <TableSortLabel
+            className="d-block"
               direction={sort.name}
               onClick={() => onChangeSort("name", sort.name)}
             >

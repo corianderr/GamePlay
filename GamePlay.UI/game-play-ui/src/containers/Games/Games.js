@@ -118,35 +118,29 @@ const Games = () => {
     setFilter((prev) => ({ ...prev, [name]: value }));
   };
 
+  const sortByPropertyName = (propertyName, sortOrder) => (a, b) => {
+    const compareResult =
+      sortOrder === "asc"
+        ? a[propertyName] < b[propertyName]
+          ? -1
+          : 1
+        : b[propertyName] < a[propertyName]
+        ? -1
+        : 1;
+    return compareResult;
+  };
+
   const onChangeSort = (name, value) => {
     const sortOrder = value === "asc" ? "desc" : "asc";
-    const sortedGames = [...filteredGames];
 
-    if (name === "name") {
-      sortedGames.sort((a, b) =>
-        value === "asc"
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
-      );
-    } else if (name === "rating") {
-      sortedGames.sort((a, b) =>
-        value === "asc"
-          ? a.averageRating - b.averageRating
-          : b.averageRating - a.averageRating
-      );
-    } else if (name === "players") {
-      sortedGames.sort((a, b) =>
-        value === "asc"
-          ? a.minPlayers - b.minPlayers
-          : b.minPlayers - a.minPlayers
-      );
-    } else if (name === "time") {
-      sortedGames.sort((a, b) =>
-        value === "asc"
-          ? a.minPlayTime - b.minPlayTime
-          : b.minPlayTime - a.minPlayTime
-      );
-    }
+    const sortingFunctions = {
+      name: sortByPropertyName("name", sortOrder),
+      rating: sortByPropertyName("averageRating", sortOrder),
+      players: sortByPropertyName("minPlayers", sortOrder),
+      time: sortByPropertyName("minPlayTime", sortOrder),
+    };
+
+    const sortedGames = [...filteredGames].sort(sortingFunctions[name]);
 
     setFilteredGames(sortedGames);
     setSort((prev) => ({ ...prev, [name]: sortOrder }));
@@ -167,7 +161,7 @@ const Games = () => {
         <Col md={3}>
           <FormGroup>
             <TableSortLabel
-            className="d-block"
+              className="d-block"
               direction={sort.name}
               onClick={() => onChangeSort("name", sort.name)}
             >
@@ -238,7 +232,9 @@ const Games = () => {
               onChange={onChangeFilter}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">{t("game.min")}</InputAdornment>
+                  <InputAdornment position="start">
+                    {t("game.min")}
+                  </InputAdornment>
                 ),
               }}
             />

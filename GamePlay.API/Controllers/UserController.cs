@@ -166,4 +166,11 @@ public class UserController : ApiController {
         var subscribers = (await _relationService.GetAllAsync(User.Identity.GetUserId(), false)).Select(r => r.Subscriber);
         return Ok(ApiResult<IEnumerable<ApplicationUser?>>.Success(subscribers));
     }
+    
+    // GET: users/notificationsCount
+    [HttpGet("notificationsCount")]
+    public async Task<ActionResult> NotificationsCount() {
+        var subscribersNumber = (await _relationService.GetNotificationsCount(User.Identity.GetUserId()));
+        return Ok(ApiResult<int>.Success(subscribersNumber));
+    }
 }

@@ -68,4 +68,8 @@ public class UserRelationService : IUserRelationService {
             r => r.UserId.Equals(userId) && r.SubscriberId.Equals(subscriberId));
         return _mapper.Map<UserRelationModel>(userRelation);
     }
+
+    public async Task<int> GetNotificationsCount(string userId) {
+        return await _relationRepository.GetAllCountAsync(r => r.UserId == userId && !r.IsFriend);
+    }
 }

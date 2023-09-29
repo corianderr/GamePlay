@@ -12,4 +12,5 @@ public interface IUserRelationService {
 
     Task<IEnumerable<UserRelationModel>> GetAllAsync(string userId,
         bool? isFriend = null);
+    Task<int> GetNotificationsCount(string userId);
 }

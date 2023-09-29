@@ -25,7 +25,7 @@ const StarRating = ({ isEditable, value, game, resetRating }) => {
 
   useEffect(() => {
     if (game?.averageRating !== undefined && rating === 0) {
-      setRating(game.averageRating.toFixed(2));
+      setRating(parseFloat(game.averageRating.toFixed(2)));
     }
   }, [game]);
 

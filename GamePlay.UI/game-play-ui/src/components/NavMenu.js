@@ -25,6 +25,10 @@ export default function NavMenu() {
     } else if (intervalId !== null) {
       stopInterval();
     }
+
+    return () => {
+      stopInterval();
+    };
   }, []);
 
   const stopInterval = () => {
@@ -33,6 +37,11 @@ export default function NavMenu() {
   };
 
   const getNotificationsNumber = async () => {
+    console.log(auth?.accesToken)
+    if (!auth?.accessToken && intervalId !== null) {
+      stopInterval();
+      return;
+    }
     const response = await axiosPrivate.get("/user/notificationsCount");
     if (response.data.succeeded) {
       console.log(response)

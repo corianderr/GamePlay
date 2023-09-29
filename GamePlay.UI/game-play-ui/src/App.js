@@ -15,6 +15,7 @@ import {
   faSquarePollVertical,
   faPenToSquare,
   faArrowsRotate,
+  faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 import Notifications from "containers/Notifications/Notifications";
 import Friends from "containers/Friends/Friends";
@@ -39,7 +40,8 @@ function App() {
     faTrash,
     faSquarePollVertical,
     faPenToSquare,
-    faArrowsRotate
+    faArrowsRotate,
+    faMagnifyingGlass
   );
 
   return (

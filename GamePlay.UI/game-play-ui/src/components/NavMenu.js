@@ -1,23 +1,52 @@
 import { Link } from "react-router-dom";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
+import { Badge } from "@mui/material";
 
 export default function NavMenu() {
   const { t, i18n } = useTranslation();
   const { auth, setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
 
+  const [intervalId, setIntervalId] = useState(null);
+  const [notificationsNumber, setNotificationsNumber] = useState(0);
+
   useEffect(() => {
-    console.log(auth);
-  }, [auth]);
+    if (auth?.accessToken) {
+      getNotificationsNumber();
+      const id = setInterval(() => {
+        getNotificationsNumber();
+      }, 10000);
+
+      setIntervalId(id);
+    } else if (intervalId !== null) {
+      stopInterval();
+    }
+  }, []);
+
+  const stopInterval = () => {
+    clearInterval(intervalId);
+    setIntervalId(null);
+  };
+
+  const getNotificationsNumber = async () => {
+    const response = await axiosPrivate.get("/user/notificationsCount");
+    if (response.data.succeeded) {
+      console.log(response)
+      setNotificationsNumber(response.data.result);
+    } else {
+      console.log("Failed");
+    }
+  };
 
   const logout = () => {
     const clearCookies = async () => {
       const response = await axiosPrivate.post("/user/logout");
-      setAuth({});  
+      setAuth({});
+      stopInterval();
     };
     clearCookies();
   };
@@ -71,12 +100,18 @@ export default function NavMenu() {
             )}
             {auth?.accessToken ? (
               <>
-                <li className="ms-lg-auto nav-item">
-                  <Link to={`/notifications`}>
-                    <FontAwesomeIcon
-                      icon="fa-solid fa-bell"
-                      className="nav-link bell"
-                    />
+                <li className="ms-lg-auto nav-item me-2">
+                  <Link to={`/notifications`} className="nav-link">
+                    {notificationsNumber > 0 ? (
+                      <Badge
+                        color="warning"
+                        badgeContent={1}
+                      >
+                        <FontAwesomeIcon icon="fa-solid fa-bell" size="lg"/>
+                      </Badge>
+                    ) : (
+                      <FontAwesomeIcon icon="fa-solid fa-bell" size="lg"/>
+                    )}
                   </Link>
                 </li>
                 <li className="nav-item">

@@ -253,7 +253,7 @@ const UserDetails = () => {
             <h4>{t("adminPanel.name")}</h4>
             <div>
               <button
-                className="btn btn-dark btn-sm opacity-75 my-1 me-1"
+                className="btn btn-warning btn-sm opacity-75 my-1 me-1"
                 onClick={refreshUserRelationsCount}
               >
                 {t("user.followers")} / {t("user.friends")}{" "}
@@ -262,7 +262,7 @@ const UserDetails = () => {
                   className="ms-1"
                 />
               </button>
-              <button className="btn btn-dark btn-sm opacity-75 my-1"
+              <button className="btn btn-warning btn-sm opacity-75 my-1"
               onClick={refreshAverageRating}>
                 {t("adminPanel.averageRatings")}{" "}
                 <FontAwesomeIcon
